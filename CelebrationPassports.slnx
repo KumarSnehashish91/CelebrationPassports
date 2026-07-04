@@ -6,7 +6,7 @@
   <Folder Name="/src/Clients/" />
   <Folder Name="/src/Data/" />
   <Folder Name="/src/Hosting/">
-    <Project Path="src/Hosting/Website/CelebrationPassports.Web.csproj" />
+    <Project Path="src/Hosting/Web/CelebrationPassports.Web.csproj" />
   </Folder>
   <Folder Name="/src/Shared/" />
   <Folder Name="/tests/" />
