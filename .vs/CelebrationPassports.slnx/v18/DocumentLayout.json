@@ -1,12 +1,41 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "E:\\Products\\CelebrationPassports\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|e:\\products\\celebrationpassports\\src\\hosting\\web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Views\\Home\\Index.cshtml",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "src\\Hosting\\Web\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-04T14:40:14.16Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
