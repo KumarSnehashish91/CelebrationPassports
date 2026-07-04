@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/docs/" />
+  <Folder Name="/scripts/" />
+  <Folder Name="/src/" />
+  <Folder Name="/src/Business/" />
+  <Folder Name="/src/Clients/" />
+  <Folder Name="/src/Data/" />
+  <Folder Name="/src/Hosting/">
+    <Project Path="src/Hosting/Website/CelebrationPassports.Web.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/" />
+  <Folder Name="/tests/" />
+  <Folder Name="/tools/" />
+</Solution>
