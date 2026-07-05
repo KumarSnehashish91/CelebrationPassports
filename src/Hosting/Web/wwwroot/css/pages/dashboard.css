@@ -1,0 +1,96 @@
+﻿.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+
+@media(max-width:768px) {
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width:1200px) {
+
+    .stats-row {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+@media(max-width:768px) {
+
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ========================================
+   Dashboard Widgets
+======================================== */
+
+.dashboard-widget {
+    background: #fff;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+}
+
+.widget-header {
+    margin-bottom: 20px;
+}
+
+    .widget-header h5 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+.upcoming-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+    .upcoming-item:last-child {
+        border-bottom: none;
+    }
+
+
+/* ==========================================
+   MEMORY HERO
+========================================== */
+
+.memory-hero {
+    min-height: 420px;
+}
+
+.memory-placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    border: 2px dashed #d7dce8;
+    border-radius: 16px;
+    color: #6c757d;
+    text-align: center;
+    padding: 40px;
+}
+
+/* ==========================================
+   Dashboard Row Consistency
+========================================== */
+
+.dashboard .row {
+    margin-bottom: 0;
+}

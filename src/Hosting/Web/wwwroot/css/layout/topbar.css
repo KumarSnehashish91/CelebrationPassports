@@ -1,0 +1,123 @@
+﻿.topbar-container {
+    min-height: 72px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 24px;
+    background: white;
+}
+
+.topbar-left h2 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+}
+
+.topbar-left p {
+    margin: 0;
+    font-size: 12px;
+    color: #7b7b7b;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-left: auto;
+}
+.search-box input {
+    width: 250px;
+    height: 36px;
+    font-size: 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 0 16px;
+    outline: none; 
+    transition: .3s;
+}
+
+    .search-box input:focus {
+        border-color: #6f4ef6;
+    }
+.top-icons {
+    display: flex;
+    gap: 10px;
+}
+
+    .top-icons button {
+        width: 34px;
+        height: 34px;
+        border: none;
+        border-radius: 50%;
+        background: #f6f7fb;
+        cursor: pointer;
+        font-size: 14px;
+        transition: .3s;
+    }
+
+        .top-icons button:hover {
+            background: #ece8ff;
+        }
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+    .profile img {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+    }
+
+
+@media (max-width:768px) {
+    .topbar-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        padding: 0 12px 0 70px;
+    }
+
+    .topbar-left {
+        display: none;
+    }
+
+    .top-icons i {
+        font-size: 15px;
+    }
+
+    .mobile-menu-button i {
+        font-size: 24px;
+    }
+
+    .search-box {
+        display: none;
+    }
+
+    .topbar-right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .top-icons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .profile {
+        display: flex;
+        align-items: center;
+        gap: 0;
+    }
+
+        .profile span,
+        .profile i {
+            display: none;
+        }
+}

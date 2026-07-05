@@ -1,8 +1,41 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@using CelebrationPassports.Web.Models.ViewModels
+@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+ 
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="dashboard">
+
+    <div class="stats-row">
+
+        <partial name="_StatisticCard"
+                 model='new StatisticCardViewModel
+                 {
+                     Title = "Upcoming",
+                     Value = Model.UpcomingCelebrations.Count.ToString(),
+                     Description = "Next Celebration",
+                     Icon = "bi bi-cake2",
+                     IconBackground = "#F4F1FF"
+                 }' />
+
+<partial name="_StatisticCard"
+         model='new StatisticCardViewModel
+         {
+             Title = "Invitations",
+             Value = Model.Summary.Invitations.ToString(),
+             Description = "Pending",
+             Icon = "bi bi-envelope",
+             IconBackground = "#EEF9F0"
+         }' />
+
+<partial name="_StatisticCard"
+         model='new StatisticCardViewModel
+         {
+             Title = "Memories",
+             Value = Model.Summary.Memories.ToString(),
+             Description = "Photos",
+             Icon = "bi bi-camera",
+             IconBackground = "#EEF7FF"
+         }' />
+
+</div>
+
 </div>

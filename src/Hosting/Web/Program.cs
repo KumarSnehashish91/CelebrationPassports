@@ -1,10 +1,17 @@
-using CelebrationPassports.Persistence;
+using CelebrationPassports.Web.Interfaces;
+using CelebrationPassports.Web.Services;
+
+
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddPersistence(builder.Configuration);
 
+
+builder.Services.AddScoped<IGreetingService, GreetingService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 var app = builder.Build();
 
@@ -25,7 +32,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Dashboard}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 

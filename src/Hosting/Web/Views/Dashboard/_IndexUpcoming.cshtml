@@ -1,0 +1,30 @@
+﻿@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+
+<div class="dashboard-widget">
+
+    <div class="widget-header">
+        <h5>Upcoming Celebrations</h5>
+    </div>
+
+    <div class="widget-body">
+
+        @foreach (var celebration in Model.UpcomingCelebrations)
+        {
+            <div class="upcoming-item">
+
+                <div>
+                    <strong>@celebration.Title</strong><br />
+                    <small>@celebration.Type</small>
+                </div>
+
+                <div class="text-end">
+                    <strong>@celebration.Date.ToString("dd MMM")</strong><br />
+                    <small>@celebration.DaysRemaining days left</small>
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>

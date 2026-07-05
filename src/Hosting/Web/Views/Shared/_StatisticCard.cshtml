@@ -1,0 +1,38 @@
+﻿@model CelebrationPassports.Web.Models.ViewModels.StatisticCardViewModel
+
+<div class="stat-card">
+
+    <div class="stat-icon" style="@($"background-color:{Model.IconBackground};")">
+
+        <div class="stat-icon"
+             style="background:@Model.IconBackground">
+
+            <i class="@Model.Icon"></i>
+
+        </div>
+
+    </div>
+
+    <div class="stat-details">
+
+        <span class="stat-title">
+
+            @Model.Title
+
+        </span>
+
+        <h3>
+
+            @Model.Value
+
+        </h3>
+
+        <small>
+
+            @Model.Description
+
+        </small>
+
+    </div>
+
+</div>

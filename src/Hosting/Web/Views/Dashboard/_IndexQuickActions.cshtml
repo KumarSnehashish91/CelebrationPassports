@@ -1,0 +1,21 @@
+﻿@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+
+<div class="dashboard-widget">
+
+    <div class="widget-header">
+        <h5>Quick Actions</h5>
+    </div>
+
+    <div class="widget-body">
+
+        @foreach (var action in Model.QuickActions)
+        {
+            <a href="@action.Url" class="btn btn-outline-primary w-100 mb-2">
+                <i class="@action.Icon me-2"></i>
+                @action.Title
+            </a>
+        }
+
+    </div>
+
+</div>

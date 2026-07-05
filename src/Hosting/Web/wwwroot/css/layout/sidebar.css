@@ -1,0 +1,104 @@
+﻿.sidebar {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    min-height: 72px;
+    padding: 14px 16px;
+    gap: 10px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.logo-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    font-size: 15px;
+    background: #6f4ef6;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.logo-text h4 {
+    margin: 0;
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 700;
+}
+
+.logo-text span {
+    color: #666;
+    font-size: 13px;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+}
+
+    .sidebar-menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: #555;
+        padding: 10px 14px;
+        margin-bottom: 6px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: .25s ease;
+    }
+    .sidebar-menu i {
+        font-size: 16px;
+        width: 20px;
+        text-align: center;
+    }
+
+        .sidebar-menu a:hover {
+            transform: translateX(4px);
+            background: #F4F2FF;
+        }
+
+    .sidebar-menu .active {
+        background: #6F4EF6;
+        color: white;
+        transform: translateX(4px);
+        box-shadow: 0 8px 20px rgba(111,78,246,.30);
+    }
+
+.premium-card {
+    margin: 20px;
+    margin-top: auto;
+    background: #f6f3ff;
+    border-radius: 18px;
+    padding: 18px;
+}
+
+    .premium-card h5 {
+        font-weight: 700;
+        font-size: 15px;
+    }
+    .premium-card p {
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .premium-card button {
+        width: 100%;
+        border: none;
+        border-radius: 12px;
+        background: #6f4ef6;
+        color: white; 
+        margin-top: 10px;
+        font-size: 13px;
+        padding: 10px;
+    }

@@ -1,0 +1,38 @@
+﻿:root {
+    /* Brand */
+    --primary: #6C4CF6;
+    --primary-hover: #5B3FE3;
+    /* Backgrounds */
+    --bg-body: #F5F7FC;
+    --bg-card: #FFFFFF;
+    --bg-sidebar: #FFFFFF;
+    /* Text */
+    --text: #1F2937;
+    --text-light: #6B7280;
+    /* Borders */
+    --border: #E6EAF2;
+    /* Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 12px;
+    --space-lg: 16px;
+    --space-xl: 24px;
+    --space-2xl: 32px;
+    /* Sidebar */
+    --sidebar-width: 180px;
+    /* Topbar */
+    --topbar-height: 72px;
+    /* Shadow */
+    --shadow-card: 0 2px 10px rgba(0,0,0,.05);
+    /* Typography */
+    --font-xs: 12px;
+    --font-sm: 13px;
+    --font-md: 14px;
+    --font-lg: 16px;
+    --font-xl: 20px;
+}

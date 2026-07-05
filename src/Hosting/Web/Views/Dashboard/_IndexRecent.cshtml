@@ -1,0 +1,36 @@
+﻿@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+
+<div class="dashboard-widget">
+
+    <div class="widget-header">
+        <h5>Recent Activity</h5>
+    </div>
+
+    <div class="widget-body">
+
+        @foreach (var activity in Model.RecentActivities)
+        {
+            <div class="upcoming-item">
+
+                <div>
+
+                    <i class="@activity.Icon me-2"></i>
+
+                    <strong>@activity.Title</strong>
+
+                    <br />
+
+                    <small>@activity.Description</small>
+
+                </div>
+
+                <small>
+                    @activity.ActivityDate.ToString("dd MMM")
+                </small>
+
+            </div>
+        }
+
+    </div>
+
+</div>
