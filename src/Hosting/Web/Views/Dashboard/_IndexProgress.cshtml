@@ -1,0 +1,30 @@
+﻿@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+
+<div class="dashboard-widget">
+
+    <div class="widget-header">
+        <h5>Passport Progress</h5>
+    </div>
+
+    <div class="widget-body">
+
+        <div class="progress mb-3" style="height:10px;">
+
+            <div class="progress-bar"
+                 role="progressbar"
+                 style="width:@Model.PassportProgress.Percentage%">
+            </div>
+
+        </div>
+
+        <h3>@Model.PassportProgress.Percentage%</h3>
+
+        <small>
+            @Model.PassportProgress.CompletedItems of
+            @Model.PassportProgress.TotalItems
+            milestones completed
+        </small>
+
+    </div>
+
+</div>

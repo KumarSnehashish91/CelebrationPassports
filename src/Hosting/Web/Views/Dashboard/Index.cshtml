@@ -1,0 +1,124 @@
+﻿@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+@using CelebrationPassports.Web.Models.ViewModels
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="dashboard">
+
+    <div class="stats-row">
+
+        <partial name="_StatisticCard"
+                 model='new StatisticCardViewModel
+                 {
+                     Title = "Upcoming",
+                     Value = Model.Summary.UpcomingCelebrations.ToString(),
+                     Description = "Next Celebration",
+                     Icon = "bi bi-calendar-event",
+                     IconBackground = "#F4F1FF"
+                 }' />
+
+<partial name="_StatisticCard"
+         model='new StatisticCardViewModel
+         {
+             Title = "Invitations",
+             Value = Model.Summary.Invitations.ToString(),
+             Description = "Pending",
+             Icon = "bi bi-envelope",
+             IconBackground = "#EEF9F0"
+         }' />
+
+<partial name="_StatisticCard"
+         model='new StatisticCardViewModel
+         {
+             Title = "Passport Stamps",
+             Value = Model.Summary.PassportStamps.ToString(),
+             Description = "Countries Visited",
+             Icon = "bi bi-award",
+             IconBackground = "#FFF1F3"
+         }' />
+
+<partial name="_StatisticCard"
+         model='new StatisticCardViewModel
+         {
+             Title = "Memories",
+             Value = Model.Summary.Memories.ToString(),
+             Description = "Photos & Videos",
+             Icon = "bi bi-camera",
+             IconBackground = "#EEF7FF"
+         }' />
+
+<partial name="_StatisticCard"
+         model='new StatisticCardViewModel
+         {
+             Title = "Trips",
+             Value = Model.Summary.Trips.ToString(),
+             Description = "Places Visited",
+             Icon = "bi bi-airplane",
+             IconBackground = "#EEF8FF"
+         }' />
+
+<partial name="_StatisticCard"
+         model='new StatisticCardViewModel
+         {
+             Title = "Countries",
+             Value = Model.Summary.Countries.ToString(),
+             Description = "Explored",
+             Icon = "bi bi-globe-central-south-asia",
+             IconBackground = "#F9F6EF"
+         }' />
+
+</div>
+
+    <!-- ============================
+     Row 1
+================================ -->
+
+    <div class="row mt-4 g-4">
+
+        <div class="col-xl-4">
+            <partial name="_IndexUpcoming" model="Model" />
+        </div>
+
+        <div class="col-xl-8">
+            <partial name="_IndexMemoryHero" model="Model" />
+        </div>
+
+    </div>
+
+    <!-- ============================
+     Row 2
+================================ -->
+
+    <div class="row mt-4 g-4">
+
+        <div class="col-xl-6">
+            <partial name="_IndexRecent" model="Model" />
+        </div>
+
+        <div class="col-xl-6">
+            <partial name="_IndexTimeline" model="Model" />
+        </div>
+
+    </div>
+
+    <!-- ============================
+     Row 3
+================================ -->
+
+    <div class="row mt-4 g-4">
+
+        <div class="col-xl-6">
+            <partial name="_IndexProgress" model="Model" />
+        </div>
+
+        <div class="col-xl-6">
+            <partial name="_IndexQuickActions" model="Model" />
+        </div>
+
+    </div>
+
+
+
+</div>

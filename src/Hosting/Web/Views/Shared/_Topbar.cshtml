@@ -1,0 +1,40 @@
+﻿@inject CelebrationPassports.Web.Interfaces.IGreetingService GreetingService
+<div class="topbar-container">
+
+    <div class="topbar-left">
+
+        <h2> @GreetingService.GetGreeting(), Kumar! 👋</h2>
+
+        <p>Every celebration creates a memory that lasts forever.</p>
+
+    </div>
+
+    <div class="topbar-right">
+
+        <div class="search-box">
+
+            <input type="text"
+                   placeholder="Search celebrations, places, people..." />
+
+        </div>
+
+        <div class="top-icons">
+
+            <button> <i class="bi bi-bell-fill"></i></button>
+
+            <button> <i class="bi bi-chat-dots-fill"></i></button>
+
+        </div>
+
+        <div class="profile">
+
+            <img src="https://i.pravatar.cc/45"
+                 alt="Profile" />
+
+            <span>▼</span>
+
+        </div>
+
+    </div>
+
+</div>
