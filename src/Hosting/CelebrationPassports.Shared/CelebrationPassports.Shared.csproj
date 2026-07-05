@@ -10,6 +10,7 @@
     <Folder Include="Exceptions\" />
     <Folder Include="Extensions\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Enums\" />
     <Folder Include="Responses\" />
     <Folder Include="Constants\" />
   </ItemGroup>

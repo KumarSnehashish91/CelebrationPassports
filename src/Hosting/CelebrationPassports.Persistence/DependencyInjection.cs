@@ -1,4 +1,6 @@
 ﻿using CelebrationPassports.Persistence.Context;
+using CelebrationPassports.Persistence.Repositories.Implementations;
+using CelebrationPassports.Persistence.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,10 +14,12 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddDbContext<CelebrationPassportsDbContext>(options =>
-        {
             options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection"));
-        });
+                configuration.GetConnectionString("DefaultConnection")));
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }
