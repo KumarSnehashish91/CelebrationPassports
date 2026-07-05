@@ -6,6 +6,12 @@
   <Folder Name="/src/Clients/" />
   <Folder Name="/src/Data/" />
   <Folder Name="/src/Hosting/">
+    <Project Path="src/Hosting/CelebrationPassports.API/CelebrationPassports.API.csproj" Id="83b278ac-da82-4acf-93e1-9a0af603d79d" />
+    <Project Path="src/Hosting/CelebrationPassports.Application/CelebrationPassports.Application.csproj" Id="5c4430de-5feb-4948-bab3-400a47e1f351" />
+    <Project Path="src/Hosting/CelebrationPassports.Domain/CelebrationPassports.Domain.csproj" Id="d2ac5774-673d-49fc-be56-3f3df5bf2cce" />
+    <Project Path="src/Hosting/CelebrationPassports.Infrastructure/CelebrationPassports.Infrastructure.csproj" Id="a8a55903-13bd-40a5-87f7-5ba55b80eb6b" />
+    <Project Path="src/Hosting/CelebrationPassports.Persistence/CelebrationPassports.Persistence.csproj" Id="f3357561-5f45-4777-b8c0-9c7b7ce54d6e" />
+    <Project Path="src/Hosting/CelebrationPassports.Shared/CelebrationPassports.Shared.csproj" Id="6505d8e0-1758-4505-a6c8-f78fc9517fe1" />
     <Project Path="src/Hosting/Web/CelebrationPassports.Web.csproj" />
   </Folder>
   <Folder Name="/src/Shared/" />
