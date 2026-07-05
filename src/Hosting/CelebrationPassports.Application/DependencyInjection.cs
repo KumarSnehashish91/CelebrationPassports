@@ -1,19 +1,24 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Reflection;
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace CelebrationPassports.Application
+namespace CelebrationPassports.Application;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        // Register MediatR
+        services.AddMediatR(cfg =>
         {
-            // MediatR
-            // FluentValidation
-            // AutoMapper
+            cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+        });
 
-            return services;
-        }
+       
+
+        // Register FluentValidation
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        return services;
     }
 }
