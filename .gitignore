@@ -95,3 +95,4 @@ node_modules/
 *.pubxml.user
 /.vs/CelebrationPassports.slnx/v18/.suo
 /.vs/CelebrationPassports.slnx/v18/DocumentLayout.json
+/CelebrationPassports.slnx
