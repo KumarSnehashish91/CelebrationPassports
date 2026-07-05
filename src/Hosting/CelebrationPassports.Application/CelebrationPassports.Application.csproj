@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="14.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CelebrationPassports.Domain\CelebrationPassports.Domain.csproj" />
+    <ProjectReference Include="..\CelebrationPassports.Shared\CelebrationPassports.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Features\Users\" />
+    <Folder Include="Features\Passports\" />
+    <Folder Include="Features\Celebrations\" />
+    <Folder Include="Features\Authentications\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Behaviours\" />
+  </ItemGroup>
+
+</Project>
