@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CelebrationPassports.Application\CelebrationPassports.Application.csproj" />
     <ProjectReference Include="..\CelebrationPassports.Domain\CelebrationPassports.Domain.csproj" />
     <ProjectReference Include="..\CelebrationPassports.Shared\CelebrationPassports.Shared.csproj" />
   </ItemGroup>

@@ -7,25 +7,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
     <PackageReference Include="MediatR" Version="14.2.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.9" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.9" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CelebrationPassports.Domain\CelebrationPassports.Domain.csproj" />
+    <ProjectReference Include="..\CelebrationPassports.Infrastructure\CelebrationPassports.Infrastructure.csproj" />
+    <ProjectReference Include="..\CelebrationPassports.Persistence\CelebrationPassports.Persistence.csproj" />
     <ProjectReference Include="..\CelebrationPassports.Shared\CelebrationPassports.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Common\Exceptions\" />
     <Folder Include="Common\Interfaces\" />
+    <Folder Include="Features\Authentication\Validators\" />
     <Folder Include="Features\Passports\" />
     <Folder Include="Features\Celebrations\" />
-    <Folder Include="Features\Authentications\" />
     <Folder Include="Common\Behaviours\" />
-    <Folder Include="Features\Users\Interfaces\" />
   </ItemGroup>
 
 </Project>

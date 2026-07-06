@@ -1,5 +1,6 @@
 using CelebrationPassports.Web.Interfaces;
 using CelebrationPassports.Web.Services;
+using CelebrationPassports.Persistence;
 
 
 var builder = WebApplication.CreateBuilder(args);

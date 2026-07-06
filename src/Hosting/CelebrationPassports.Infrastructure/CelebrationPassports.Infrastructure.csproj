@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CelebrationPassports.Application\CelebrationPassports.Application.csproj" />
     <ProjectReference Include="..\CelebrationPassports.Domain\CelebrationPassports.Domain.csproj" />
     <ProjectReference Include="..\CelebrationPassports.Shared\CelebrationPassports.Shared.csproj" />
   </ItemGroup>
@@ -34,7 +33,6 @@
     <Folder Include="Logging\" />
     <Folder Include="Services\" />
     <Folder Include="Storage\" />
-    <Folder Include="Authentication\" />
   </ItemGroup>
 
 </Project>
