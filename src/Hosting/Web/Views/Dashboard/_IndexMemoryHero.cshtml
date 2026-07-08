@@ -1,15 +1,65 @@
 ﻿@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
 
-<div class="dashboard-widget memory-hero">
+<div class="memory-hero-card">
 
-    <div class="memory-placeholder">
+    <img src="@Model.MemoryHero.ImageUrl"
+         class="memory-image"
+         alt="Memory Hero" />
 
-        <h2>Memory Hero</h2>
+    <div class="memory-overlay">
 
-        <p>
-            This area will display the featured memory with
-            a large cover image and AI story.
-        </p>
+        <div class="memory-content">
+
+            <span class="memory-badge">
+                ❤ Recent Memory
+            </span>
+
+            <h2>@Model.MemoryHero.Title</h2>
+
+            <p class="memory-location">
+
+                <i class="bi bi-geo-alt-fill"></i>
+
+                @Model.MemoryHero.Location
+
+                •
+
+                @Model.MemoryHero.Date.ToString("dd MMM yyyy")
+
+            </p>
+
+            <div class="memory-stats">
+
+                <span>
+                    <i class="bi bi-camera"></i>
+                    @Model.MemoryHero.Photos Photos
+                </span>
+
+                <span>
+                    <i class="bi bi-film"></i>
+                    @Model.MemoryHero.Videos Videos
+                </span>
+
+                <span>
+                    <i class="bi bi-people"></i>
+                    @Model.MemoryHero.People People
+                </span>
+
+            </div>
+
+            <h5 class="mt-4">
+                AI Story
+            </h5>
+
+            <p class="memory-description">
+                @Model.MemoryHero.Description
+            </p>
+
+            <button class="btn btn-light">
+                Continue Reading
+            </button>
+
+        </div>
 
     </div>
 

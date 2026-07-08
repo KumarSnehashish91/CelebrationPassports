@@ -14,4 +14,6 @@ public class DashboardViewModel
 
     public List<QuickAction> QuickActions { get; set; } = [];
     public MemoryHighlight MemoryHighlight { get; set; } = new();
+    public MemoryHighlight MemoryHero { get; set; } = new();
+    public List<TimelineItem> Timeline { get; set; } = new();
 }

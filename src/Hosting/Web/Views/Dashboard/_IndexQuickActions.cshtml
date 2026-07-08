@@ -1,20 +1,58 @@
-﻿@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+﻿<div class="dashboard-card quick-actions">
 
-<div class="dashboard-widget">
-
-    <div class="widget-header">
-        <h5>Quick Actions</h5>
+    <div class="section-header">
+        <h3>Quick Actions</h3>
     </div>
 
-    <div class="widget-body">
 
-        @foreach (var action in Model.QuickActions)
-        {
-            <a href="@action.Url" class="btn btn-outline-primary w-100 mb-2">
-                <i class="@action.Icon me-2"></i>
-                @action.Title
+   
+
+    <div class="quick-grid">
+
+        <div class="quick-grid">
+
+            <a href="#" class="quick-item purple">
+                <i class="bi bi-calendar-event"></i>
+                <span>Plan Celebration</span>
             </a>
-        }
+
+            <a href="#" class="quick-item indigo">
+                <span class="ai-badge">AI</span>
+                <i class="bi bi-stars"></i>
+                <span>AI Planner</span>
+            </a>
+
+            <a href="#" class="quick-item orange">
+                <i class="bi bi-image"></i>
+                <span>Add Memory</span>
+            </a>
+
+            <a href="#" class="quick-item green">
+                <i class="bi bi-book"></i>
+                <span>Create Passport</span>
+            </a>
+
+            <a href="#" class="quick-item blue">
+                <i class="bi bi-airplane"></i>
+                <span>New Trip</span>
+            </a>
+
+            <a href="#" class="quick-item pink">
+                <i class="bi bi-people"></i>
+                <span>Invite People</span>
+            </a>
+
+            <a href="#" class="quick-item yellow">
+                <i class="bi bi-gift"></i>
+                <span>Add Gift</span>
+            </a>
+
+            <a href="#" class="quick-item teal">
+                <i class="bi bi-geo-alt"></i>
+                <span>Check In</span>
+            </a>
+
+        </div>
 
     </div>
 
