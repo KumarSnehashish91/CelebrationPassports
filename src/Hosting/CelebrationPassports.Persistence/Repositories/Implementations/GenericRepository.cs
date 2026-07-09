@@ -8,12 +8,12 @@ namespace CelebrationPassports.Persistence.Repositories.Implementations;
 public class GenericRepository<TEntity> : IGenericRepository<TEntity>
     where TEntity : class
 {
-    protected readonly CelebrationPassportsDbContext _context;
+    protected readonly CelebrationPassportsDbContext _dbcontext;
     protected readonly DbSet<TEntity> _dbSet;
 
     public GenericRepository(CelebrationPassportsDbContext context)
     {
-        _context = context;
+        _dbcontext = context;
         _dbSet = context.Set<TEntity>();
     }
 

@@ -1,10 +1,10 @@
-﻿using CelebrationPassports.Application.Features.Users.Interfaces;
-using CelebrationPassports.Application.Features.Users.Services;
-using CelebrationPassports.Application.Features.Authentication.Interfaces;
-using CelebrationPassports.Application.Features.Authentication.Services;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using CelebrationPassports.Application.Authentication.Interfaces;
+using CelebrationPassports.Application.Authentication.Services;
+using CelebrationPassports.Application.Users.Interfaces;
+using CelebrationPassports.Application.Users.Services;
 
 namespace CelebrationPassports.Application;
 

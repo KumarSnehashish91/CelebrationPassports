@@ -1,7 +1,9 @@
 <Solution>
   <Folder Name="/docs/" />
   <Folder Name="/scripts/" />
-  <Folder Name="/src/" />
+  <Folder Name="/src/">
+    <Project Path="test/CelebrationPassports.UnitTests/CelebrationPassports.UnitTests.csproj" />
+  </Folder>
   <Folder Name="/src/Business/" />
   <Folder Name="/src/Clients/" />
   <Folder Name="/src/Data/" />
