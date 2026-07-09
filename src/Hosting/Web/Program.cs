@@ -13,6 +13,10 @@ builder.Services.AddPersistence(builder.Configuration);
 
 builder.Services.AddScoped<IGreetingService, GreetingService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7254/");
+});
 
 var app = builder.Build();
 
