@@ -25,19 +25,35 @@ namespace CelebrationPassports.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var result = await _authenticationService.RegisterAsync(model);
-
-            if (!result)
+            try
             {
-                ModelState.AddModelError("", "Registration failed.");
-                return View(model);
+                var result = await _authenticationService.RegisterAsync(model);
+
+                if (!result)
+                {
+                    ModelState.AddModelError("", "Registration failed.");
+                    return View(model);
+                }
+
+                //return Content("SUCCESS");
+                if (!result)
+                {
+                    ModelState.AddModelError("", "Registration failed.");
+                    return View(model);
+                }
+
+                ViewBag.SuccessMessage = "🎉 Your Celebration Passport has been created successfully.";
+
+                ModelState.Clear();
+
+                return View(new RegisterViewModel());
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.ToString(), "text/plain");
             }
 
-            ViewBag.SuccessMessage = "🎉 Your Celebration Passport has been created successfully.";
-
-            ModelState.Clear();
-
-            return View(new RegisterViewModel());
+           
         }
 
         public IActionResult RegisterSuccess()
