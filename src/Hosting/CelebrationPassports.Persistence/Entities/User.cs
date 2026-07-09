@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace CelebrationPassports.Persistence.Entities;
 
-[Index("StatusId", Name = "IX_Users_StatusId")]
-[Index("Email", Name = "UQ_Users_Email", IsUnique = true)]
 public partial class User
 {
-    [Key]
     public Guid Id { get; set; }
 
-    [StringLength(320)]
     public string Email { get; set; } = null!;
 
-    [StringLength(500)]
     public string PasswordHash { get; set; } = null!;
 
     public int StatusId { get; set; }
@@ -41,46 +33,55 @@ public partial class User
 
     public DateTime? LastPasswordChangedOn { get; set; }
 
-    [InverseProperty("CreatedByNavigation")]
+    public DateTime? LastLoginOn { get; set; }
+
+    public DateTime? LastSeenOn { get; set; }
+
+    public int FailedLoginAttempts { get; set; }
+
+    public bool IsLocked { get; set; }
+
+    public DateTime? LockoutEnd { get; set; }
+
+    public string? FirstName { get; set; }
+
+    public string? LastName { get; set; }
+
+    public virtual ICollection<AnalyticsEvent> AnalyticsEvents { get; set; } = new List<AnalyticsEvent>();
+
+    public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+
     public virtual ICollection<Passport> PassportCreatedByNavigations { get; set; } = new List<Passport>();
 
-    [InverseProperty("DeletedByNavigation")]
     public virtual ICollection<Passport> PassportDeletedByNavigations { get; set; } = new List<Passport>();
 
-    [InverseProperty("User")]
     public virtual ICollection<PassportMember> PassportMembers { get; set; } = new List<PassportMember>();
 
-    [InverseProperty("ModifiedByNavigation")]
     public virtual ICollection<Passport> PassportModifiedByNavigations { get; set; } = new List<Passport>();
 
-    [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<PassportMoment> PassportMomentCreatedByNavigations { get; set; } = new List<PassportMoment>();
 
-    [InverseProperty("DeletedByNavigation")]
     public virtual ICollection<PassportMoment> PassportMomentDeletedByNavigations { get; set; } = new List<PassportMoment>();
 
-    [InverseProperty("ModifiedByNavigation")]
     public virtual ICollection<PassportMoment> PassportMomentModifiedByNavigations { get; set; } = new List<PassportMoment>();
 
-    [InverseProperty("User")]
     public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
-    [ForeignKey("StatusId")]
-    [InverseProperty("Users")]
     public virtual Status Status { get; set; } = null!;
 
-    [InverseProperty("User")]
     public virtual ICollection<UserDevice> UserDevices { get; set; } = new List<UserDevice>();
 
-    [InverseProperty("User")]
     public virtual ICollection<UserLoginHistory> UserLoginHistories { get; set; } = new List<UserLoginHistory>();
 
-    [InverseProperty("User")]
     public virtual UserProfile? UserProfile { get; set; }
 
-    [InverseProperty("User")]
     public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 
-    [InverseProperty("User")]
+    public virtual ICollection<UserSession> UserSessions { get; set; } = new List<UserSession>();
+
     public virtual ICollection<UserToken> UserTokens { get; set; } = new List<UserToken>();
+
+    public virtual ICollection<Visitor> Visitors { get; set; } = new List<Visitor>();
+
+    public virtual ICollection<Waitlist> Waitlists { get; set; } = new List<Waitlist>();
 }

@@ -2,6 +2,7 @@
 using CelebrationPassports.Persistence.Entities;
 using CelebrationPassports.Persistence.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mail;
 
 namespace CelebrationPassports.Persistence.Repositories.Implementations;
 
@@ -16,8 +17,9 @@ public class UserRepository
 
     public async Task<User?> GetByEmailAsync(string email)
     {
-        return await _context.Users
-            .FirstOrDefaultAsync(x => x.Email == email);
+        return await _dbcontext.Users
+       .AsNoTracking()
+       .FirstOrDefaultAsync(x => x.Email == email);
     }
 
     //public async Task<User?> GetByMobileAsync(string mobile)
@@ -28,7 +30,7 @@ public class UserRepository
 
     public async Task<bool> EmailExistsAsync(string email)
     {
-        return await _context.Users
+        return await _dbcontext.Users
             .AnyAsync(x => x.Email == email);
     }
 
