@@ -96,3 +96,7 @@ node_modules/
 /.vs/CelebrationPassports.slnx/v18/.suo
 /.vs/CelebrationPassports.slnx/v18/DocumentLayout.json
 /CelebrationPassports.slnx
+/src/Hosting/CelebrationPassports.API/dotnet-tools.json
+/.gitignore
+/.gitignore
+/.gitignore
