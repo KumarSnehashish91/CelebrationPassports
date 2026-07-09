@@ -1,7 +1,7 @@
 ﻿using CelebrationPassports.Infrastructure.Authentication.Interfaces;
 using CelebrationPassports.Persistence.Repositories.Interfaces;
-using CelebrationPassports.Application.Features.Authentication.Services;
-using CelebrationPassports.Application.Features.Authentication.DTOs;
+using CelebrationPassports.Application.Authentication.Services;
+using CelebrationPassports.Application.Authentication.DTOs.RequestDTO;
 
 using Moq;
 using Xunit;
@@ -19,6 +19,8 @@ public class AuthenticationServiceTests
         var unitOfWork = new Mock<IUnitOfWork>();
 
         var passwordHasher = new Mock<IPasswordHasher>();
+        var userLoginHistory = new Mock<IUserLoginHistoryRepository>();
+        var usersession=new Mock<IUserSessionRepository>();
 
         userRepository
     .Setup(x => x.EmailExistsAsync(It.IsAny<string>()))
@@ -26,7 +28,8 @@ public class AuthenticationServiceTests
         var service = new AuthenticationService(
              userRepository.Object,
              unitOfWork.Object,
-             passwordHasher.Object);
+             passwordHasher.Object,
+             userLoginHistory.Object);
 
         var request = new RegisterRequest
         {
