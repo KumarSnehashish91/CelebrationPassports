@@ -1,0 +1,209 @@
+﻿@model CelebrationPassports.Web.Models.Account.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1" />
+
+    <title>@ViewData["Title"]</title>
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+          rel="stylesheet" />
+
+    <link href="~/css/pages/account.css"
+          rel="stylesheet"
+          asp-append-version="true" />
+
+</head>
+
+<body>
+
+    <div class="register-page">
+
+        <!-- LEFT PANEL -->
+
+        <section class="hero-panel">
+
+            <div class="hero-content">
+
+                <div class="logo-circle">
+
+                    CP
+
+                </div>
+
+                <span class="hero-tag">
+
+                    CELEBRATION PASSPORT
+
+                </span>
+
+                <h1>
+
+                    Every celebration
+                    deserves
+                    a passport.
+
+                </h1>
+
+                <p>
+
+                    Birthdays.
+                    Anniversaries.
+                    Trips.
+                    Memories.
+                    Wishes.
+                    Budgets.
+                    One place for everything.
+
+                </p>
+
+                <div class="feature-list">
+
+                    <div class="feature-item">
+
+                        🎂 Birthday Planner
+
+                    </div>
+
+                    <div class="feature-item">
+
+                        💍 Anniversary Reminder
+
+                    </div>
+
+                    <div class="feature-item">
+
+                        ✈ Trip Planner
+
+                    </div>
+
+                    <div class="feature-item">
+
+                        📸 Memory Timeline
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- RIGHT PANEL -->
+
+        <section class="form-panel">
+
+            <div class="register-card">
+
+                <h2>
+
+                    Welcome Back
+
+                </h2>
+
+                <p class="subtitle">
+
+                    Sign in to continue your celebration journey.
+
+                </p>
+
+                @if (ViewBag.SuccessMessage != null)
+                {
+                    <div class="alert alert-success mb-3">
+
+                        @ViewBag.SuccessMessage
+
+                    </div>
+                }
+
+                <form asp-action="Login"
+                      method="post">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger mb-3">
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label asp-for="Email"></label>
+
+                        <input asp-for="Email"
+                               class="form-control" />
+
+                        <span asp-validation-for="Email"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label asp-for="Password"></label>
+
+                        <input asp-for="Password"
+                               class="form-control" />
+
+                        <span asp-validation-for="Password"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="form-check mb-4">
+
+                        <input asp-for="RememberMe"
+                               class="form-check-input" />
+
+                        <label asp-for="RememberMe"
+                               class="form-check-label">
+
+                            Remember Me
+
+                        </label>
+
+                    </div>
+
+                    <button class="btn-register"
+                            type="submit">
+
+                        Sign In
+
+                    </button>
+
+                </form>
+
+                <div class="login-link">
+
+                    Don't have an account?
+
+                    <a asp-action="Register">
+
+                        Create Passport
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <partial name="_ValidationScriptsPartial" />
+
+</body>
+
+</html>

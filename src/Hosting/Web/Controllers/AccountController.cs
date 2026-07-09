@@ -25,24 +25,65 @@ namespace CelebrationPassports.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var result = await _authenticationService.RegisterAsync(model);
-
-            if (!result)
+            try
             {
-                ModelState.AddModelError("", "Registration failed.");
-                return View(model);
+                var result = await _authenticationService.RegisterAsync(model);
+
+                if (!result)
+                {
+                    ModelState.AddModelError("", "Registration failed.");
+                    return View(model);
+                }
+
+                //return Content("SUCCESS");
+                if (!result)
+                {
+                    ModelState.AddModelError("", "Registration failed.");
+                    return View(model);
+                }
+
+                ViewBag.SuccessMessage = "🎉 Your Celebration Passport has been created successfully.";
+
+                ModelState.Clear();
+
+                return View(new RegisterViewModel());
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.ToString(), "text/plain");
             }
 
-            ViewBag.SuccessMessage = "🎉 Your Celebration Passport has been created successfully.";
-
-            ModelState.Clear();
-
-            return View(new RegisterViewModel());
+           
         }
 
         public IActionResult RegisterSuccess()
         {
             return View();
+        }
+
+        
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View(new LoginViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var result = await _authenticationService.LoginAsync(model);
+
+            if (!result)
+            {
+                ModelState.AddModelError("", "Invalid Email or Password.");
+                return View(model);
+            }
+
+            return RedirectToAction("Index", "Dashboard");
         }
     }
 }
