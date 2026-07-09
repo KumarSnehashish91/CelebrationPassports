@@ -44,5 +44,30 @@ namespace CelebrationPassports.Web.Controllers
         {
             return View();
         }
+
+        
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View(new LoginViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var result = await _authenticationService.LoginAsync(model);
+
+            if (!result)
+            {
+                ModelState.AddModelError("", "Invalid Email or Password.");
+                return View(model);
+            }
+
+            return RedirectToAction("Index", "Dashboard");
+        }
     }
 }

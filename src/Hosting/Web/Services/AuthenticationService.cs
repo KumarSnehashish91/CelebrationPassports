@@ -36,4 +36,26 @@ public class AuthenticationService : IAuthenticationService
 
         return response.IsSuccessStatusCode;
     }
+
+    public async Task<bool> LoginAsync(LoginViewModel model)
+    {
+        var request = new
+        {
+            email = model.Email,
+            password = model.Password
+        };
+
+        var json = JsonSerializer.Serialize(request);
+
+        var content = new StringContent(
+            json,
+            Encoding.UTF8,
+            "application/json");
+
+        var response = await _httpClient.PostAsync(
+            "api/Authentication/login",
+            content);
+
+        return response.IsSuccessStatusCode;
+    }
 }

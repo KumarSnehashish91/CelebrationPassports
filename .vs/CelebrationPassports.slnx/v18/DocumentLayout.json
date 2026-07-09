@@ -3,28 +3,36 @@
   "WorkspaceRootPath": "C:\\File-to-move\\Products\\CelebrationPassports\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|c:\\file-to-move\\products\\celebrationpassports\\src\\hosting\\web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|c:\\file-to-move\\products\\celebrationpassports\\src\\hosting\\web\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|c:\\file-to-move\\products\\celebrationpassports\\src\\hosting\\web\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|c:\\file-to-move\\products\\celebrationpassports\\src\\hosting\\web\\services\\authenticationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\services\\authenticationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|c:\\file-to-move\\products\\celebrationpassports\\src\\hosting\\web\\interfaces\\iauthenticationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\interfaces\\iauthenticationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|c:\\file-to-move\\products\\celebrationpassports\\src\\hosting\\web\\models\\account\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\models\\account\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|c:\\file-to-move\\products\\celebrationpassports\\src\\hosting\\web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|c:\\file-to-move\\products\\celebrationpassports\\src\\hosting\\web\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|c:\\file-to-move\\products\\celebrationpassports\\src\\hosting\\web\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|c:\\file-to-move\\products\\celebrationpassports\\src\\hosting\\web\\wwwroot\\css\\pages\\account.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
       "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\wwwroot\\css\\pages\\account.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|c:\\file-to-move\\products\\celebrationpassports\\src\\hosting\\web\\interfaces\\iauthenticationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\interfaces\\iauthenticationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|c:\\file-to-move\\products\\celebrationpassports\\src\\hosting\\web\\models\\account\\registerviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -38,7 +46,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,20 +58,85 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
+              "Title": "LoginViewModel.cs",
+              "DocumentMoniker": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Models\\Account\\LoginViewModel.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Models\\Account\\LoginViewModel.cs",
+              "ToolTip": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Models\\Account\\LoginViewModel.cs",
+              "RelativeToolTip": "src\\Hosting\\Web\\Models\\Account\\LoginViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-09T04:58:58.399Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Views\\Account\\Login.cshtml",
+              "ToolTip": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "src\\Hosting\\Web\\Views\\Account\\Login.cshtml",
+              "ViewState": "AgIAALEAAAAAAAAAAAAAANAAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-09T04:58:38.114Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Program.cs",
               "RelativeDocumentMoniker": "src\\Hosting\\Web\\Program.cs",
               "ToolTip": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Program.cs",
               "RelativeToolTip": "src\\Hosting\\Web\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-09T03:52:21.397Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
+              "Title": "AuthenticationService.cs",
+              "DocumentMoniker": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Services\\AuthenticationService.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Services\\AuthenticationService.cs",
+              "ToolTip": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Services\\AuthenticationService.cs",
+              "RelativeToolTip": "src\\Hosting\\Web\\Services\\AuthenticationService.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAxwDsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-08T15:56:56.753Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IAuthenticationService.cs",
+              "DocumentMoniker": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Interfaces\\IAuthenticationService.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Interfaces\\IAuthenticationService.cs",
+              "ToolTip": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Interfaces\\IAuthenticationService.cs",
+              "RelativeToolTip": "src\\Hosting\\Web\\Interfaces\\IAuthenticationService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-08T15:56:40.29Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Controllers\\AccountController.cs*",
+              "RelativeToolTip": "src\\Hosting\\Web\\Controllers\\AccountController.cs*",
+              "ViewState": "AgIAABIAAAAAAAAAAAAYwC8AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-08T15:56:01.465Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "account.css",
               "DocumentMoniker": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\wwwroot\\css\\pages\\account.css",
               "RelativeDocumentMoniker": "src\\Hosting\\Web\\wwwroot\\css\\pages\\account.css",
@@ -76,46 +149,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AuthenticationService.cs",
-              "DocumentMoniker": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Services\\AuthenticationService.cs",
-              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Services\\AuthenticationService.cs",
-              "ToolTip": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Services\\AuthenticationService.cs",
-              "RelativeToolTip": "src\\Hosting\\Web\\Services\\AuthenticationService.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAuwCYAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-08T15:56:56.753Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "IAuthenticationService.cs",
-              "DocumentMoniker": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Interfaces\\IAuthenticationService.cs",
-              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Interfaces\\IAuthenticationService.cs",
-              "ToolTip": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Interfaces\\IAuthenticationService.cs",
-              "RelativeToolTip": "src\\Hosting\\Web\\Interfaces\\IAuthenticationService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-08T15:56:40.29Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AccountController.cs",
-              "DocumentMoniker": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Controllers\\AccountController.cs",
-              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Controllers\\AccountController.cs",
-              "ToolTip": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Controllers\\AccountController.cs",
-              "RelativeToolTip": "src\\Hosting\\Web\\Controllers\\AccountController.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAqwCcAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-08T15:56:01.465Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "Register.cshtml",
               "DocumentMoniker": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Views\\Account\\Register.cshtml",
               "RelativeDocumentMoniker": "src\\Hosting\\Web\\Views\\Account\\Register.cshtml",
@@ -128,7 +162,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "RegisterViewModel.cs",
               "DocumentMoniker": "C:\\File-to-move\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Models\\Account\\RegisterViewModel.cs",
               "RelativeDocumentMoniker": "src\\Hosting\\Web\\Models\\Account\\RegisterViewModel.cs",
