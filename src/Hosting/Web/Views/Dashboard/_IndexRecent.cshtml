@@ -1,35 +1,75 @@
-﻿@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+﻿<div class="dashboard-card recent-card">
 
-<div class="dashboard-widget">
-
-    <div class="widget-header">
-        <h5>Recent Activity</h5>
+    <div class="card-header">
+        <h4>Recent Activity</h4>
+        <a href="#">View All</a>
     </div>
 
-    <div class="widget-body">
+    <div class="activity-list">
 
-        @foreach (var activity in Model.RecentActivities)
-        {
-            <div class="upcoming-item">
-
-                <div>
-
-                    <i class="@activity.Icon me-2"></i>
-
-                    <strong>@activity.Title</strong>
-
-                    <br />
-
-                    <small>@activity.Description</small>
-
-                </div>
-
-                <small>
-                    @activity.ActivityDate.ToString("dd MMM")
-                </small>
-
+        <div class="activity-item">
+            <div class="activity-icon purple">
+                <i class="bi bi-calendar-event"></i>
             </div>
-        }
+
+            <div class="activity-content">
+                <h5>Added Birthday</h5>
+                <p>Created Rahul's Birthday</p>
+            </div>
+
+            <div class="activity-date-card">
+                <span class="month">JUL</span>
+                <span class="day">06</span>
+            </div>
+        </div>
+
+        <div class="activity-item">
+            <div class="activity-icon blue">
+                <i class="bi bi-camera"></i>
+            </div>
+
+            <div class="activity-content">
+                <h5>Uploaded Memories</h5>
+                <p>Added 20 new photos</p>
+            </div>
+
+            <div class="activity-date-card">
+                <span class="month">JUL</span>
+                <span class="day">06</span>
+            </div>
+        </div>
+
+        <div class="activity-item">
+            <div class="activity-icon green">
+                <i class="bi bi-airplane"></i>
+            </div>
+
+            <div class="activity-content">
+                <h5>Planned Goa Trip</h5>
+                <p>Created travel itinerary</p>
+            </div>
+
+            <div class="activity-date-card">
+                <span class="month">JUL</span>
+                <span class="day">06</span>
+            </div>
+        </div>
+
+        <div class="activity-item">
+            <div class="activity-icon orange">
+                <i class="bi bi-gift"></i>
+            </div>
+
+            <div class="activity-content">
+                <h5>Invitation Accepted</h5>
+                <p>Neha joined Anniversary</p>
+            </div>
+
+            <div class="activity-date-card">
+                <span class="month">JUL</span>
+                <span class="day">06</span>
+            </div>
+        </div>
 
     </div>
 

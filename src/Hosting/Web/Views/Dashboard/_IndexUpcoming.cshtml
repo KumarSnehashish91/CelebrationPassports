@@ -1,30 +1,64 @@
 ﻿@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
 
-<div class="dashboard-widget">
+<div class="dashboard-card upcoming-card">
 
-    <div class="widget-header">
-        <h5>Upcoming Celebrations</h5>
+    <div class="card-header">
+
+        <h4>Upcoming Celebrations</h4>
+
+        <a href="#">View All</a>
+
     </div>
 
-    <div class="widget-body">
+    <div class="upcoming-list">
 
-        @foreach (var celebration in Model.UpcomingCelebrations)
+        @foreach (var item in Model.UpcomingCelebrations)
         {
+            var daysLeft = (item.Date - DateTime.Today).Days;
+
             <div class="upcoming-item">
 
-                <div>
-                    <strong>@celebration.Title</strong><br />
-                    <small>@celebration.Type</small>
+                <img src="@item.ImageUrl"
+                     class="celebration-thumb"
+                     alt="@item.Title" />
+
+                <div class="upcoming-info">
+
+                    <h6>@item.Title</h6>
+
+                    <span>@item.Type</span>
+
                 </div>
 
-                <div class="text-end">
-                    <strong>@celebration.Date.ToString("dd MMM")</strong><br />
-                    <small>@celebration.DaysRemaining days left</small>
+                <div class="upcoming-date">
+
+                    <div class="date-badge">
+
+                        <small>@item.Date.ToString("MMM").ToUpper()</small>
+
+                        <strong>@item.Date.ToString("dd")</strong>
+
+                    </div>
+
+                    <span class="days-left">
+
+                        @(daysLeft > 0 ? $"{daysLeft} days left" : "Today")
+
+                    </span>
+
                 </div>
 
             </div>
         }
 
     </div>
+
+    <button class="btn btn-outline-primary w-100 mt-3">
+
+        <i class="bi bi-plus-lg"></i>
+
+        Create New Celebration
+
+    </button>
 
 </div>
