@@ -17,18 +17,21 @@ public class AuthenticationService : IAuthenticationService
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUserLoginHistoryRepository _userLoginHistoryRepository;
     private readonly IUserSessionRepository _userLogout;
+    private readonly IUserProfileRepository _userProfileRepository;
     public AuthenticationService(
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
         IPasswordHasher passwordHasher,
         IUserLoginHistoryRepository userLoginHistory,
-        IUserSessionRepository userLogout)
+        IUserSessionRepository userLogout,
+        IUserProfileRepository userProfileRepository)
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
         _passwordHasher = passwordHasher;
         _userLoginHistoryRepository = userLoginHistory;
         _userLogout=    userLogout;
+        _userProfileRepository = userProfileRepository;
     }
 
 
@@ -47,6 +50,8 @@ public class AuthenticationService : IAuthenticationService
         var user = new User
         {
             Id = Guid.NewGuid(),
+            FirstName = request.FirstName,
+            LastName = request.LastName,
             Email = request.Email,
             PasswordHash = passwordHash,
             StatusId = 1,
@@ -55,6 +60,17 @@ public class AuthenticationService : IAuthenticationService
         };
 
         await _userRepository.AddAsync(user);
+
+        var profile = new UserProfile
+        {
+            UserId = user.Id,
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            DisplayName = $"{request.FirstName} {request.LastName}",
+            CreatedOn = DateTime.UtcNow
+        };
+
+        await _userProfileRepository.AddAsync(profile);
 
         await _unitOfWork.SaveChangesAsync();
 

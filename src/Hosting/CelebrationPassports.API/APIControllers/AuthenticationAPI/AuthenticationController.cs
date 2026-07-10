@@ -1,10 +1,12 @@
 ﻿using CelebrationPassports.Application.Authentication.DTOs.RequestDTO;
 using CelebrationPassports.Application.Authentication.DTOs.ResponseDTO;
 using CelebrationPassports.Application.Authentication.Interfaces;
+using CelebrationPassports.Application.Users.DTOs;
+using CelebrationPassports.Application.Users.Interfaces;
 using CelebrationPassports.Persistence.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CelebrationPassports.API.Controllers;
+namespace CelebrationPassports.API.APIControllers.AuthenticationAPI;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -13,7 +15,7 @@ public class AuthenticationController : ControllerBase
     private readonly IAuthenticationService _authenticationService;
 
     public AuthenticationController(
-        IAuthenticationService authenticationService)
+        IAuthenticationService authenticationService )
     {
         _authenticationService = authenticationService;
     }
@@ -46,4 +48,6 @@ public class AuthenticationController : ControllerBase
         await _authenticationService.LogoutAsync(request);
         //return Ok(new { Message = "Logged out successfully." });
     }
+
+   
 }

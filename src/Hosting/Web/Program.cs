@@ -15,8 +15,11 @@ builder.Services.AddScoped<IGreetingService, GreetingService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>
 {
-    //client.BaseAddress = new Uri("http://localhost:5000/");
-    client.BaseAddress = new Uri("http://127.0.0.1:5000/");
+    //Development URL
+    client.BaseAddress = new Uri("http://localhost:5000/");
+
+    //Production URL
+    //client.BaseAddress = new Uri("http://127.0.0.1:5000/");
 });
 
 var app = builder.Build();

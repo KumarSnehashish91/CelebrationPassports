@@ -24,6 +24,9 @@ public static class DependencyInjection
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IuserProfileService, UserProfileService>();
+        
+
 
         return services;
     }
