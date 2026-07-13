@@ -26,4 +26,16 @@ public class Passport
     public virtual User Owner { get; set; } = null!;
 
     public virtual User? DeletedByUser { get; set; }
+
+    public virtual ICollection<PassportPerson> People { get; set; } = new List<PassportPerson>();
+
+    public virtual ICollection<PassportInvitation> Invitations { get; set; } = new List<PassportInvitation>();
+
+    public virtual ICollection<PassportShare> Shares { get; set; } = new List<PassportShare>();
+
+    public virtual ICollection<PassportOwnershipHistory> OwnershipHistory { get; set; } = new List<PassportOwnershipHistory>();
+
+    public virtual ICollection<Trip> Trips { get; set; } = new List<Trip>();
+
+    public virtual ICollection<Chapter> Chapters { get; set; } = new List<Chapter>();
 }

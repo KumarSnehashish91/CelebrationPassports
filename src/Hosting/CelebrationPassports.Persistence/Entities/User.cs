@@ -64,5 +64,21 @@ public partial class User
 
     public virtual ICollection<Passport> DeletedPassports { get; set; } = new List<Passport>();
 
+    public virtual ICollection<PassportPerson> PassportPeople { get; set; } = new List<PassportPerson>();
+
+    public virtual ICollection<PassportPerson> DeletedPassportPeople { get; set; } = new List<PassportPerson>();
+
+    public virtual ICollection<PassportInvitation> SentPassportInvitations { get; set; } = new List<PassportInvitation>();
+
+    public virtual ICollection<PassportOwnershipHistory> OwnershipTransfersFrom { get; set; } = new List<PassportOwnershipHistory>();
+
+    public virtual ICollection<PassportOwnershipHistory> OwnershipTransfersTo { get; set; } = new List<PassportOwnershipHistory>();
+
+    public virtual ICollection<PassportOwnershipHistory> OwnershipTransfersPerformed { get; set; } = new List<PassportOwnershipHistory>();
+
+    public virtual ICollection<Trip> DeletedTrips { get; set; } = new List<Trip>();
+
+    public virtual ICollection<Chapter> DeletedChapters { get; set; } = new List<Chapter>();
+
   
 }
