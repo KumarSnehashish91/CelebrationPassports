@@ -26,12 +26,32 @@
 
         </div>
 
-        <div class="profile">
+        <div class="profile" id="profileDropdown">
 
-            <img src="https://i.pravatar.cc/45"
-                 alt="Profile" />
+            <img src="https://i.pravatar.cc/45" alt="Profile">
 
-            <span>▼</span>
+            <i class="bi bi-chevron-down profile-arrow"></i>
+
+            <div class="profile-menu" id="profileMenu">
+
+                <a href="#">
+                    <i class="bi bi-person"></i>
+                    My Profile
+                </a>
+
+                <a href="#">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                </a>
+
+                <hr>
+
+                <a href="/Account/Login" class="logout-link">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+
+            </div>
 
         </div>
 

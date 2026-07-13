@@ -1,40 +1,130 @@
-﻿const menuButton = document.getElementById("mobileMenuButton");
+﻿// ========================================
+// Mobile Sidebar
+// ========================================
 
+const menuButton = document.getElementById("mobileMenuButton");
 const sidebar = document.querySelector(".sidebar");
-
 const overlay = document.getElementById("sidebarOverlay");
 
-menuButton.addEventListener("click", () => {
+if (menuButton) {
 
-    sidebar.classList.toggle("open");
+    menuButton.addEventListener("click", () => {
 
-    overlay.classList.toggle("show");
+        sidebar.classList.add("open");
+        overlay.classList.add("show");
+        document.body.classList.add("menu-open");
 
-});
+    });
 
-overlay.addEventListener("click", () => {
+}
 
-    sidebar.classList.toggle("open");
+if (overlay) {
 
-    overlay.classList.toggle("show");
+    overlay.addEventListener("click", () => {
 
-    document.body.classList.toggle("menu-open");
+        sidebar.classList.remove("open");
+        overlay.classList.remove("show");
+        document.body.classList.remove("menu-open");
 
-});
+    });
+
+}
 
 
-document.querySelectorAll(".sidebar-link")
+// ========================================
+// Close sidebar when normal menu clicked
+// ========================================
+
+document.querySelectorAll(".sidebar-link:not(.sidebar-dropdown-toggle)")
     .forEach(link => {
 
         link.addEventListener("click", () => {
 
-            sidebar.classList.remove("open");
+            if (window.innerWidth <= 768) {
 
-            overlay.classList.remove("show");
+                sidebar.classList.remove("open");
+                overlay.classList.remove("show");
+                document.body.classList.remove("menu-open");
 
-            document.body.classList.remove("menu-open");
+            }
 
         });
 
     });
-     
+
+
+// ========================================
+// Quick Actions (Mobile)
+// ========================================
+
+const quickActionToggle = document.getElementById("quickActionToggle");
+const quickActionMenu = document.getElementById("quickActionMenu");
+
+if (quickActionToggle && quickActionMenu) {
+
+    quickActionToggle.addEventListener("click", function (e) {
+
+        if (window.innerWidth > 768)
+            return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        quickActionToggle.classList.toggle("active");
+        quickActionMenu.classList.toggle("open");
+
+    });
+
+}
+
+
+// ========================================
+// Prevent submenu click from bubbling
+// ========================================
+
+if (quickActionMenu) {
+
+    quickActionMenu.addEventListener("click", function (e) {
+
+        e.stopPropagation();
+
+    });
+
+}
+
+
+// ========================================
+// Close submenu if clicking outside
+// ========================================
+
+document.addEventListener("click", function () {
+
+    if (window.innerWidth > 768)
+        return;
+
+    quickActionToggle?.classList.remove("active");
+    quickActionMenu?.classList.remove("open");
+
+});
+
+
+const profile = document.getElementById("profileDropdown");
+const profileMenu = document.getElementById("profileMenu");
+
+if (profile) {
+
+    profile.addEventListener("click", function (e) {
+
+        e.stopPropagation();
+
+        profileMenu.classList.toggle("show");
+
+    });
+
+}
+
+document.addEventListener("click", function () {
+
+    profileMenu?.classList.remove("show");
+
+});

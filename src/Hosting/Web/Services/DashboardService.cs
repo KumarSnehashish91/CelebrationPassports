@@ -44,14 +44,6 @@ public class DashboardService : IDashboardService
                 Type = "Trip",
                 Date = new DateTime(2026, 5, 18),
                 ImageUrl = "/images/udaipur.jpg"
-            },
-
-            new UpcomingCelebration
-            {
-                Title = "Holi Celebration",
-                Type = "Family Celebration",
-                Date = new DateTime(2027, 3, 14),
-                ImageUrl = "/images/udaipur.jpg"
             }
                 },
 
