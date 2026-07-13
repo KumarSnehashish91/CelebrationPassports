@@ -27,7 +27,7 @@ public partial class MomentMedium
 
     public virtual PassportMoment PassportMoment { get; set; } = null!;
 
-    public virtual ICollection<PassportMoment> PassportMoments { get; set; } = new List<PassportMoment>();
+    
 
     public virtual ICollection<Passport> Passports { get; set; } = new List<Passport>();
 }

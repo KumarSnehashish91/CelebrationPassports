@@ -7,7 +7,7 @@ namespace CelebrationPassports.Persistence.Repositories.Interfaces
 {
     public interface IUserSessionRepository
     {
-        Task<UserSession?> GetActiveSessionByUserIdAsync(Guid userId);
+        Task<UserSession?> GetActiveSessionByUserIdAsync(Guid userId, Guid sessionId);
         Task AddAsync(UserSession userSession);
     }
 }

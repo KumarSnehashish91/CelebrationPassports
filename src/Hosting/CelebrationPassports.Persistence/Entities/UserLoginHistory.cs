@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CelebrationPassports.Persistence.Entities;
 
-public partial class UserLoginHistory
+public partial class UserLoginHistory :BaseEntity
 {
     public Guid Id { get; set; }
 
@@ -11,6 +11,7 @@ public partial class UserLoginHistory
 
     public DateTime LoginOn { get; set; }
 
+    public DateTime LogoutOn { get; set; }
     public string? IpAddress { get; set; }
 
     public string? UserAgent { get; set; }

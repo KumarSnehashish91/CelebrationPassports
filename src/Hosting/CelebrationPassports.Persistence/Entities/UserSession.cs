@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace CelebrationPassports.Persistence.Entities;
 
-public partial class UserSession
+public partial class UserSession : BaseEntity
 {
-    public Guid Id { get; set; }
 
     public Guid UserId { get; set; }
 
@@ -39,7 +38,7 @@ public partial class UserSession
 
     public string? RevokedReason { get; set; }
 
-    public DateTime CreatedOn { get; set; }
+    
 
     public virtual User User { get; set; } = null!;
 }

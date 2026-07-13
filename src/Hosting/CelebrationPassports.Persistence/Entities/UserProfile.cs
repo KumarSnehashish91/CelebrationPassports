@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CelebrationPassports.Persistence.Entities;
 
-public partial class UserProfile
+public partial class UserProfile : BaseEntity
 {
     public Guid UserId { get; set; }
 
@@ -21,9 +21,8 @@ public partial class UserProfile
 
     public string? ProfilePhotoUrl { get; set; }
 
-    public DateTime CreatedOn { get; set; }
+   
 
-    public DateTime? ModifiedOn { get; set; }
-
+    //Navigation
     public virtual User User { get; set; } = null!;
 }

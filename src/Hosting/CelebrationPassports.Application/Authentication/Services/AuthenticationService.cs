@@ -201,21 +201,27 @@ public class AuthenticationService : IAuthenticationService
     public async Task LogoutAsync(LogoutRequest request)
     {
         
-        var session = await _userLogout.GetActiveSessionByUserIdAsync(request.UserId);
-        var _userSessionLogout = new UserSession
-        {
-            
-            UserId = session.UserId,
-            IsActive = false,
-            LoggedOutOn = DateTime.UtcNow,
-            RevokedOn = null,
-            RevokedReason = "User Logged Out",
-            LoggedInOn = DateTime.UtcNow.AddHours(1),
-            CreatedOn = DateTime.UtcNow,
-            RefreshTokenExpiryOn = DateTime.UtcNow.AddHours(1),
-            RefreshToken = Guid.NewGuid().ToString(),
-        };
-        await _userLogout.AddAsync(_userSessionLogout);
+        var _userSessionLogout = await _userLogout.GetActiveSessionByUserIdAsync(request.UserId,request.SessionId);
+
+
+        _userSessionLogout.IsActive = false;
+        _userSessionLogout.LoggedOutOn = DateTime.UtcNow;
+        _userSessionLogout.RevokedOn = null;
+        _userSessionLogout.RevokedReason = "User Logged Out";
+        _userSessionLogout.LoggedOutOn = DateTime.UtcNow;
+        _userSessionLogout.ModifiedOn = DateTime.UtcNow;
+
+
+        //Update Login History
+        var loginHistory =
+     await _userLoginHistoryRepository
+         .GetLoginUserHistoryAsync(request.UserId);
+
+        loginHistory.IsLoggedIn = false;
+        loginHistory.LogoutOn = DateTime.UtcNow;
+        loginHistory.ModifiedBy = loginHistory.UserId;
+        loginHistory.ModifiedOn = DateTime.UtcNow;           
+         
 
         await _unitOfWork.SaveChangesAsync();
     }

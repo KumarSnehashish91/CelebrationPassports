@@ -13,11 +13,11 @@ namespace CelebrationPassports.Persistence.Repositories.Implementations
         public UserSessionRepository(CelebrationPassportsDbContext context) : base(context)
         {
         }
-        public async Task<UserSession?> GetActiveSessionByUserIdAsync(Guid userId)
+        public async Task<UserSession?> GetActiveSessionByUserIdAsync(Guid userId, Guid sessionId)
         {
             return await _dbcontext.UserSessions
-      .AsNoTracking()
-      .FirstOrDefaultAsync(x => x.UserId == userId);
+      
+      .FirstOrDefaultAsync(x => x.UserId == userId && x.Id == sessionId);
         }
     }
 }
