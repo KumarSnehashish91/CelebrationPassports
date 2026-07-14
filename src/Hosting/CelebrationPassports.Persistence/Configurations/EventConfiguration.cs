@@ -16,8 +16,14 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
             .IsRequired()
             .HasMaxLength(200);
 
+        builder.Property(x => x.EventType)
+            .IsRequired();
+
         builder.Property(x => x.Status)
             .IsRequired();
+
+        builder.Property(x => x.TimeZoneId)
+            .HasMaxLength(100);
 
         builder.Property(x => x.Notes)
             .HasMaxLength(2000);
@@ -39,6 +45,12 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
             .WithMany(x => x.Events)
             .HasForeignKey(x => x.PlaceId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        // Cover-media FKs use SetNull — losing the cover photo shouldn't block deleting it.
+        builder.HasOne(x => x.CoverMedia)
+            .WithMany()
+            .HasForeignKey(x => x.CoverMediaId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(x => x.Story)
             .WithMany(x => x.Events)

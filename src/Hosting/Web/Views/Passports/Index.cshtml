@@ -1,0 +1,47 @@
+@model List<CelebrationPassports.Web.Models.Passports.PassportListItemViewModel>
+
+@{
+    ViewData["Title"] = "My Passports";
+}
+
+<div class="dashboard">
+
+    <div class="dashboard-card" style="padding: 24px;">
+
+        <div class="card-header">
+            <h4>My Passports</h4>
+            <a asp-action="Create">+ New Passport</a>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <p>You don't have any passports yet.</p>
+            <a asp-action="Create" class="primary-btn" style="display:inline-block;width:auto;">Create your first Passport</a>
+        }
+        else
+        {
+            <div class="upcoming-list">
+                @foreach (var passport in Model)
+                {
+                    <div class="upcoming-item">
+                        <div>
+                            <h5 style="margin:0;">@passport.Title</h5>
+                            <small>
+                                @passport.Status &middot; @passport.PeopleCount @(passport.PeopleCount == 1 ? "person" : "people")
+                                @(passport.IsOwner ? " · Owner" : "")
+                            </small>
+                        </div>
+
+                        <form asp-action="Invite" method="post" style="display:flex; gap:8px; margin-left:auto;">
+                            <input type="hidden" name="passportId" value="@passport.Id" />
+                            <input type="email" name="email" class="form-control" placeholder="Invite by email" style="width:220px;" required />
+                            <button type="submit" class="primary-btn" style="width:auto; padding: 8px 14px;">Invite</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+
+</div>

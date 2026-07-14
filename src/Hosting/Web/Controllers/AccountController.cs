@@ -1,6 +1,10 @@
-﻿using CelebrationPassports.Web.Interfaces;
+using System.Security.Claims;
 using CelebrationPassports.Web.Models.Account;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using IAuthenticationService = CelebrationPassports.Web.Interfaces.IAuthenticationService;
 
 namespace CelebrationPassports.Web.Controllers
 {
@@ -25,43 +29,18 @@ namespace CelebrationPassports.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            try
+            var result = await _authenticationService.RegisterAsync(model);
+
+            if (!result.Success)
             {
-                var result = await _authenticationService.RegisterAsync(model);
-
-                if (!result)
-                {
-                    ModelState.AddModelError("", "Registration failed.");
-                    return View(model);
-                }
-
-                //return Content("SUCCESS");
-                if (!result)
-                {
-                    ModelState.AddModelError("", "Registration failed.");
-                    return View(model);
-                }
-
-                ViewBag.SuccessMessage = "🎉 Your Celebration Passport has been created successfully.";
-
-                ModelState.Clear();
-
-                return View(new RegisterViewModel());
-            }
-            catch (Exception ex)
-            {
-                return Content(ex.ToString(), "text/plain");
+                ModelState.AddModelError("", result.ErrorMessage ?? "Registration failed.");
+                return View(model);
             }
 
-           
-        }
+            await SignInAsync(result);
 
-        public IActionResult RegisterSuccess()
-        {
-            return View();
+            return RedirectToAction("Index", "Dashboard");
         }
-
-        
 
         [HttpGet]
         public IActionResult Login()
@@ -77,13 +56,56 @@ namespace CelebrationPassports.Web.Controllers
 
             var result = await _authenticationService.LoginAsync(model);
 
-            if (!result)
+            if (!result.Success)
             {
-                ModelState.AddModelError("", "Invalid Email or Password.");
+                ModelState.AddModelError("", result.ErrorMessage ?? "Invalid email or password.");
                 return View(model);
             }
 
+            await SignInAsync(result);
+
             return RedirectToAction("Index", "Dashboard");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            var sessionIdClaim = User.FindFirstValue("session_id");
+
+            if (Guid.TryParse(sessionIdClaim, out var sessionId))
+            {
+                await _authenticationService.LogoutAsync(sessionId);
+            }
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Login", "Account");
+        }
+
+        private async Task SignInAsync(AuthResult result)
+        {
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.NameIdentifier, result.UserId.ToString()),
+                new(ClaimTypes.Email, result.Email),
+                new(ClaimTypes.GivenName, result.FirstName),
+                new(ClaimTypes.Surname, result.LastName),
+                new("session_id", result.SessionId.ToString())
+            };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            var properties = new AuthenticationProperties();
+            properties.StoreTokens(new[]
+            {
+                new AuthenticationToken { Name = "access_token", Value = result.AccessToken },
+                new AuthenticationToken { Name = "refresh_token", Value = result.RefreshToken },
+                new AuthenticationToken { Name = "expires_on", Value = result.ExpiresOn.ToString("o") }
+            });
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, properties);
         }
     }
 }

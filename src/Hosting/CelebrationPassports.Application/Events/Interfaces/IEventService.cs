@@ -14,4 +14,8 @@ public interface IEventService
     Task<EventDetailDto> UpdateAsync(Guid userId, Guid eventId, UpdateEventRequest request);
 
     Task<EventDetailDto> AddCalendarEventAsync(Guid userId, Guid eventId, AddCalendarEventRequest request);
+
+    Task<IReadOnlyList<EventSummaryDto>> GetUpcomingForUserAsync(Guid userId, int take);
+
+    Task<IReadOnlyList<EventSummaryDto>> GetAllForUserAsync(Guid userId, EventStatus? status);
 }

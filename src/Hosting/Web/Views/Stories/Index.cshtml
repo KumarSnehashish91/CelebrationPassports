@@ -1,0 +1,63 @@
+@model List<CelebrationPassports.Web.Models.Stories.StoryListItemViewModel>
+
+@{
+    ViewData["Title"] = "Memories";
+}
+
+<div class="stories-page">
+
+    <div class="stories-header">
+        <div>
+            <h1>Memories</h1>
+            <p>The stories your celebrations turned into.</p>
+        </div>
+
+        <a asp-action="Create" class="btn-new-celebration">
+            <i class="bi bi-plus-lg"></i>
+            New Story
+        </a>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="celebration-empty">
+            <i class="bi bi-book"></i>
+            <h3>No stories yet</h3>
+            <p>Create your first story to start capturing what happened.</p>
+            <a asp-action="Create" class="btn-new-celebration">
+                <i class="bi bi-plus-lg"></i>
+                New Story
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="stories-grid">
+            @foreach (var story in Model)
+            {
+                <a asp-action="Details" asp-route-id="@story.Id" class="story-card">
+                    <div class="story-card-cover @(string.IsNullOrEmpty(story.CoverImageUrl) ? "no-image" : "")"
+                         style="@(!string.IsNullOrEmpty(story.CoverImageUrl) ? $"background-image:url('{story.CoverImageUrl}')" : "")">
+                        @if (string.IsNullOrEmpty(story.CoverImageUrl))
+                        {
+                            <i class="bi bi-images"></i>
+                        }
+                    </div>
+                    <div class="story-card-body">
+                        <h3>@story.Title</h3>
+                        <span class="story-card-meta">
+                            <i class="bi bi-collection"></i> @story.ChapterCount @(story.ChapterCount == 1 ? "chapter" : "chapters")
+                        </span>
+                        @if (story.StartDate.HasValue)
+                        {
+                            <span class="story-card-meta">
+                                <i class="bi bi-calendar3"></i> @story.StartDate.Value.ToString("MMM dd, yyyy")
+                            </span>
+                        }
+                    </div>
+                </a>
+            }
+        </div>
+    }
+
+</div>

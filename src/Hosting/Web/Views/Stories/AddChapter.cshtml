@@ -1,0 +1,67 @@
+@model CelebrationPassports.Web.Models.Stories.CreateChapterViewModel
+
+@{
+    ViewData["Title"] = "Add Chapter";
+    Layout = "_Layout";
+}
+
+<div class="wizard-page">
+
+    <div class="wizard-header">
+        <div class="wizard-header-top">
+            <div>
+                <h1>Add Chapter</h1>
+                <p>Adding to <strong>@Model.StoryTitle</strong></p>
+            </div>
+            <a asp-action="Details" asp-route-id="@Model.StoryId" class="btn-wizard-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Story
+            </a>
+        </div>
+    </div>
+
+    <form asp-action="AddChapter" method="post">
+        <input type="hidden" asp-for="StoryId" />
+        <input type="hidden" asp-for="StoryTitle" />
+
+        <div asp-validation-summary="ModelOnly" class="field-error mb-3"></div>
+
+        <div class="wizard-card" style="max-width:700px;">
+
+            <div class="wizard-field">
+                <label>Chapter Title <span class="required">*</span></label>
+                <input type="text" asp-for="Title" maxlength="150" placeholder="e.g., Road Trip" />
+                <span asp-validation-for="Title" class="field-error"></span>
+            </div>
+
+            <div class="wizard-field">
+                <label>Category <span class="required">*</span></label>
+                <select asp-for="CategoryId">
+                    <option value="">Select a category</option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" class="field-error"></span>
+            </div>
+
+            <div class="wizard-field">
+                <label>Date <span class="required">*</span></label>
+                <input type="date" asp-for="EventDate" />
+                <span asp-validation-for="EventDate" class="field-error"></span>
+            </div>
+
+        </div>
+
+        <div class="wizard-footer">
+            <a asp-action="Details" asp-route-id="@Model.StoryId" class="btn-wizard-secondary">Cancel</a>
+
+            <div class="wizard-footer-right">
+                <button type="submit" class="btn-wizard-next">
+                    Add Chapter <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>

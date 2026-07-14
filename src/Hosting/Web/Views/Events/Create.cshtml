@@ -1,0 +1,184 @@
+@model CelebrationPassports.Web.Models.Events.EventWizardViewModel
+@using CelebrationPassports.Web.Models.Events
+@using System.Linq
+
+@{
+    ViewData["Title"] = Model.Id.HasValue && Model.Status != 1 ? "Update Event" : "Create New Event";
+    ViewData["CurrentStep"] = 1;
+    Layout = "_Layout";
+
+    // Mirrors CelebrationPassports.Persistence.Enums.EventStatus (Draft=1, Upcoming=2,
+    // Ongoing=3, Completed=4) — duplicated as a plain mapping since Web no longer
+    // references Persistence directly.
+    var statusLabel = Model.Status switch
+    {
+        1 => "Draft",
+        2 => "Upcoming Event",
+        3 => "Ongoing",
+        4 => "Completed",
+        _ => "Draft"
+    };
+
+    var dateTimePreview = "Not selected yet";
+    if (Model.EventDate.HasValue)
+    {
+        dateTimePreview = Model.EventDate.Value.ToString("MMM dd, yyyy");
+
+        if (Model.IsAllDay)
+        {
+            dateTimePreview += " · All Day";
+        }
+        else if (Model.StartTime.HasValue)
+        {
+            dateTimePreview += " · " + Model.StartTime.Value.ToString("h:mm tt");
+        }
+    }
+
+    var locationPreview = "Not selected yet";
+    if (!string.IsNullOrWhiteSpace(Model.PlaceName))
+    {
+        locationPreview = Model.PlaceName;
+
+        if (!string.IsNullOrWhiteSpace(Model.City))
+        {
+            locationPreview += ", " + Model.City;
+        }
+    }
+}
+
+<div class="wizard-page">
+
+    <partial name="_WizardSteps" />
+
+    <form asp-action="Create" method="post" enctype="multipart/form-data" id="eventDetailsForm">
+
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="hidden" name="passportId" value="@Model.PassportId" />
+
+        <div asp-validation-summary="ModelOnly" class="field-error mb-3"></div>
+
+        <div class="wizard-layout">
+
+            <div class="wizard-card">
+
+                <div class="wizard-field">
+                    <label>Event Title <span class="required">*</span></label>
+                    <input type="text" name="title" id="titleInput" maxlength="100" value="@Model.Title"
+                           placeholder="e.g., Aarav's 5th Birthday" oninput="updateCharCount('titleInput','titleCount',100);updatePreviewTitle();" />
+                    <div class="field-char-count"><span id="titleCount">@(Model.Title?.Length ?? 0)</span>/100</div>
+                </div>
+
+                <div class="wizard-field">
+                    <label>Event Type <span class="required">*</span></label>
+                    <p class="field-hint">Select the type of event</p>
+
+                    <div class="event-type-grid">
+                        @foreach (var option in EventTypeOption.All)
+                        {
+                            var selected = Model.EventType == option.Value;
+                            <label class="event-type-card @(selected ? "selected" : "")" onclick="selectEventType(@option.Value)">
+                                <input type="radio" name="eventType" value="@option.Value" data-event-type-radio @(selected ? "checked" : "") />
+                                <span class="check-badge"><i class="bi bi-check-lg"></i></span>
+                                <i class="bi @option.Icon"></i>
+                                <span>@option.Label</span>
+                            </label>
+                        }
+                    </div>
+                </div>
+
+                <div class="wizard-field">
+                    <label>Event Description</label>
+                    <p class="field-hint">Add a few details about your event (optional)</p>
+                    <textarea name="description" id="descriptionInput" rows="4" maxlength="500"
+                              placeholder="Share some details about this special occasion..."
+                              oninput="updateCharCount('descriptionInput','descriptionCount',500)">@Model.Description</textarea>
+                    <div class="field-char-count"><span id="descriptionCount">@(Model.Description?.Length ?? 0)</span>/500</div>
+                </div>
+
+                <div class="wizard-field">
+                    <label>Event Cover</label>
+                    <p class="field-hint">Upload a cover photo that represents your event</p>
+
+                    <div class="cover-dropzone">
+                        <input type="file" name="coverImage" id="coverImageInput" accept=".jpg,.jpeg,.png,.webp" onchange="previewCoverImage(event)" />
+                        <div class="cover-dropzone-prompt">
+                            <i class="bi bi-cloud-arrow-up"></i>
+                            Click to upload or drag and drop
+                            <small>JPG, PNG or WebP (Max 5MB)</small>
+                        </div>
+                        @* Deliberately not pre-filled from Model.CoverImageUrl — this dropzone is for
+                           choosing a NEW file; the existing cover is already shown in the Event
+                           Preview panel above, not duplicated here. *@
+                        <img id="coverPreviewImg" class="cover-preview" src="" alt="Cover preview" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="wizard-card">
+                <h4 style="font-size:16px;margin:0 0 4px;">Event Preview</h4>
+                <p class="field-hint">This is how your event will appear</p>
+
+                <div id="wizardPreviewHero" class="wizard-preview-image @(!string.IsNullOrEmpty(Model.CoverImageUrl) ? "has-cover" : "")"
+                     style="@(!string.IsNullOrEmpty(Model.CoverImageUrl) ? $"background-image:url('{Model.CoverImageUrl}')" : "")">
+                    <i class="bi bi-calendar-star preview-icon"></i>
+                    <div>
+                        <strong id="previewTitle" style="font-size:20px;">@(string.IsNullOrEmpty(Model.Title) ? "Event Title" : Model.Title)</strong>
+                        <span class="wizard-preview-badge">@statusLabel</span>
+                    </div>
+                </div>
+
+                <div class="wizard-preview-list">
+                    <div class="wizard-preview-row">
+                        <i class="bi bi-tag"></i>
+                        <div>
+                            <strong>Event Type</strong>
+                            <span id="previewEventType">@(EventTypeOption.All.FirstOrDefault(o => o.Value == Model.EventType)?.Label ?? "Not selected yet")</span>
+                        </div>
+                    </div>
+                    <div class="wizard-preview-row">
+                        <i class="bi bi-calendar3"></i>
+                        <div>
+                            <strong>Date &amp; Time</strong>
+                            <span>@dateTimePreview</span>
+                        </div>
+                    </div>
+                    <div class="wizard-preview-row">
+                        <i class="bi bi-geo-alt"></i>
+                        <div>
+                            <strong>Location</strong>
+                            <span>@locationPreview</span>
+                        </div>
+                    </div>
+                    <div class="wizard-preview-row">
+                        <i class="bi bi-people"></i>
+                        <div>
+                            <strong>Guests</strong>
+                            <span>@Model.Guests.Count invited</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="wizard-footer">
+            <a asp-controller="Celebrations" asp-action="Index" class="btn-wizard-secondary">Cancel</a>
+
+            <div class="wizard-footer-right">
+                <button type="submit" name="action" value="draft" class="btn-wizard-secondary">
+                    <i class="bi bi-save"></i> Save Draft
+                </button>
+                <button type="submit" name="action" value="next" class="btn-wizard-next">
+                    Next Step <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/create-event.js"></script>
+}

@@ -32,6 +32,20 @@ public class EventsController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("api/events/mine/upcoming")]
+    public async Task<IActionResult> UpcomingForMe([FromQuery] int take = 5)
+    {
+        var result = await _eventService.GetUpcomingForUserAsync(User.GetUserId(), take);
+        return Ok(result);
+    }
+
+    [HttpGet("api/events/mine")]
+    public async Task<IActionResult> AllForMe([FromQuery] EventStatus? status)
+    {
+        var result = await _eventService.GetAllForUserAsync(User.GetUserId(), status);
+        return Ok(result);
+    }
+
     [HttpGet("api/events/{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {

@@ -1,23 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CelebrationPassports.Application\CelebrationPassports.Application.csproj" />
-    <ProjectReference Include="..\CelebrationPassports.Infrastructure\CelebrationPassports.Infrastructure.csproj" />
-    <ProjectReference Include="..\CelebrationPassports.Persistence\CelebrationPassports.Persistence.csproj" />
-    <ProjectReference Include="..\CelebrationPassports.Shared\CelebrationPassports.Shared.csproj" />
-  </ItemGroup>
 
 </Project>

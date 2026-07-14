@@ -1,5 +1,8 @@
-﻿@{
-    ViewData["Title"] = "Celebrations";
+@model List<CelebrationPassports.Web.Models.Events.CelebrationListItemViewModel>
+
+@{
+    ViewData["Title"] = "Events";
+    var activeTab = ViewData["ActiveTab"] as string ?? "all";
 }
 
 <div class="celebration-page">
@@ -12,7 +15,7 @@
 
         <div>
 
-            <h1>Celebrations</h1>
+            <h1>Events</h1>
 
             <p>
                 Manage all your special moments in one place.
@@ -20,10 +23,10 @@
 
         </div>
 
-        <button class="btn-new-celebration">
+        <a asp-controller="Events" asp-action="Create" class="btn-new-celebration">
             <i class="bi bi-plus-lg"></i>
-            New Celebration
-        </button>
+            New Event
+        </a>
 
     </div>
 
@@ -38,15 +41,17 @@
 
         <div class="celebration-tabs">
 
-            <button class="active">All</button>
+            <a asp-action="Index" asp-route-tab="all" class="@(activeTab == "all" ? "active" : "")">All</a>
 
-            <button>Upcoming</button>
+            <a asp-action="Index" asp-route-tab="upcoming" class="@(activeTab == "upcoming" ? "active" : "")">Upcoming</a>
 
-            <button>Past</button>
+            <a asp-action="Index" asp-route-tab="ongoing" class="@(activeTab == "ongoing" ? "active" : "")">Ongoing</a>
 
-            <button>Draft</button>
+            <a asp-action="Index" asp-route-tab="past" class="@(activeTab == "past" ? "active" : "")">Past</a>
 
-            <button>Cancelled</button>
+            <a asp-action="Index" asp-route-tab="draft" class="@(activeTab == "draft" ? "active" : "")">Draft</a>
+
+            <a asp-action="Index" asp-route-tab="cancelled" class="@(activeTab == "cancelled" ? "active" : "")">Cancelled</a>
 
         </div>
 
@@ -60,7 +65,7 @@
                 <i class="bi bi-search"></i>
 
                 <input type="text"
-                       placeholder="Search celebrations..." />
+                       placeholder="Search events..." />
 
             </div>
 
@@ -87,23 +92,31 @@
 
 
     <!-- ========================= -->
-    <!-- Cards (Next Step) -->
+    <!-- Cards -->
     <!-- ========================= -->
 
-    <div class="celebration-grid">
+    @if (Model.Count == 0)
+    {
+        <div class="celebration-empty">
+            <i class="bi bi-calendar-heart"></i>
+            <h3>No events here yet</h3>
+            <p>@(activeTab == "all" ? "Create your first event to get started." : $"You don't have any {activeTab} events yet.")</p>
+            <a asp-controller="Events" asp-action="Create" class="btn-new-celebration">
+                <i class="bi bi-plus-lg"></i>
+                New Event
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="celebration-grid">
 
-        <partial name="_CelebrationCard" />
+            @foreach (var item in Model)
+            {
+                <partial name="_CelebrationCard" model="item" />
+            }
 
-        <partial name="_CelebrationCard" />
-
-        <partial name="_CelebrationCard" />
-
-        <partial name="_CelebrationCard" />
-
-        <partial name="_CelebrationCard" />
-
-        <partial name="_CelebrationCard" />
-
-    </div>
+        </div>
+    }
 
 </div>

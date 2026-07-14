@@ -14,6 +14,9 @@ public class UpdateEventRequestValidator : AbstractValidator<UpdateEventRequest>
         RuleFor(x => x.Notes)
             .MaximumLength(2000);
 
+        RuleFor(x => x.EventType)
+            .IsInEnum();
+
         RuleFor(x => x.Status)
             .IsInEnum();
 

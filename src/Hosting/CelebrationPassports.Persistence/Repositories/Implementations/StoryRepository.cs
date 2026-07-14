@@ -15,6 +15,7 @@ public class StoryRepository : GenericRepository<Story>, IStoryRepository
     {
         return await _dbcontext.Stories
             .AsNoTracking()
+            .Include(s => s.Chapters.Where(c => !c.IsDeleted))
             .Where(s => s.PassportId == passportId && !s.IsDeleted)
             .OrderBy(s => s.DisplayOrder)
             .ToListAsync();

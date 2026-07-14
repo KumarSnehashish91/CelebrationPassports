@@ -1,0 +1,57 @@
+@model CelebrationPassports.Web.Models.Stories.ChapterDetailViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="event-preview-page">
+
+    <div class="event-preview-topbar">
+        <a asp-action="Details" asp-route-id="@Model.StoryId" class="btn-wizard-secondary">
+            <i class="bi bi-arrow-left"></i> Back to @Model.StoryTitle
+        </a>
+    </div>
+
+    <div class="wizard-card" style="margin-bottom: var(--space-xl);">
+        <h1 style="margin:0 0 6px;font-size:26px;">@Model.Title</h1>
+        <p class="field-hint" style="margin:0;">
+            @Model.CategoryName &middot; @Model.EventDate.ToString("MMMM dd, yyyy") &middot; @Model.Media.Count @(Model.Media.Count == 1 ? "photo" : "photos")
+        </p>
+    </div>
+
+    <div class="wizard-card" style="margin-bottom: var(--space-xl);">
+        <h4>Add Photos</h4>
+        <form asp-action="UploadMedia" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="chapterId" value="@Model.Id" />
+
+            <div class="wizard-field" style="margin-bottom:0;">
+                <input type="file" name="files" accept=".jpg,.jpeg,.png,.webp" multiple />
+            </div>
+
+            <button type="submit" class="btn-wizard-next" style="margin-top:var(--space-md);">
+                <i class="bi bi-cloud-arrow-up"></i> Upload
+            </button>
+        </form>
+    </div>
+
+    <div class="wizard-card">
+        <h4>Photos</h4>
+
+        @if (Model.Media.Count == 0)
+        {
+            <p class="field-hint">No photos yet — add some above.</p>
+        }
+        else
+        {
+            <div class="chapter-media-grid">
+                @foreach (var media in Model.Media)
+                {
+                    <div class="chapter-media-item">
+                        <img src="@media.Url" alt="@Model.Title" loading="lazy" />
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+</div>

@@ -1,0 +1,70 @@
+@model CelebrationPassports.Web.Models.Stories.CreateStoryViewModel
+
+@{
+    ViewData["Title"] = "New Story";
+    Layout = "_Layout";
+}
+
+<div class="wizard-page">
+
+    <div class="wizard-header">
+        <div class="wizard-header-top">
+            <div>
+                <h1>New Story</h1>
+                <p>Capture what happened — add chapters and photos once it's created.</p>
+            </div>
+            <a asp-action="Index" class="btn-wizard-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Memories
+            </a>
+        </div>
+    </div>
+
+    <form asp-action="Create" method="post">
+        <input type="hidden" asp-for="PassportId" />
+
+        <div asp-validation-summary="ModelOnly" class="field-error mb-3"></div>
+
+        <div class="wizard-card" style="max-width:700px;">
+
+            <div class="wizard-field">
+                <label>Story Title <span class="required">*</span></label>
+                <input type="text" asp-for="Title" maxlength="150" placeholder="e.g., Manali Trip" />
+                <span asp-validation-for="Title" class="field-error"></span>
+            </div>
+
+            <div class="wizard-row-2">
+                <div class="wizard-field">
+                    <label>Start Date</label>
+                    <input type="date" asp-for="StartDate" />
+                </div>
+                <div class="wizard-field">
+                    <label>End Date</label>
+                    <input type="date" asp-for="EndDate" />
+                </div>
+            </div>
+
+            <div class="wizard-field">
+                <label>Place (Optional)</label>
+                <p class="field-hint">Where did this happen? You can leave this blank.</p>
+                <input type="text" asp-for="PlaceName" placeholder="e.g., Manali, Himachal Pradesh" />
+            </div>
+
+            <div class="wizard-field">
+                <label>City</label>
+                <input type="text" asp-for="City" placeholder="e.g., Manali" />
+            </div>
+
+        </div>
+
+        <div class="wizard-footer">
+            <a asp-action="Index" class="btn-wizard-secondary">Cancel</a>
+
+            <div class="wizard-footer-right">
+                <button type="submit" class="btn-wizard-next">
+                    Create Story <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>

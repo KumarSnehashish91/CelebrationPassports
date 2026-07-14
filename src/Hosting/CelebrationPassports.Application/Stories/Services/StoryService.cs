@@ -76,7 +76,8 @@ public class StoryService : IStoryService
         PlaceId = story.PlaceId,
         StartDate = story.StartDate,
         EndDate = story.EndDate,
-        DisplayOrder = story.DisplayOrder
+        DisplayOrder = story.DisplayOrder,
+        ChapterCount = story.Chapters.Count
     };
 
     private static StoryDetailDto MapToDetail(Story story) => new()

@@ -53,7 +53,7 @@ public class MediaService : IMediaService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<MediaDto> UploadAsync(Guid userId, Guid chapterId, FileUploadRequest file)
+    public async Task<MediaDto> UploadAsync(Guid userId, Guid? chapterId, FileUploadRequest file)
     {
         if (file.Length <= 0)
         {
@@ -72,10 +72,13 @@ public class MediaService : IMediaService
             throw new ValidationException($"File type '{extension}' is not supported.");
         }
 
-        var chapter = await _chapterRepository.GetByIdWithMediaAsync(chapterId)
-            ?? throw new NotFoundException("Chapter not found.");
+        if (chapterId.HasValue)
+        {
+            var chapter = await _chapterRepository.GetByIdWithMediaAsync(chapterId.Value)
+                ?? throw new NotFoundException("Chapter not found.");
 
-        await _accessGuard.EnsureMemberAsync(userId, chapter.Story.PassportId);
+            await _accessGuard.EnsureMemberAsync(userId, chapter.Story.PassportId);
+        }
 
         var url = await _fileStorageService.SaveAsync(file.Content, file.FileName);
 
@@ -102,6 +105,12 @@ public class MediaService : IMediaService
         await _accessGuard.EnsureMemberAsync(userId, chapter.Story.PassportId);
 
         return chapter.Media.Select(MapToDto).ToList();
+    }
+
+    public async Task<MediaDto?> GetByIdAsync(Guid id)
+    {
+        var media = await _mediaRepository.GetByIdAsync(id);
+        return media is null ? null : MapToDto(media);
     }
 
     private static MediaDto MapToDto(MediaEntity media) => new()

@@ -1,0 +1,94 @@
+@model CelebrationPassports.Web.Models.Events.EventWizardViewModel
+
+@{
+    ViewData["Title"] = Model.Id.HasValue && Model.Status != 1 ? "Update Event" : "Create New Event";
+    ViewData["CurrentStep"] = 4;
+    Layout = "_Layout";
+}
+
+<div class="wizard-page">
+
+    <partial name="_WizardSteps" />
+
+    <div class="wizard-card" style="max-width:700px;">
+
+        <h4 style="margin:0 0 4px;">Who would you like to invite?</h4>
+        <p class="field-hint">Add guests and send invitations to share your event</p>
+
+        <form asp-action="InviteGuest" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="hidden" name="passportId" value="@Model.PassportId" />
+
+            <div class="wizard-field">
+                <label>Invite Guests</label>
+                <div class="guest-invite-row">
+                    <input type="email" name="email" placeholder="Enter email address" required />
+                    <!-- Visual only for now — event-level guest permissions (Can Edit / Can View & Add /
+                         Can View) aren't a real concept yet; passport membership is binary today. -->
+                    <select style="max-width:160px;">
+                        <option>Can View &amp; Add</option>
+                        <option>Can Edit</option>
+                        <option>Can View</option>
+                    </select>
+                    <button type="submit" class="btn-wizard-next" style="padding:10px 18px;">Add</button>
+                </div>
+            </div>
+        </form>
+
+        @if (Model.Guests.Any())
+        {
+            <div class="guest-list">
+                <h5 style="margin:0 0 4px;">Added Guests (@Model.Guests.Count)</h5>
+
+                @foreach (var guest in Model.Guests)
+                {
+                    <div class="guest-row">
+                        <div class="guest-avatar">@guest.Email.Substring(0, 1).ToUpper()</div>
+                        <div class="guest-info">
+                            <strong>@guest.Email</strong>
+                            <span>Invited to @guest.PassportTitle</span>
+                        </div>
+                        <span class="guest-status @guest.Status.ToLower()">@guest.Status</span>
+                    </div>
+                }
+            </div>
+        }
+
+        <div class="wizard-field" style="margin-top:24px;">
+            <label>Invitation Message (Optional)</label>
+            <p class="field-hint">Add a personal message to your invitation</p>
+            <textarea maxlength="300" placeholder="Hi there! You're invited to be part of this special event. Can't wait to create beautiful memories together!"></textarea>
+        </div>
+
+        <div class="wizard-info-banner">
+            <h5>How invitations work?</h5>
+            <ul>
+                <li>Guests will receive an email invitation.</li>
+                <li>They can view the event details once they accept.</li>
+                <li>Accepted guests become members of this passport.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <form asp-action="Finish" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+
+        <div class="wizard-footer">
+            <a asp-controller="Celebrations" asp-action="Index" class="btn-wizard-secondary">Cancel</a>
+
+            <div class="wizard-footer-right">
+                <button type="submit" name="action" value="back" class="btn-wizard-secondary">
+                    <i class="bi bi-arrow-left"></i> Back
+                </button>
+                <button type="submit" name="action" value="draft" class="btn-wizard-secondary">
+                    <i class="bi bi-save"></i> Save Draft
+                </button>
+                <button type="submit" name="action" value="finish" class="btn-wizard-next btn-wizard-finish">
+                    @(Model.Id.HasValue && Model.Status != 1 ? "Update Event" : "Create Event") <i class="bi bi-stars"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>

@@ -13,6 +13,14 @@ using CelebrationPassports.Application.Stories.Interfaces;
 using CelebrationPassports.Application.Stories.Services;
 using CelebrationPassports.Application.Media.Interfaces;
 using CelebrationPassports.Application.Media.Services;
+using CelebrationPassports.Application.Invitations.Interfaces;
+using CelebrationPassports.Application.Invitations.Services;
+using CelebrationPassports.Application.Stamps.Interfaces;
+using CelebrationPassports.Application.Stamps.Services;
+using CelebrationPassports.Application.Places.Interfaces;
+using CelebrationPassports.Application.Places.Services;
+using CelebrationPassports.Application.Categories.Interfaces;
+using CelebrationPassports.Application.Categories.Services;
 
 namespace CelebrationPassports.Application;
 
@@ -39,6 +47,10 @@ public static class DependencyInjection
         services.AddScoped<IStoryService, StoryService>();
         services.AddScoped<IChapterService, ChapterService>();
         services.AddScoped<IMediaService, MediaService>();
+        services.AddScoped<IPassportInvitationService, PassportInvitationService>();
+        services.AddScoped<IPassportStampService, PassportStampService>();
+        services.AddScoped<IPlaceService, PlaceService>();
+        services.AddScoped<ICategoryService, CategoryService>();
 
 
         return services;

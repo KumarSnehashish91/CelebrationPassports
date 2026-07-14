@@ -11,6 +11,9 @@ public class CreateEventRequestValidator : AbstractValidator<CreateEventRequest>
             .NotEmpty()
             .MaximumLength(200);
 
+        RuleFor(x => x.EventType)
+            .IsInEnum();
+
         RuleFor(x => x.Notes)
             .MaximumLength(2000);
 

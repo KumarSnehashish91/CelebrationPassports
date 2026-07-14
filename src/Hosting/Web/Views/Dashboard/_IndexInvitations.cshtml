@@ -1,0 +1,27 @@
+@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+
+<div class="dashboard-card" style="padding: 20px 24px; margin-bottom: 24px;">
+
+    <div class="card-header" style="margin-bottom: 12px;">
+        <h4 style="font-size:18px;">You've been invited</h4>
+    </div>
+
+    @foreach (var invitation in Model.PendingInvitations)
+    {
+        <div class="upcoming-item">
+            <div>
+                <h5 style="margin:0;">@invitation.PassportTitle</h5>
+                <small>Invited to join this passport</small>
+            </div>
+
+            <form asp-controller="Invitations" asp-action="Accept" asp-route-id="@invitation.Id" method="post" style="display:inline; margin-left:auto;">
+                <button type="submit" class="primary-btn" style="width:auto; padding: 8px 14px;">Accept</button>
+            </form>
+
+            <form asp-controller="Invitations" asp-action="Decline" asp-route-id="@invitation.Id" method="post" style="display:inline; margin-left: 8px;">
+                <button type="submit" class="primary-btn" style="width:auto; padding: 8px 14px; background:#fff; color:var(--text); border:1px solid var(--border);">Decline</button>
+            </form>
+        </div>
+    }
+
+</div>

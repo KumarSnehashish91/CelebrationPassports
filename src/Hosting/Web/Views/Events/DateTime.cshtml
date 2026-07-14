@@ -1,0 +1,103 @@
+@model CelebrationPassports.Web.Models.Events.EventWizardViewModel
+
+@{
+    ViewData["Title"] = Model.Id.HasValue && Model.Status != 1 ? "Update Event" : "Create New Event";
+    ViewData["CurrentStep"] = 2;
+    Layout = "_Layout";
+
+    var zones = new[]
+    {
+        "(GMT+05:30) India Standard Time (IST)",
+        "(GMT+00:00) Greenwich Mean Time (GMT)",
+        "(GMT-05:00) Eastern Time (US & Canada)",
+        "(GMT-08:00) Pacific Time (US & Canada)",
+        "(GMT+01:00) Central European Time (CET)",
+        "(GMT+04:00) Gulf Standard Time (GST)",
+        "(GMT+08:00) China Standard Time (CST)",
+        "(GMT+09:00) Japan Standard Time (JST)",
+        "(GMT+10:00) Australian Eastern Time (AET)"
+    };
+}
+
+<div class="wizard-page">
+
+    <partial name="_WizardSteps" />
+
+    <form asp-action="DateTime" method="post">
+
+        <input type="hidden" name="id" value="@Model.Id" />
+
+        <div asp-validation-summary="ModelOnly" class="field-error mb-3"></div>
+
+        <div class="wizard-card" style="max-width:700px;">
+
+            <h4 style="margin:0 0 4px;">When is your event?</h4>
+            <p class="field-hint">Select the date and time for your event</p>
+
+            <div class="wizard-field">
+                <label>Event Date <span class="required">*</span></label>
+                <input type="date" name="eventDate" value="@(Model.EventDate?.ToString("yyyy-MM-dd"))" required />
+            </div>
+
+            <div class="wizard-row-2">
+                <div class="wizard-field time-field">
+                    <label>Start Time <span class="required">*</span></label>
+                    <input type="time" name="startTime" value="@(Model.StartTime?.ToString("HH:mm"))" />
+                </div>
+                <div class="wizard-field time-field">
+                    <label>End Time</label>
+                    <input type="time" name="endTime" value="@(Model.EndTime?.ToString("HH:mm"))" />
+                </div>
+            </div>
+
+            <div class="wizard-field" style="display:flex;align-items:center;gap:10px;">
+                <input type="checkbox" id="allDayToggle" name="isAllDay" value="true" @(Model.IsAllDay ? "checked" : "") style="width:18px;height:18px;" />
+                <div>
+                    <label style="margin:0;">All Day Event</label>
+                    <p class="field-hint" style="margin:0;">This is an all day event</p>
+                </div>
+            </div>
+
+            <div class="wizard-field">
+                <label>Time Zone</label>
+                <select name="timeZoneId">
+                    @foreach (var zone in zones)
+                    {
+                        <option value="@zone" selected="@(Model.TimeZoneId == zone)">@zone</option>
+                    }
+                </select>
+            </div>
+
+            <div class="wizard-info-banner" style="display:flex;gap:12px;align-items:center;">
+                <i class="bi bi-calendar-heart" style="font-size:28px;color:var(--primary);"></i>
+                <div>
+                    <h5>Not sure about the time?</h5>
+                    <p style="margin:0;font-size:var(--font-xs);color:var(--text-light);">You can always update the date and time later.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="wizard-footer">
+            <a asp-controller="Celebrations" asp-action="Index" class="btn-wizard-secondary">Cancel</a>
+
+            <div class="wizard-footer-right">
+                <button type="submit" name="action" value="back" class="btn-wizard-secondary">
+                    <i class="bi bi-arrow-left"></i> Back
+                </button>
+                <button type="submit" name="action" value="draft" class="btn-wizard-secondary">
+                    <i class="bi bi-save"></i> Save Draft
+                </button>
+                <button type="submit" name="action" value="next" class="btn-wizard-next">
+                    Next Step <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/create-event.js"></script>
+}

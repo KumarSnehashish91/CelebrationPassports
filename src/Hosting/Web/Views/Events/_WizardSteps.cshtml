@@ -1,0 +1,49 @@
+@model CelebrationPassports.Web.Models.Events.EventWizardViewModel
+
+@{
+    var currentStep = (int)(ViewData["CurrentStep"] ?? 1);
+    var steps = new[] { "Event Details", "Date & Time", "Location", "Invite Guests" };
+    // Status 1 = Draft — a brand-new event stays Draft through every step until Finish,
+    // so it still has an Id by Step 2 without being an "edit" of something already
+    // published. Only a non-Draft status (opened from an existing Upcoming/Ongoing/
+    // Completed event) counts as updating rather than creating.
+    var isEditing = Model?.Id.HasValue == true && Model.Status != 1;
+}
+
+<div class="wizard-header">
+
+    <div class="wizard-header-top">
+        <div>
+            <h1>@(isEditing ? "Update Event" : "Create New Event")</h1>
+            <p>@(isEditing ? "Update your event details" : "Create a new event and start capturing beautiful memories")</p>
+        </div>
+        <a asp-controller="Celebrations" asp-action="Index" class="btn-wizard-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Events
+        </a>
+    </div>
+
+    <div class="wizard-steps">
+        @for (var i = 1; i <= steps.Length; i++)
+        {
+            var stepState = i < currentStep ? "done" : (i == currentStep ? "active" : "");
+            <div class="wizard-step @stepState">
+                <div class="wizard-step-circle">
+                    @if (i < currentStep)
+                    {
+                        <i class="bi bi-check-lg"></i>
+                    }
+                    else
+                    {
+                        @i
+                    }
+                </div>
+                <span>@steps[i - 1]</span>
+            </div>
+            if (i < steps.Length)
+            {
+                <div class="wizard-step-line @(i < currentStep ? "done" : "")"></div>
+            }
+        }
+    </div>
+
+</div>

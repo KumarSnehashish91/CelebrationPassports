@@ -54,21 +54,21 @@
             </li>
 
             <li>
-                <a href="#">
+                <a asp-controller="Events" asp-action="Create">
                     <i class="bi bi-calendar-plus"></i>
-                    Create Celebration
+                    Create Event
                 </a>
             </li>
 
             <li>
-                <a href="#">
+                <a asp-controller="Passports" asp-action="Create">
                     <i class="bi bi-book"></i>
                     Create Passport
                 </a>
             </li>
 
             <li>
-                <a href="#">
+                <a asp-controller="Stories" asp-action="Create">
                     <i class="bi bi-image"></i>
                     Add Memory
                 </a>
@@ -111,7 +111,7 @@
        class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Celebrations" ? "active" : "")">
 
         <i class="bi bi-balloon-heart"></i>
-        <span>Celebrations</span>
+        <span>Events</span>
 
     </a>
 
@@ -130,7 +130,9 @@
         <span>Trips</span>
     </a>
 
-    <a class="sidebar-link" href="#">
+    <a asp-controller="Stories"
+       asp-action="Index"
+       class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Stories" ? "active" : "")">
         <i class="bi bi-images"></i>
         <span>Memories</span>
     </a>

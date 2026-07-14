@@ -1,0 +1,75 @@
+@model CelebrationPassports.Web.Models.Stories.StoryDetailViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="event-preview-page">
+
+    <div class="event-preview-topbar">
+        <a asp-action="Index" class="btn-wizard-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Memories
+        </a>
+
+        <a asp-action="AddChapter" asp-route-storyId="@Model.Id" class="btn-wizard-next">
+            <i class="bi bi-plus-lg"></i> Add Chapter
+        </a>
+    </div>
+
+    <div class="event-preview-hero @(!string.IsNullOrEmpty(Model.CoverImageUrl) ? "has-cover" : "")"
+         style="@(!string.IsNullOrEmpty(Model.CoverImageUrl) ? $"background-image:url('{Model.CoverImageUrl}')" : "")">
+
+        <div class="event-preview-hero-content">
+            <h1>@Model.Title</h1>
+
+            <div class="event-preview-hero-meta">
+                @if (Model.StartDate.HasValue)
+                {
+                    <span>
+                        <i class="bi bi-calendar3"></i>
+                        @Model.StartDate.Value.ToString("MMM dd, yyyy")
+                        @if (Model.EndDate.HasValue && Model.EndDate != Model.StartDate)
+                        {
+                            @: - @Model.EndDate.Value.ToString("MMM dd, yyyy")
+                        }
+                    </span>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.PlaceName))
+                {
+                    <span><i class="bi bi-geo-alt"></i> @Model.PlaceName</span>
+                }
+
+                <span><i class="bi bi-collection"></i> @Model.Chapters.Count @(Model.Chapters.Count == 1 ? "chapter" : "chapters")</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="wizard-card">
+        <h4>Chapters</h4>
+
+        @if (Model.Chapters.Count == 0)
+        {
+            <p class="field-hint">No chapters yet. Add one to start uploading photos.</p>
+        }
+        else
+        {
+            <div class="chapter-list">
+                @foreach (var chapter in Model.Chapters)
+                {
+                    <a asp-action="Chapter" asp-route-id="@chapter.Id" class="chapter-row">
+                        <div class="chapter-row-icon">
+                            <i class="bi bi-images"></i>
+                        </div>
+                        <div class="chapter-row-info">
+                            <strong>@chapter.Title</strong>
+                            <span>@chapter.CategoryName &middot; @chapter.EventDate.ToString("MMM dd, yyyy")</span>
+                        </div>
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                }
+            </div>
+        }
+    </div>
+
+</div>

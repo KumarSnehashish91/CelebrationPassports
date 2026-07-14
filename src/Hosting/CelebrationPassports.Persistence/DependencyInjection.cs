@@ -27,6 +27,8 @@ public static class DependencyInjection
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<IStoryRepository, StoryRepository>();
         services.AddScoped<IChapterRepository, ChapterRepository>();
+        services.AddScoped<IPassportInvitationRepository, PassportInvitationRepository>();
+        services.AddScoped<IPlaceRepository, PlaceRepository>();
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 

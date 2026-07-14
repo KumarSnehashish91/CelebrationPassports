@@ -16,10 +16,25 @@ public class PlaceConfiguration : IEntityTypeConfiguration<Place>
             .IsRequired()
             .HasMaxLength(200);
 
+        builder.Property(x => x.Address)
+            .HasMaxLength(300);
+
         builder.Property(x => x.City)
             .HasMaxLength(200);
 
+        builder.Property(x => x.PostalCode)
+            .HasMaxLength(20);
+
         builder.Property(x => x.Country)
             .HasMaxLength(200);
+
+        builder.Property(x => x.Notes)
+            .HasMaxLength(500);
+
+        builder.Property(x => x.Latitude)
+            .HasColumnType("decimal(9,6)");
+
+        builder.Property(x => x.Longitude)
+            .HasColumnType("decimal(9,6)");
     }
 }

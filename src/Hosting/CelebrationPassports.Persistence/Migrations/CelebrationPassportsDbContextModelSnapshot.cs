@@ -115,6 +115,56 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("9a1b7e10-0001-4a00-8000-000000000001"),
+                            Icon = "bi-airplane",
+                            Name = "Travel"
+                        },
+                        new
+                        {
+                            Id = new Guid("9a1b7e10-0001-4a00-8000-000000000002"),
+                            Icon = "bi-people",
+                            Name = "Family"
+                        },
+                        new
+                        {
+                            Id = new Guid("9a1b7e10-0001-4a00-8000-000000000003"),
+                            Icon = "bi-balloon-heart",
+                            Name = "Celebration"
+                        },
+                        new
+                        {
+                            Id = new Guid("9a1b7e10-0001-4a00-8000-000000000004"),
+                            Icon = "bi-cup-straw",
+                            Name = "Food"
+                        },
+                        new
+                        {
+                            Id = new Guid("9a1b7e10-0001-4a00-8000-000000000005"),
+                            Icon = "bi-people-fill",
+                            Name = "Friends"
+                        },
+                        new
+                        {
+                            Id = new Guid("9a1b7e10-0001-4a00-8000-000000000006"),
+                            Icon = "bi-trophy",
+                            Name = "Milestone"
+                        },
+                        new
+                        {
+                            Id = new Guid("9a1b7e10-0001-4a00-8000-000000000007"),
+                            Icon = "bi-compass",
+                            Name = "Adventure"
+                        },
+                        new
+                        {
+                            Id = new Guid("9a1b7e10-0001-4a00-8000-000000000008"),
+                            Icon = "bi-sun",
+                            Name = "Everyday"
+                        });
                 });
 
             modelBuilder.Entity("CelebrationPassports.Persistence.Entities.Chapter", b =>
@@ -230,6 +280,9 @@ namespace CelebrationPassports.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("CoverMediaId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
@@ -246,6 +299,15 @@ namespace CelebrationPassports.Persistence.Migrations
 
                     b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date");
+
+                    b.Property<TimeOnly?>("EndTime")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<int>("EventType")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsAllDay")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -265,11 +327,18 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
+                    b.Property<TimeOnly?>("StartTime")
+                        .HasColumnType("time without time zone");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<Guid?>("StoryId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("TimeZoneId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -277,6 +346,8 @@ namespace CelebrationPassports.Persistence.Migrations
                         .HasColumnType("character varying(200)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CoverMediaId");
 
                     b.HasIndex("CreatedBy");
 
@@ -788,6 +859,10 @@ namespace CelebrationPassports.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Address")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
                     b.Property<string>("City")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
@@ -796,10 +871,24 @@ namespace CelebrationPassports.Persistence.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<decimal?>("Latitude")
+                        .HasColumnType("decimal(9,6)");
+
+                    b.Property<decimal?>("Longitude")
+                        .HasColumnType("decimal(9,6)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("PostalCode")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.HasKey("Id");
 
@@ -1398,6 +1487,11 @@ namespace CelebrationPassports.Persistence.Migrations
 
             modelBuilder.Entity("CelebrationPassports.Persistence.Entities.Event", b =>
                 {
+                    b.HasOne("CelebrationPassports.Persistence.Entities.Media", "CoverMedia")
+                        .WithMany()
+                        .HasForeignKey("CoverMediaId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("CelebrationPassports.Persistence.Entities.User", "CreatedByUser")
                         .WithMany("CreatedEvents")
                         .HasForeignKey("CreatedBy")
@@ -1424,6 +1518,8 @@ namespace CelebrationPassports.Persistence.Migrations
                         .WithMany("Events")
                         .HasForeignKey("StoryId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CoverMedia");
 
                     b.Navigation("CreatedByUser");
 

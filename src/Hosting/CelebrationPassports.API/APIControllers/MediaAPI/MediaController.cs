@@ -22,16 +22,30 @@ public class MediaController : ControllerBase
     [RequestSizeLimit(25 * 1024 * 1024)]
     public async Task<IActionResult> Upload(Guid chapterId, IFormFile file)
     {
+        var result = await UploadInternalAsync(chapterId, file);
+        return Ok(result);
+    }
+
+    // Unattached upload — "upload first, sort later" (e.g. an Event's cover photo,
+    // which has no Chapter/Story/Passport guard context of its own yet).
+    [HttpPost]
+    [RequestSizeLimit(25 * 1024 * 1024)]
+    public async Task<IActionResult> UploadUnattached(IFormFile file)
+    {
+        var result = await UploadInternalAsync(null, file);
+        return Ok(result);
+    }
+
+    private async Task<MediaDto> UploadInternalAsync(Guid? chapterId, IFormFile file)
+    {
         await using var stream = file.OpenReadStream();
 
-        var result = await _mediaService.UploadAsync(User.GetUserId(), chapterId, new FileUploadRequest
+        return await _mediaService.UploadAsync(User.GetUserId(), chapterId, new FileUploadRequest
         {
             Content = stream,
             FileName = file.FileName,
             Length = file.Length
         });
-
-        return Ok(result);
     }
 
     [HttpGet("chapters/{chapterId:guid}")]
@@ -39,5 +53,12 @@ public class MediaController : ControllerBase
     {
         var result = await _mediaService.ListByChapterAsync(User.GetUserId(), chapterId);
         return Ok(result);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await _mediaService.GetByIdAsync(id);
+        return result is null ? NotFound() : Ok(result);
     }
 }

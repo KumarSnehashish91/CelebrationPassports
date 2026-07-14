@@ -3,9 +3,9 @@
 
     <div class="topbar-left">
 
-        <h2> @GreetingService.GetGreeting(), Kumar! 👋</h2>
+        <h2> @GreetingService.GetGreeting(), @(User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value ?? "there")! 👋</h2>
 
-        <p>Every celebration creates a memory that lasts forever.</p>
+        <p>Every event creates a memory that lasts forever.</p>
 
     </div>
 
@@ -14,7 +14,7 @@
         <div class="search-box">
 
             <input type="text"
-                   placeholder="Search celebrations, places, people..." />
+                   placeholder="Search events, places, people..." />
 
         </div>
 
@@ -46,7 +46,7 @@
 
                 <hr>
 
-                <a href="/Account/Login" class="logout-link">
+                <a href="/Account/Logout" class="logout-link">
                     <i class="bi bi-box-arrow-right"></i>
                     Logout
                 </a>

@@ -19,5 +19,7 @@ namespace CelebrationPassports.Application.Authentication.DTOs.ResponseDTO
         public string RefreshToken { get; set; } = string.Empty;
 
         public DateTime ExpiresOn { get; set; }
+
+        public Guid SessionId { get; set; }
     }
 }

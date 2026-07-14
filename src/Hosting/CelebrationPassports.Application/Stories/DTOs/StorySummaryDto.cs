@@ -13,4 +13,6 @@ public class StorySummaryDto
     public DateOnly? EndDate { get; set; }
 
     public int DisplayOrder { get; set; }
+
+    public int ChapterCount { get; set; }
 }

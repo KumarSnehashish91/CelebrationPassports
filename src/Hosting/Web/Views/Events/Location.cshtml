@@ -1,0 +1,99 @@
+@model CelebrationPassports.Web.Models.Events.EventWizardViewModel
+
+@{
+    ViewData["Title"] = Model.Id.HasValue && Model.Status != 1 ? "Update Event" : "Create New Event";
+    ViewData["CurrentStep"] = 3;
+    Layout = "_Layout";
+
+    var countries = new[] { "India", "United States", "United Kingdom", "Canada", "Australia", "United Arab Emirates", "Other" };
+}
+
+<div class="wizard-page">
+
+    <partial name="_WizardSteps" />
+
+    <form asp-action="Location" method="post">
+
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="hidden" id="selectedPlaceIdInput" name="selectedPlaceId" value="@Model.PlaceId" />
+
+        <div asp-validation-summary="ModelOnly" class="field-error mb-3"></div>
+
+        <div class="wizard-card" style="max-width:700px;">
+
+            <h4 style="margin:0 0 4px;">Where is your event?</h4>
+            <p class="field-hint">Add the location details for your event</p>
+
+            <div class="wizard-field">
+                <label>Search for a location</label>
+                <input type="text" id="locationSearchInput" placeholder="Search for a venue, place or address..." autocomplete="off" />
+                <div id="locationSearchResults"></div>
+            </div>
+
+            <div class="location-divider">OR</div>
+
+            <h5 style="margin:0 0 2px;">Enter Location Manually</h5>
+            <p class="field-hint">Enter the location details</p>
+
+            <div class="wizard-field">
+                <label>Venue / Place Name <span class="required">*</span></label>
+                <input type="text" id="venueNameInput" name="venueName" value="@Model.PlaceName" placeholder="e.g., The Grand Banquet Hall" />
+            </div>
+
+            <div class="wizard-field">
+                <label>Address</label>
+                <input type="text" name="address" value="@Model.Address" placeholder="e.g., 123 MG Road, Bangalore, Karnataka, 560001" />
+            </div>
+
+            <div class="wizard-row-2">
+                <div class="wizard-field">
+                    <label>City <span class="required">*</span></label>
+                    <input type="text" id="cityInput" name="city" value="@Model.City" placeholder="e.g., Bangalore" />
+                </div>
+                <div class="wizard-field">
+                    <label>PIN / ZIP Code</label>
+                    <input type="text" name="postalCode" value="@Model.PostalCode" placeholder="e.g., 560001" />
+                </div>
+            </div>
+
+            <div class="wizard-field">
+                <label>Country <span class="required">*</span></label>
+                <select id="countryInput" name="country">
+                    @foreach (var country in countries)
+                    {
+                        <option value="@country" selected="@(Model.Country == country)">@country</option>
+                    }
+                </select>
+            </div>
+
+            <div class="wizard-field">
+                <label>Add Notes (Optional)</label>
+                <p class="field-hint">Any additional information about the location</p>
+                <textarea name="locationNotes" maxlength="200" placeholder="e.g., Near the metro station, parking available, etc...">@Model.LocationNotes</textarea>
+            </div>
+
+        </div>
+
+        <div class="wizard-footer">
+            <a asp-controller="Celebrations" asp-action="Index" class="btn-wizard-secondary">Cancel</a>
+
+            <div class="wizard-footer-right">
+                <button type="submit" name="action" value="back" class="btn-wizard-secondary">
+                    <i class="bi bi-arrow-left"></i> Back
+                </button>
+                <button type="submit" name="action" value="draft" class="btn-wizard-secondary">
+                    <i class="bi bi-save"></i> Save Draft
+                </button>
+                <button type="submit" name="action" value="next" class="btn-wizard-next">
+                    Next Step <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/create-event.js"></script>
+}

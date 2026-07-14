@@ -7,6 +7,11 @@
 
 <div class="dashboard">
 
+    @if (Model.PendingInvitations.Any())
+    {
+        <partial name="_IndexInvitations" />
+    }
+
     <!-- ===========================
          Statistics
     ============================ -->
@@ -18,7 +23,7 @@
                  {
                      Title = "Upcoming",
                      Value = Model.Summary.UpcomingCelebrations.ToString(),
-                     Description = "Next Celebration",
+                     Description = "Next Event",
                      Icon = "bi bi-calendar-event",
                      IconBackground = "#F4F1FF"
                  }' />
@@ -112,6 +117,10 @@
 
         <!-- Row 3 -->
         <div class="dashboard-bottom-row">
+
+            <div class="grid-passports">
+                <partial name="_IndexPassports" />
+            </div>
 
             <div class="grid-recent">
                 <partial name="_IndexRecent" />

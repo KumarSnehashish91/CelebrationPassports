@@ -182,7 +182,7 @@
 .dashboard-bottom-row {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     align-items: start;
 }
@@ -439,14 +439,20 @@
 .upcoming-item {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 10px;
     padding-bottom: 18px;
     border-bottom: 1px solid #EEF2F7;
+    text-decoration: none;
+    color: inherit;
 }
 
     .upcoming-item:last-child {
         border-bottom: none;
         padding-bottom: 0;
+    }
+
+    .upcoming-item:hover .upcoming-info h6 {
+        color: var(--primary, #6C4CF6);
     }
 
 .celebration-thumb {
@@ -466,15 +472,22 @@
         margin: 0 0 6px;
         font-size: 17px;
         font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .upcoming-info span {
         color: #6B7280;
         font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
     }
 
 .upcoming-date {
-    width: 110px;
+    width: 90px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -499,10 +512,10 @@
     }
 
 .days-left {
-    width: 55px;
-    font-size: 13px;
+    width: 50px;
+    font-size: 12px;
     color: #6B7280;
-    line-height: 16px;
+    line-height: 15px;
 }
 
 /*==========================================================

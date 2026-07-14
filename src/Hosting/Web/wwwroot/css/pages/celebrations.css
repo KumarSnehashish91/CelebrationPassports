@@ -46,6 +46,7 @@
     align-items: center;
     gap: 10px;
     transition: .25s;
+    text-decoration: none;
 }
 
     .btn-new-celebration:hover {
@@ -80,16 +81,20 @@
     box-shadow: 0 5px 18px rgba(0,0,0,.05);
 }
 
-    .celebration-tabs button {
+    .celebration-tabs button,
+    .celebration-tabs a {
         border: none;
         background: transparent;
         padding: 12px 22px;
         border-radius: 12px;
         font-size: 15px;
         transition: .25s;
+        text-decoration: none;
+        color: inherit;
     }
 
-        .celebration-tabs button:hover {
+        .celebration-tabs button:hover,
+        .celebration-tabs a:hover {
             background: #F4F2FF;
         }
 
@@ -168,6 +173,37 @@
     gap: 28px;
 }
 
+.celebration-empty {
+    background: #fff;
+    border-radius: 24px;
+    padding: 60px 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,.05);
+}
+
+    .celebration-empty i {
+        font-size: 42px;
+        color: #6F4EF6;
+        margin-bottom: 16px;
+        display: inline-block;
+    }
+
+    .celebration-empty h3 {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .celebration-empty p {
+        color: #6b7280;
+        margin-bottom: 24px;
+    }
+
+    .celebration-empty .btn-new-celebration {
+        display: inline-flex;
+        margin: 0 auto;
+    }
+
 /*=========================================
   Celebration Card
 =========================================*/
@@ -182,6 +218,8 @@
     align-items: stretch;
     box-shadow: 0 10px 30px rgba(0,0,0,.05);
     transition: .25s;
+    text-decoration: none;
+    color: inherit;
 }
 
     .celebration-card:hover {
@@ -241,6 +279,21 @@
 .upcoming {
     background: #EFEAFF;
     color: #6F4EF6;
+}
+
+.draft {
+    background: #F3F4F6;
+    color: #6B7280;
+}
+
+.ongoing {
+    background: #E0F2FE;
+    color: #0284C7;
+}
+
+.past {
+    background: #FEF3C7;
+    color: #B45309;
 }
 .celebration-content p {
     color: #666;

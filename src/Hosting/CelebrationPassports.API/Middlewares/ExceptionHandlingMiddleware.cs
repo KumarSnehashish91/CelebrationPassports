@@ -24,6 +24,7 @@ public class ExceptionHandlingMiddleware
             var (statusCode, message) = ex switch
             {
                 DuplicateEmailException => (StatusCodes.Status409Conflict, ex.Message),
+                ConflictException => (StatusCodes.Status409Conflict, ex.Message),
                 NotFoundException => (StatusCodes.Status404NotFound, ex.Message),
                 ForbiddenAccessException => (StatusCodes.Status403Forbidden, ex.Message),
                 UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, ex.Message),

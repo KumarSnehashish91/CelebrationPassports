@@ -84,11 +84,12 @@ public class AuthenticationService : IAuthenticationService
 
         await _userProfileRepository.AddAsync(profile);
 
-        var accessToken = _tokenService.GenerateAccessToken(user.Id, user.Email);
+        var sessionId = Guid.NewGuid();
+        var accessToken = _tokenService.GenerateAccessToken(user.Id, user.Email, sessionId);
         var refreshToken = _tokenService.GenerateRefreshToken();
         var expiresOn = _tokenService.GetAccessTokenExpiry();
 
-        await SaveUserSessionAsync(user.Id, refreshToken);
+        await SaveUserSessionAsync(user.Id, sessionId, refreshToken);
 
         await _unitOfWork.SaveChangesAsync();
 
@@ -98,7 +99,8 @@ public class AuthenticationService : IAuthenticationService
             Email = user.Email,
             AccessToken = accessToken,
             RefreshToken = refreshToken,
-            ExpiresOn = expiresOn
+            ExpiresOn = expiresOn,
+            SessionId = sessionId
         };
     }
     public async Task<LoginResponse> LoginAsync(LoginRequest request)
@@ -158,11 +160,12 @@ public class AuthenticationService : IAuthenticationService
             true,
             null);
 
-        var accessToken = _tokenService.GenerateAccessToken(user.Id, user.Email);
+        var sessionId = Guid.NewGuid();
+        var accessToken = _tokenService.GenerateAccessToken(user.Id, user.Email, sessionId);
         var refreshToken = _tokenService.GenerateRefreshToken();
         var expiresOn = _tokenService.GetAccessTokenExpiry();
 
-        await SaveUserSessionAsync(user.Id, refreshToken);
+        await SaveUserSessionAsync(user.Id, sessionId, refreshToken);
 
         await _unitOfWork.SaveChangesAsync();
 
@@ -174,7 +177,8 @@ public class AuthenticationService : IAuthenticationService
             EmailAddress = user.Email,
             AccessToken = accessToken,
             RefreshToken = refreshToken,
-            ExpiresOn = expiresOn
+            ExpiresOn = expiresOn,
+            SessionId = sessionId
         };
     }
 
@@ -197,7 +201,7 @@ public class AuthenticationService : IAuthenticationService
             throw new UnauthorizedAccessException("The refresh token is invalid or has expired.");
         }
 
-        var accessToken = _tokenService.GenerateAccessToken(user.Id, user.Email);
+        var accessToken = _tokenService.GenerateAccessToken(user.Id, user.Email, session.Id);
         var newRefreshToken = _tokenService.GenerateRefreshToken();
         var expiresOn = _tokenService.GetAccessTokenExpiry();
 
@@ -213,7 +217,8 @@ public class AuthenticationService : IAuthenticationService
             Email = user.Email,
             AccessToken = accessToken,
             RefreshToken = newRefreshToken,
-            ExpiresOn = expiresOn
+            ExpiresOn = expiresOn,
+            SessionId = session.Id
         };
     }
 
@@ -240,11 +245,12 @@ public class AuthenticationService : IAuthenticationService
 
     private async Task SaveUserSessionAsync(
     Guid userId,
+    Guid sessionId,
     string refreshToken)
     {
         var _userSession = new UserSession
         {
-            Id = Guid.NewGuid(),
+            Id = sessionId,
             UserId = userId,
             IsActive = true,
             CreatedOn = DateTime.UtcNow,
