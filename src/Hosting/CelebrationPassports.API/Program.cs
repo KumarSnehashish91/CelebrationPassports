@@ -1,6 +1,14 @@
 using CelebrationPassports.Application;
-using CelebrationPassports.Persistence;
+using CelebrationPassports.Infrastructure.AI.Clients;
+using CelebrationPassports.Infrastructure.AI.Configuration;
 using CelebrationPassports.Infrastructure.Authentication;
+using CelebrationPassports.Persistence;
+
+using CelebrationPassports.Infrastructure.AI.Clients;
+using CelebrationPassports.Infrastructure.AI.Configuration;
+using CelebrationPassports.Infrastructure.AI.Services;
+using CelebrationPassports.Infrastructure.AI.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,6 +24,14 @@ builder.Services.AddInfrastructure(builder.Configuration);
 //builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<AIOptions>(
+    builder.Configuration.GetSection("CelebrationAI"));
+
+builder.Services.AddHttpClient<AIClient>();
+
+builder.Services.AddScoped<ICelebrationAIService, CelebrationAIService>();
+
 
 var app = builder.Build();
 app.UseDeveloperExceptionPage();
