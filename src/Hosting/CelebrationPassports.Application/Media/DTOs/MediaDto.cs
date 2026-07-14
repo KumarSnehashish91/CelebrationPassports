@@ -13,4 +13,10 @@ public class MediaDto
     public MediaType Type { get; set; }
 
     public Guid UploadedBy { get; set; }
+
+    public decimal? Latitude { get; set; }
+
+    public decimal? Longitude { get; set; }
+
+    public DateTime? CapturedAt { get; set; }
 }

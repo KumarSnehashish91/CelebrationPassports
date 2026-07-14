@@ -19,6 +19,12 @@ public class MediaConfiguration : IEntityTypeConfiguration<Media>
         builder.Property(x => x.Type)
             .IsRequired();
 
+        builder.Property(x => x.Latitude)
+            .HasPrecision(9, 6);
+
+        builder.Property(x => x.Longitude)
+            .HasPrecision(9, 6);
+
         builder.Property(x => x.IsDeleted)
             .HasDefaultValue(false);
 

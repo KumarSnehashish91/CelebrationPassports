@@ -72,6 +72,16 @@ builder.Services.AddHttpClient<IStoryService, StoryService>(client =>
     client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<BearerTokenHandler>();
 
+builder.Services.AddHttpClient<INotificationService, NotificationService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<IUserProfileService, UserProfileService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

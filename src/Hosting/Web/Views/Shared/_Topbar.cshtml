@@ -1,4 +1,9 @@
 ﻿@inject CelebrationPassports.Web.Interfaces.IGreetingService GreetingService
+@inject CelebrationPassports.Web.Interfaces.INotificationService NotificationService
+@{
+    var notifications = await NotificationService.GetMineAsync(8);
+    var unreadCount = notifications.Count(n => !n.IsRead);
+}
 <div class="topbar-container">
 
     <div class="topbar-left">
@@ -20,7 +25,36 @@
 
         <div class="top-icons">
 
-            <button> <i class="bi bi-bell-fill"></i></button>
+            <div class="notification-dropdown-wrap" id="notificationDropdown">
+                <button type="button">
+                    <i class="bi bi-bell-fill"></i>
+                    @if (unreadCount > 0)
+                    {
+                        <span class="notification-badge">@(unreadCount > 9 ? "9+" : unreadCount.ToString())</span>
+                    }
+                </button>
+
+                <div class="notification-menu" id="notificationMenu">
+                    <div class="notification-menu-header">Notifications</div>
+
+                    @if (notifications.Count == 0)
+                    {
+                        <div class="notification-empty">You're all caught up.</div>
+                    }
+                    else
+                    {
+                        foreach (var n in notifications)
+                        {
+                            <a asp-controller="Notifications" asp-action="Open" asp-route-id="@n.Id"
+                               class="notification-item @(n.IsRead ? "" : "unread")">
+                                <strong>@n.Title</strong>
+                                <span>@n.Message</span>
+                                <small>@n.CreatedOn.ToString("MMM dd, h:mm tt")</small>
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
 
             <button> <i class="bi bi-chat-dots-fill"></i></button>
 
@@ -39,7 +73,7 @@
                     My Profile
                 </a>
 
-                <a href="#">
+                <a asp-controller="Settings" asp-action="Index">
                     <i class="bi bi-gear"></i>
                     Settings
                 </a>

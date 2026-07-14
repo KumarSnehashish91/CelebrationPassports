@@ -52,4 +52,11 @@ public class CreatePlaceViewModel
 
     [StringLength(200)]
     public string? Notes { get; set; }
+
+    // Only actually collected today by the Settings "Home Location" form — trip
+    // detection needs real coordinates and there's no geocoding service to derive them
+    // from a name/city, so the user enters them directly there. Null everywhere else.
+    public decimal? Latitude { get; set; }
+
+    public decimal? Longitude { get; set; }
 }

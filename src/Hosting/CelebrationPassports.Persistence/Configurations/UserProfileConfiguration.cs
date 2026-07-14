@@ -28,5 +28,10 @@ public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
             .WithMany()
             .HasForeignKey(x => x.AvatarMediaId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(x => x.HomePlace)
+            .WithMany()
+            .HasForeignKey(x => x.HomePlaceId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

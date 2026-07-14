@@ -21,6 +21,8 @@ using CelebrationPassports.Application.Places.Interfaces;
 using CelebrationPassports.Application.Places.Services;
 using CelebrationPassports.Application.Categories.Interfaces;
 using CelebrationPassports.Application.Categories.Services;
+using CelebrationPassports.Application.Notifications.Interfaces;
+using CelebrationPassports.Application.Notifications.Services;
 
 namespace CelebrationPassports.Application;
 
@@ -51,6 +53,8 @@ public static class DependencyInjection
         services.AddScoped<IPassportStampService, PassportStampService>();
         services.AddScoped<IPlaceService, PlaceService>();
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<ITripDetectionService, TripDetectionService>();
 
 
         return services;

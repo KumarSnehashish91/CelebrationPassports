@@ -1,0 +1,114 @@
+@model CelebrationPassports.Web.Models.Stories.ConfirmChapterViewModel
+@{
+    ViewData["Title"] = "Review Trip";
+    Layout = "_Layout";
+    var chapter = ViewData["Chapter"] as CelebrationPassports.Web.Models.Stories.ChapterDetailViewModel;
+}
+
+<div class="wizard-page">
+
+    <div class="wizard-header">
+        <div class="wizard-header-top">
+            <div>
+                <h1><i class="bi bi-stars" style="color:var(--primary);"></i> We spotted a trip!</h1>
+                <p>Review the details below, then confirm or discard this chapter.</p>
+            </div>
+            <a asp-action="Index" class="btn-wizard-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Memories
+            </a>
+        </div>
+    </div>
+
+    @if (chapter is not null && chapter.Media.Count > 0)
+    {
+        <div class="wizard-card" style="margin-bottom:var(--space-xl);">
+            <h4>Photos (@chapter.Media.Count)</h4>
+            <div class="chapter-media-grid">
+                @foreach (var media in chapter.Media)
+                {
+                    <div class="chapter-media-item">
+                        <img src="@media.Url" alt="Trip photo" loading="lazy" />
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <form asp-action="ReviewChapter" method="post">
+        <input type="hidden" asp-for="ChapterId" />
+        <input type="hidden" asp-for="PlaceId" />
+
+        <div asp-validation-summary="ModelOnly" class="field-error mb-3"></div>
+
+        <div class="wizard-card" style="max-width:700px;margin-bottom:var(--space-xl);">
+            <div class="wizard-field">
+                <label>Chapter Title <span class="required">*</span></label>
+                <input type="text" asp-for="Title" maxlength="150" />
+                <span asp-validation-for="Title" class="field-error"></span>
+            </div>
+
+            <div class="wizard-field">
+                <label>Category <span class="required">*</span></label>
+                <select asp-for="CategoryId">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="wizard-field">
+                <label>Date <span class="required">*</span></label>
+                <input type="date" asp-for="EventDate" />
+            </div>
+        </div>
+
+        <div class="wizard-card" style="max-width:700px;">
+            <h4>Add to a Story</h4>
+            <p class="field-hint">Roll this chapter into an existing story, or start a new one.</p>
+
+            <div class="wizard-field">
+                <select asp-for="StoryChoice" id="storyChoiceSelect">
+                    <option value="new">Create a new story</option>
+                    @foreach (var story in Model.ExistingStories)
+                    {
+                        <option value="existing-@story.Id">Add to "@story.Title"</option>
+                    }
+                </select>
+            </div>
+
+            <div class="wizard-field" id="newStoryTitleField">
+                <label>New Story Title</label>
+                <p class="field-hint">Leave blank to use a suggested title based on the date.</p>
+                <input type="text" asp-for="NewStoryTitle" placeholder="e.g., Weekend in the Hills" />
+            </div>
+        </div>
+
+        <div class="wizard-footer">
+            <button type="submit" formaction="@Url.Action("DiscardChapter")" formnovalidate class="btn-wizard-secondary">
+                <i class="bi bi-trash"></i> Discard
+            </button>
+
+            <div class="wizard-footer-right">
+                <button type="submit" class="btn-wizard-next">
+                    <i class="bi bi-check-lg"></i> Confirm Chapter
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+@section Scripts {
+    <script>
+        const storyChoiceSelect = document.getElementById('storyChoiceSelect');
+        const newStoryTitleField = document.getElementById('newStoryTitleField');
+
+        function toggleNewStoryField() {
+            newStoryTitleField.style.display = storyChoiceSelect.value === 'new' ? '' : 'none';
+        }
+
+        storyChoiceSelect.addEventListener('change', toggleNewStoryField);
+        toggleNewStoryField();
+    </script>
+}

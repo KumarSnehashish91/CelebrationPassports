@@ -126,5 +126,22 @@ if (profile) {
 document.addEventListener("click", function () {
 
     profileMenu?.classList.remove("show");
+    notificationMenu?.classList.remove("show");
 
 });
+
+
+const notificationToggle = document.getElementById("notificationDropdown");
+const notificationMenu = document.getElementById("notificationMenu");
+
+if (notificationToggle) {
+
+    notificationToggle.addEventListener("click", function (e) {
+
+        e.stopPropagation();
+
+        notificationMenu.classList.toggle("show");
+
+    });
+
+}

@@ -212,6 +212,8 @@
     gap: 18px;
     padding: 18px 0;
     border-bottom: 1px solid #edf1f6;
+    text-decoration: none;
+    color: inherit;
 }
 
 .activity-item:last-child{

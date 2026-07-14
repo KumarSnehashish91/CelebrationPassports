@@ -17,4 +17,17 @@ public interface IStoryService
     Task<Guid?> AddChapterAsync(CreateChapterViewModel model);
 
     Task<ChapterDetailViewModel?> GetChapterByIdAsync(Guid chapterId);
+
+    // Trip detection review flow
+    Task<Guid?> DetectTripAsync(List<Guid> mediaIds);
+
+    Task<List<ChapterDetailViewModel>> GetDraftsAsync();
+
+    // Confirmed chapters only, most recent first — feeds the Dashboard's Recent
+    // Chapters widget.
+    Task<List<ChapterDetailViewModel>> GetRecentChaptersAsync(int take = 6);
+
+    Task<bool> ConfirmDraftAsync(ConfirmChapterViewModel model);
+
+    Task<bool> DiscardDraftAsync(Guid chapterId);
 }

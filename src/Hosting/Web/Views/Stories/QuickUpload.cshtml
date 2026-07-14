@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "Upload Photos";
+    Layout = "_Layout";
+}
+
+<div class="wizard-page">
+
+    <div class="wizard-header">
+        <div class="wizard-header-top">
+            <div>
+                <h1>Upload Photos</h1>
+                <p>Drop in photos from anywhere — if it looks like a trip, we'll draft a chapter for you automatically.</p>
+            </div>
+            <a asp-action="Index" class="btn-wizard-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Memories
+            </a>
+        </div>
+    </div>
+
+    @if (ViewData["NoTripDetected"] is true)
+    {
+        <div class="wizard-info-banner" style="margin-bottom:var(--space-xl);">
+            <h5>Uploaded @ViewData["UploadedCount"] photo(s)</h5>
+            <p style="margin:0;font-size:var(--font-xs);color:var(--text-light);">
+                We didn't detect a trip from these — either they weren't geo-tagged, or
+                they looked close to home. They're saved and ready to add to a chapter
+                manually from any Story's "Add Chapter" page.
+            </p>
+        </div>
+    }
+
+    @if (ViewData["UploadError"] is string uploadError)
+    {
+        <div class="field-error mb-3">@uploadError</div>
+    }
+
+    <form asp-action="QuickUpload" method="post" enctype="multipart/form-data">
+        <div class="wizard-card" style="max-width:700px;">
+            <div class="wizard-field" style="margin-bottom:0;">
+                <label>Photos</label>
+                <p class="field-hint">JPG or PNG works best — that's what carries the location/date info we use for detection.</p>
+                <input type="file" name="files" accept=".jpg,.jpeg,.png" multiple />
+            </div>
+        </div>
+
+        <div class="wizard-footer">
+            <a asp-action="Index" class="btn-wizard-secondary">Cancel</a>
+            <div class="wizard-footer-right">
+                <button type="submit" class="btn-wizard-next">
+                    <i class="bi bi-cloud-arrow-up"></i> Upload
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>

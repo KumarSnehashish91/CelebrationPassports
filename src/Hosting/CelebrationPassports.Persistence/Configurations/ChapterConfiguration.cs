@@ -19,7 +19,18 @@ public class ChapterConfiguration : IEntityTypeConfiguration<Chapter>
         builder.Property(x => x.IsDeleted)
             .HasDefaultValue(false);
 
+        builder.Property(x => x.Status)
+            .HasDefaultValue(Enums.ChapterStatus.Confirmed);
+
+        builder.Property(x => x.Source)
+            .HasDefaultValue(Enums.ChapterSource.Manual);
+
         builder.HasIndex(x => new { x.StoryId, x.EventDate });
+
+        builder.HasOne(x => x.Passport)
+            .WithMany()
+            .HasForeignKey(x => x.PassportId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Story)
             .WithMany(x => x.Chapters)

@@ -3,6 +3,8 @@ using CelebrationPassports.Infrastructure.Authentication.Interfaces;
 using CelebrationPassports.Infrastructure.Authentication.Services;
 using CelebrationPassports.Infrastructure.Storage.Interfaces;
 using CelebrationPassports.Infrastructure.Storage.Services;
+using CelebrationPassports.Infrastructure.Photo.Interfaces;
+using CelebrationPassports.Infrastructure.Photo.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,6 +23,7 @@ namespace CelebrationPassports.Infrastructure.Authentication
             services.AddScoped<ITokenService, JwtTokenService>();
 
             services.AddScoped<IFileStorageService, LocalFileStorageService>();
+            services.AddScoped<IPhotoMetadataService, PhotoMetadataService>();
 
             return services;
         }

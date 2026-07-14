@@ -1,4 +1,5 @@
-﻿using CelebrationPassports.Application.Users.DTOs;
+using CelebrationPassports.Application.Exceptions;
+using CelebrationPassports.Application.Users.DTOs;
 using CelebrationPassports.Application.Users.Interfaces;
 using CelebrationPassports.Persistence.Repositories.Interfaces;
 using System;
@@ -10,10 +11,14 @@ namespace CelebrationPassports.Application.Users.Services
     public class UserProfileService : IuserProfileService
     {
         private readonly IUserProfileRepository _IuserProfileRepository;
-        public UserProfileService(IUserProfileRepository userProfileRepository)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public UserProfileService(IUserProfileRepository userProfileRepository, IUnitOfWork unitOfWork)
         {
             _IuserProfileRepository = userProfileRepository;
+            _unitOfWork = unitOfWork;
         }
+
         async Task<UserProfileDto?> IuserProfileService.GetUserProfileAsync(Guid userId)
         {
             var profile = await _IuserProfileRepository.GetUserProfileByIdAsync(userId);
@@ -29,9 +34,24 @@ namespace CelebrationPassports.Application.Users.Services
                 Gender = profile.Gender,
                 MobileNumber = profile.MobileNumber,
                 ProfilePhotoUrl = profile.ProfilePhotoUrl,
-                CreatedOn = profile.CreatedOn
+                CreatedOn = profile.CreatedOn,
+                HomePlaceId = profile.HomePlaceId
             };
-            
+
+        }
+
+        public async Task SetHomePlaceAsync(Guid userId, Guid? placeId)
+        {
+            var profile = await _IuserProfileRepository.GetUserProfileByIdAsync(userId)
+                ?? throw new NotFoundException("User profile not found.");
+
+            // GetUserProfileByIdAsync reads with AsNoTracking, so the mutation below is
+            // on a detached entity — Update() re-attaches it as Modified so
+            // SaveChangesAsync actually persists it, instead of silently doing nothing.
+            profile.HomePlaceId = placeId;
+            _IuserProfileRepository.Update(profile);
+
+            await _unitOfWork.SaveChangesAsync();
         }
 
     }

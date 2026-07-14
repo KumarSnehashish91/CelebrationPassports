@@ -1,6 +1,7 @@
 using CelebrationPassports.API.Extensions;
 using CelebrationPassports.Application.Media.DTOs;
 using CelebrationPassports.Application.Media.Interfaces;
+using CelebrationPassports.Application.Stories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,12 @@ namespace CelebrationPassports.API.APIControllers.MediaAPI;
 public class MediaController : ControllerBase
 {
     private readonly IMediaService _mediaService;
+    private readonly ITripDetectionService _tripDetectionService;
 
-    public MediaController(IMediaService mediaService)
+    public MediaController(IMediaService mediaService, ITripDetectionService tripDetectionService)
     {
         _mediaService = mediaService;
+        _tripDetectionService = tripDetectionService;
     }
 
     [HttpPost("chapters/{chapterId:guid}")]
@@ -61,4 +64,16 @@ public class MediaController : ControllerBase
         var result = await _mediaService.GetByIdAsync(id);
         return result is null ? NotFound() : Ok(result);
     }
+
+    [HttpPost("batches/detect-trip")]
+    public async Task<IActionResult> DetectTrip(DetectTripRequest request)
+    {
+        var chapterId = await _tripDetectionService.DetectAsync(User.GetUserId(), request.MediaIds);
+        return Ok(new { detected = chapterId.HasValue, chapterId });
+    }
+}
+
+public class DetectTripRequest
+{
+    public List<Guid> MediaIds { get; set; } = [];
 }

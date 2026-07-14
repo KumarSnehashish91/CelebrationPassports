@@ -5,9 +5,9 @@ using CelebrationPassports.Web.ViewModels.Dashboard;
 namespace CelebrationPassports.Web.Services;
 
 // Everything this returns is mock data. DashboardController overwrites Passports,
-// UpcomingCelebrations, PendingInvitations, and the corresponding Summary counts with
-// real API data after calling this — Memories/Trips/Countries, Recent Activity, Memory
-// Highlights, Life Journey Timeline, and Passport Progress still have no backing
+// UpcomingCelebrations, PendingInvitations, RecentChapters, and the corresponding
+// Summary counts with real API data after calling this — Memories/Trips/Countries,
+// Memory Highlights, Life Journey Timeline, and Passport Progress still have no backing
 // endpoints (see the Dashboard plan notes) and stay mock.
 public class DashboardService : IDashboardService
 {
@@ -51,24 +51,6 @@ public class DashboardService : IDashboardService
                 ImageUrl = "/images/udaipur.jpg"
             }
                 },
-
-            RecentActivities =
-            [
-                new()
-                {
-                    Title = "Added Birthday",
-                    Description = "Created Rahul's Birthday",
-                    ActivityDate = DateTime.Now,
-                    Icon = "bi-gift"
-                },
-                new()
-                {
-                    Title = "Uploaded Memories",
-                    Description = "Added 20 new photos",
-                    ActivityDate = DateTime.Now,
-                    Icon = "bi-camera"
-                }
-            ],
 
             PassportProgress = new PassportProgress
             {

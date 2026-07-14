@@ -12,10 +12,16 @@
             <p>The stories your celebrations turned into.</p>
         </div>
 
-        <a asp-action="Create" class="btn-new-celebration">
-            <i class="bi bi-plus-lg"></i>
-            New Story
-        </a>
+        <div style="display:flex;gap:10px;">
+            <a asp-action="QuickUpload" class="btn-wizard-secondary">
+                <i class="bi bi-cloud-arrow-up"></i>
+                Upload Photos
+            </a>
+            <a asp-action="Create" class="btn-new-celebration">
+                <i class="bi bi-plus-lg"></i>
+                New Story
+            </a>
+        </div>
     </div>
 
     @if (Model.Count == 0)

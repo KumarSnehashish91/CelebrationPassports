@@ -1,6 +1,7 @@
 ﻿using CelebrationPassports.Web.Models.Dashboard;
 using CelebrationPassports.Web.Models.Invitations;
 using CelebrationPassports.Web.Models.Passports;
+using CelebrationPassports.Web.Models.Stories;
 
 namespace CelebrationPassports.Web.ViewModels.Dashboard;
 
@@ -16,7 +17,8 @@ public class DashboardViewModel
 
     public List<UpcomingCelebration> UpcomingCelebrations { get; set; } = [];
 
-    public List<RecentActivity> RecentActivities { get; set; } = [];
+    // Real, API-backed — replaces the old mock "Recent Activity" widget.
+    public List<ChapterDetailViewModel> RecentChapters { get; set; } = [];
 
     public PassportProgress PassportProgress { get; set; } = new();
 

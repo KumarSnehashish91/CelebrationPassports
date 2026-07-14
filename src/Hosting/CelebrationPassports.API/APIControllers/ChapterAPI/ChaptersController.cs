@@ -31,4 +31,32 @@ public class ChaptersController : ControllerBase
         var result = await _chapterService.UpdateAsync(User.GetUserId(), id, request);
         return Ok(result);
     }
+
+    [HttpGet("mine/drafts")]
+    public async Task<IActionResult> MyDrafts()
+    {
+        var result = await _chapterService.ListDraftsForUserAsync(User.GetUserId());
+        return Ok(result);
+    }
+
+    [HttpGet("mine/recent")]
+    public async Task<IActionResult> MyRecent([FromQuery] int take = 6)
+    {
+        var result = await _chapterService.ListRecentConfirmedForUserAsync(User.GetUserId(), take);
+        return Ok(result);
+    }
+
+    [HttpPost("{id:guid}/confirm")]
+    public async Task<IActionResult> Confirm(Guid id, ConfirmChapterRequest request)
+    {
+        var result = await _chapterService.ConfirmAsync(User.GetUserId(), id, request);
+        return Ok(result);
+    }
+
+    [HttpPost("{id:guid}/discard")]
+    public async Task<IActionResult> Discard(Guid id)
+    {
+        await _chapterService.DiscardAsync(User.GetUserId(), id);
+        return NoContent();
+    }
 }

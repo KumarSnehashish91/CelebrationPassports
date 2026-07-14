@@ -15,6 +15,15 @@ public class Media
 
     public MediaType Type { get; set; }
 
+    // Extracted from EXIF at upload time (photos only — null when absent, e.g. no GPS
+    // tag, screenshots, videos). Drives trip detection: compared against the uploader's
+    // UserProfile.HomePlaceId to tell whether a batch of uploads was taken away from home.
+    public decimal? Latitude { get; set; }
+
+    public decimal? Longitude { get; set; }
+
+    public DateTime? CapturedAt { get; set; }
+
     public bool IsDeleted { get; set; }
 
     public DateTime? DeletedOn { get; set; }

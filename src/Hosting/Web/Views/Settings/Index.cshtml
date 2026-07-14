@@ -1,0 +1,102 @@
+@model CelebrationPassports.Web.Models.Settings.SettingsViewModel
+
+@{
+    ViewData["Title"] = "Settings";
+    Layout = "_Layout";
+}
+
+<div class="wizard-page">
+
+    <div class="wizard-header">
+        <div class="wizard-header-top">
+            <div>
+                <h1>Settings</h1>
+                <p>Manage your account preferences.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="wizard-card" style="max-width:700px;">
+        <h4>Home Location</h4>
+        <p class="field-hint">
+            Used to automatically detect trips — when you upload photos taken far from
+            here, we'll draft a chapter for you to review instead of you having to add
+            it by hand.
+        </p>
+
+        <div asp-validation-summary="ModelOnly" class="field-error mb-3"></div>
+
+        @if (!string.IsNullOrEmpty(Model.HomePlaceName))
+        {
+            <div class="event-preview-detail-row" style="margin-bottom:var(--space-lg);">
+                <i class="bi bi-house-door"></i>
+                <div>
+                    <strong>Current Home</strong>
+                    <span>@Model.HomePlaceName</span>
+                </div>
+            </div>
+
+            <form asp-action="ClearHomePlace" method="post">
+                <button type="submit" class="btn-wizard-secondary">
+                    <i class="bi bi-x-lg"></i> Clear Home Location
+                </button>
+            </form>
+        }
+        else
+        {
+            <p class="field-hint" style="color:#B45309;">
+                <i class="bi bi-exclamation-triangle"></i> No home location set yet — trip detection is currently off.
+            </p>
+
+            <form asp-action="SetHomePlace" method="post">
+                <div class="wizard-field">
+                    <label>Place Name <span class="required">*</span></label>
+                    <input type="text" name="placeName" value="@Model.PlaceName" placeholder="e.g., My House" />
+                </div>
+
+                <div class="wizard-field">
+                    <label>City <span class="required">*</span></label>
+                    <input type="text" name="city" value="@Model.City" placeholder="e.g., Bangalore" />
+                </div>
+
+                <div class="wizard-row-2">
+                    <div class="wizard-field">
+                        <label>Latitude <span class="required">*</span></label>
+                        <input type="number" step="any" id="latitudeInput" name="latitude" value="@Model.Latitude" placeholder="e.g., 12.9716" />
+                    </div>
+                    <div class="wizard-field">
+                        <label>Longitude <span class="required">*</span></label>
+                        <input type="number" step="any" id="longitudeInput" name="longitude" value="@Model.Longitude" placeholder="e.g., 77.5946" />
+                    </div>
+                </div>
+
+                <button type="button" id="useMyLocationBtn" class="btn-wizard-secondary" style="margin-bottom:var(--space-lg);">
+                    <i class="bi bi-geo-alt"></i> Use My Current Location
+                </button>
+
+                <button type="submit" class="btn-wizard-next">
+                    <i class="bi bi-house-check"></i> Set Home Location
+                </button>
+            </form>
+        }
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('useMyLocationBtn')?.addEventListener('click', function () {
+            if (!navigator.geolocation) {
+                alert('Your browser does not support location access — enter coordinates manually.');
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(function (position) {
+                document.getElementById('latitudeInput').value = position.coords.latitude.toFixed(6);
+                document.getElementById('longitudeInput').value = position.coords.longitude.toFixed(6);
+            }, function () {
+                alert('Could not get your location — enter coordinates manually.');
+            });
+        });
+    </script>
+}

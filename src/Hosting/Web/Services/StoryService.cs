@@ -192,24 +192,32 @@ public class StoryService : IStoryService
         var categories = await _categoryService.ListAllAsync();
         var categoryName = categories.FirstOrDefault(c => c.Id == body.CategoryId)?.Name ?? "Uncategorized";
 
-        var storyResponse = await _httpClient.GetAsync($"api/stories/{body.StoryId}");
         var storyTitle = string.Empty;
 
-        if (storyResponse.IsSuccessStatusCode)
+        if (body.StoryId.HasValue)
         {
-            var story = await storyResponse.Content.ReadFromJsonAsync<StoryDetailBody>(JsonOptions);
-            storyTitle = story?.Title ?? string.Empty;
+            var storyResponse = await _httpClient.GetAsync($"api/stories/{body.StoryId}");
+
+            if (storyResponse.IsSuccessStatusCode)
+            {
+                var story = await storyResponse.Content.ReadFromJsonAsync<StoryDetailBody>(JsonOptions);
+                storyTitle = story?.Title ?? string.Empty;
+            }
         }
 
         var model = new ChapterDetailViewModel
         {
             Id = body.Id,
+            PassportId = body.PassportId,
             StoryId = body.StoryId,
             StoryTitle = storyTitle,
             Title = body.Title,
             CategoryId = body.CategoryId,
             CategoryName = categoryName,
-            EventDate = body.EventDate
+            PlaceId = body.PlaceId,
+            EventDate = body.EventDate,
+            Status = body.Status,
+            Source = body.Source
         };
 
         foreach (var m in body.Media)
@@ -225,6 +233,116 @@ public class StoryService : IStoryService
         }
 
         return model;
+    }
+
+    public async Task<Guid?> DetectTripAsync(List<Guid> mediaIds)
+    {
+        var response = await _httpClient.PostAsJsonAsync("api/media/batches/detect-trip", new { mediaIds });
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
+
+        var body = await response.Content.ReadFromJsonAsync<DetectTripBody>(JsonOptions);
+        return body?.Detected == true ? body.ChapterId : null;
+    }
+
+    public async Task<List<ChapterDetailViewModel>> GetDraftsAsync()
+    {
+        var response = await _httpClient.GetAsync("api/chapters/mine/drafts");
+        return await MapChaptersAsync(response);
+    }
+
+    public async Task<List<ChapterDetailViewModel>> GetRecentChaptersAsync(int take = 6)
+    {
+        var response = await _httpClient.GetAsync($"api/chapters/mine/recent?take={take}");
+        return await MapChaptersAsync(response);
+    }
+
+    private async Task<List<ChapterDetailViewModel>> MapChaptersAsync(HttpResponseMessage response)
+    {
+        if (!response.IsSuccessStatusCode)
+        {
+            return [];
+        }
+
+        var body = await response.Content.ReadFromJsonAsync<List<ChapterDetailBody>>(JsonOptions);
+
+        if (body is null)
+        {
+            return [];
+        }
+
+        var categories = await _categoryService.ListAllAsync();
+        var result = new List<ChapterDetailViewModel>();
+
+        foreach (var c in body)
+        {
+            var model = new ChapterDetailViewModel
+            {
+                Id = c.Id,
+                PassportId = c.PassportId,
+                StoryId = c.StoryId,
+                Title = c.Title,
+                CategoryId = c.CategoryId,
+                CategoryName = categories.FirstOrDefault(cat => cat.Id == c.CategoryId)?.Name ?? "Uncategorized",
+                PlaceId = c.PlaceId,
+                EventDate = c.EventDate,
+                Status = c.Status,
+                Source = c.Source
+            };
+
+            foreach (var m in c.Media)
+            {
+                var url = await _mediaService.GetUrlAsync(m.Id);
+                model.Media.Add(new MediaItemViewModel { Id = m.Id, Url = url ?? string.Empty, Type = m.Type });
+            }
+
+            result.Add(model);
+        }
+
+        return result;
+    }
+
+    public async Task<bool> ConfirmDraftAsync(ConfirmChapterViewModel model)
+    {
+        Guid? existingStoryId = null;
+        string? newStoryTitle = null;
+
+        if (model.StoryChoice.StartsWith("existing-") && Guid.TryParse(model.StoryChoice["existing-".Length..], out var parsedId))
+        {
+            existingStoryId = parsedId;
+        }
+        else
+        {
+            newStoryTitle = model.NewStoryTitle;
+        }
+
+        var request = new
+        {
+            title = model.Title,
+            categoryId = model.CategoryId,
+            placeId = model.PlaceId,
+            eventDate = model.EventDate,
+            existingStoryId,
+            newStoryTitle
+        };
+
+        var response = await _httpClient.PostAsJsonAsync($"api/chapters/{model.ChapterId}/confirm", request);
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> DiscardDraftAsync(Guid chapterId)
+    {
+        var response = await _httpClient.PostAsync($"api/chapters/{chapterId}/discard", null);
+        return response.IsSuccessStatusCode;
+    }
+
+    private sealed class DetectTripBody
+    {
+        public bool Detected { get; set; }
+        public Guid? ChapterId { get; set; }
     }
 
     private sealed class StorySummaryBody
@@ -262,12 +380,15 @@ public class StoryService : IStoryService
     private sealed class ChapterDetailBody
     {
         public Guid Id { get; set; }
-        public Guid StoryId { get; set; }
+        public Guid PassportId { get; set; }
+        public Guid? StoryId { get; set; }
         public string Title { get; set; } = string.Empty;
         public Guid CategoryId { get; set; }
         public Guid? PlaceId { get; set; }
         public Guid? CoverMediaId { get; set; }
         public DateOnly EventDate { get; set; }
+        public int Status { get; set; }
+        public int Source { get; set; }
         public List<MediaBody> Media { get; set; } = [];
     }
 

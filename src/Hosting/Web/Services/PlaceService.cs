@@ -53,7 +53,9 @@ public class PlaceService : IPlaceService
             city = model.City,
             postalCode = model.PostalCode,
             country = model.Country,
-            notes = model.Notes
+            notes = model.Notes,
+            latitude = model.Latitude,
+            longitude = model.Longitude
         });
 
         if (!response.IsSuccessStatusCode)

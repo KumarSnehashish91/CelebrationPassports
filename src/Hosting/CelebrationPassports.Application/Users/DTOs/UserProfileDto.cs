@@ -25,5 +25,7 @@ namespace CelebrationPassports.Application.Users.DTOs
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
+
+        public Guid? HomePlaceId { get; set; }
     }
 }

@@ -2,6 +2,7 @@ using CelebrationPassports.Application.Exceptions;
 using CelebrationPassports.Application.Media.DTOs;
 using CelebrationPassports.Application.Media.Interfaces;
 using CelebrationPassports.Application.Passports.Interfaces;
+using CelebrationPassports.Infrastructure.Photo.Interfaces;
 using CelebrationPassports.Infrastructure.Storage.Interfaces;
 using CelebrationPassports.Persistence.Enums;
 using CelebrationPassports.Persistence.Repositories.Interfaces;
@@ -37,6 +38,7 @@ public class MediaService : IMediaService
     private readonly IGenericRepository<MediaEntity> _mediaRepository;
     private readonly IPassportAccessGuard _accessGuard;
     private readonly IFileStorageService _fileStorageService;
+    private readonly IPhotoMetadataService _photoMetadataService;
     private readonly IUnitOfWork _unitOfWork;
 
     public MediaService(
@@ -44,12 +46,14 @@ public class MediaService : IMediaService
         IGenericRepository<MediaEntity> mediaRepository,
         IPassportAccessGuard accessGuard,
         IFileStorageService fileStorageService,
+        IPhotoMetadataService photoMetadataService,
         IUnitOfWork unitOfWork)
     {
         _chapterRepository = chapterRepository;
         _mediaRepository = mediaRepository;
         _accessGuard = accessGuard;
         _fileStorageService = fileStorageService;
+        _photoMetadataService = photoMetadataService;
         _unitOfWork = unitOfWork;
     }
 
@@ -77,8 +81,14 @@ public class MediaService : IMediaService
             var chapter = await _chapterRepository.GetByIdWithMediaAsync(chapterId.Value)
                 ?? throw new NotFoundException("Chapter not found.");
 
-            await _accessGuard.EnsureMemberAsync(userId, chapter.Story.PassportId);
+            await _accessGuard.EnsureMemberAsync(userId, chapter.PassportId);
         }
+
+        // GPS/capture-date only make sense for photos — extraction is a no-op (all
+        // nulls) for anything else, including when the stream isn't seekable.
+        var metadata = mediaType == MediaType.Photo
+            ? _photoMetadataService.Extract(file.Content)
+            : new PhotoMetadata();
 
         var url = await _fileStorageService.SaveAsync(file.Content, file.FileName);
 
@@ -88,7 +98,10 @@ public class MediaService : IMediaService
             ChapterId = chapterId,
             UploadedBy = userId,
             Url = url,
-            Type = mediaType
+            Type = mediaType,
+            Latitude = metadata.Latitude,
+            Longitude = metadata.Longitude,
+            CapturedAt = metadata.CapturedAt
         };
 
         await _mediaRepository.AddAsync(media);
@@ -102,7 +115,7 @@ public class MediaService : IMediaService
         var chapter = await _chapterRepository.GetByIdWithMediaAsync(chapterId)
             ?? throw new NotFoundException("Chapter not found.");
 
-        await _accessGuard.EnsureMemberAsync(userId, chapter.Story.PassportId);
+        await _accessGuard.EnsureMemberAsync(userId, chapter.PassportId);
 
         return chapter.Media.Select(MapToDto).ToList();
     }
@@ -119,6 +132,9 @@ public class MediaService : IMediaService
         ChapterId = media.ChapterId,
         Url = media.Url,
         Type = media.Type,
-        UploadedBy = media.UploadedBy
+        UploadedBy = media.UploadedBy,
+        Latitude = media.Latitude,
+        Longitude = media.Longitude,
+        CapturedAt = media.CapturedAt
     };
 }

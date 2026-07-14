@@ -4,6 +4,7 @@ using CelebrationPassports.Application.Passports.Interfaces;
 using CelebrationPassports.Application.Stories.DTOs;
 using CelebrationPassports.Application.Stories.Interfaces;
 using CelebrationPassports.Persistence.Entities;
+using CelebrationPassports.Persistence.Enums;
 using CelebrationPassports.Persistence.Repositories.Interfaces;
 using FluentValidation;
 
@@ -13,6 +14,7 @@ public class ChapterService : IChapterService
 {
     private readonly IChapterRepository _chapterRepository;
     private readonly IStoryRepository _storyRepository;
+    private readonly IPassportRepository _passportRepository;
     private readonly IPassportAccessGuard _accessGuard;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<CreateChapterRequest> _createValidator;
@@ -21,6 +23,7 @@ public class ChapterService : IChapterService
     public ChapterService(
         IChapterRepository chapterRepository,
         IStoryRepository storyRepository,
+        IPassportRepository passportRepository,
         IPassportAccessGuard accessGuard,
         IUnitOfWork unitOfWork,
         IValidator<CreateChapterRequest> createValidator,
@@ -28,6 +31,7 @@ public class ChapterService : IChapterService
     {
         _chapterRepository = chapterRepository;
         _storyRepository = storyRepository;
+        _passportRepository = passportRepository;
         _accessGuard = accessGuard;
         _unitOfWork = unitOfWork;
         _createValidator = createValidator;
@@ -39,7 +43,7 @@ public class ChapterService : IChapterService
         var chapter = await _chapterRepository.GetByIdWithMediaAsync(chapterId)
             ?? throw new NotFoundException("Chapter not found.");
 
-        await _accessGuard.EnsureMemberAsync(userId, chapter.Story.PassportId);
+        await _accessGuard.EnsureMemberAsync(userId, chapter.PassportId);
 
         return MapToDetail(chapter);
     }
@@ -56,6 +60,7 @@ public class ChapterService : IChapterService
         var chapter = new Chapter
         {
             Id = Guid.NewGuid(),
+            PassportId = story.PassportId,
             StoryId = storyId,
             CategoryId = request.CategoryId,
             PlaceId = request.PlaceId,
@@ -77,7 +82,7 @@ public class ChapterService : IChapterService
         var chapter = await _chapterRepository.GetByIdWithMediaAsync(chapterId)
             ?? throw new NotFoundException("Chapter not found.");
 
-        await _accessGuard.EnsureMemberAsync(userId, chapter.Story.PassportId);
+        await _accessGuard.EnsureMemberAsync(userId, chapter.PassportId);
 
         chapter.Title = request.Title;
         chapter.CategoryId = request.CategoryId;
@@ -90,9 +95,125 @@ public class ChapterService : IChapterService
         return MapToDetail(chapter);
     }
 
+    public async Task<IReadOnlyList<ChapterDetailDto>> ListDraftsForUserAsync(Guid userId)
+    {
+        var passportIds = (await _passportRepository.GetForUserAsync(userId)).Select(p => p.Id).ToList();
+
+        if (passportIds.Count == 0)
+        {
+            return [];
+        }
+
+        var chapters = await _chapterRepository.GetByPassportsAsync(passportIds, ChapterStatus.Draft, take: null);
+
+        return chapters.Select(MapToDetail).ToList();
+    }
+
+    public async Task<IReadOnlyList<ChapterDetailDto>> ListRecentConfirmedForUserAsync(Guid userId, int take)
+    {
+        var passportIds = (await _passportRepository.GetForUserAsync(userId)).Select(p => p.Id).ToList();
+
+        if (passportIds.Count == 0)
+        {
+            return [];
+        }
+
+        var chapters = await _chapterRepository.GetByPassportsAsync(passportIds, ChapterStatus.Confirmed, take);
+
+        return chapters.Select(MapToDetail).ToList();
+    }
+
+    public async Task<ChapterDetailDto> ConfirmAsync(Guid userId, Guid chapterId, ConfirmChapterRequest request)
+    {
+        var chapter = await _chapterRepository.GetByIdWithMediaAsync(chapterId)
+            ?? throw new NotFoundException("Chapter not found.");
+
+        await _accessGuard.EnsureMemberAsync(userId, chapter.PassportId);
+
+        if (chapter.Status != ChapterStatus.Draft)
+        {
+            throw new ConflictException("This chapter has already been confirmed.");
+        }
+
+        chapter.Title = request.Title;
+        chapter.CategoryId = request.CategoryId;
+        chapter.PlaceId = request.PlaceId;
+        chapter.EventDate = request.EventDate;
+
+        if (request.ExistingStoryId.HasValue)
+        {
+            var existingStory = await _storyRepository.GetByIdAsync(request.ExistingStoryId.Value)
+                ?? throw new NotFoundException("Story not found.");
+
+            if (existingStory.PassportId != chapter.PassportId)
+            {
+                throw new ForbiddenAccessException("That story doesn't belong to the same passport as this chapter.");
+            }
+
+            chapter.StoryId = existingStory.Id;
+        }
+        else
+        {
+            // AI-suggested title placeholder — no real title-generation model wired up
+            // yet, so this is a deterministic stand-in the user can freely rename (here
+            // or anytime after, from the Story itself).
+            var suggestedTitle = string.IsNullOrWhiteSpace(request.NewStoryTitle)
+                ? $"Trip - {request.EventDate:MMMM yyyy}"
+                : request.NewStoryTitle;
+
+            var newStory = new Story
+            {
+                Id = Guid.NewGuid(),
+                PassportId = chapter.PassportId,
+                Title = suggestedTitle,
+                PlaceId = request.PlaceId,
+                StartDate = request.EventDate,
+                EndDate = request.EventDate,
+                DisplayOrder = 0,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _storyRepository.AddAsync(newStory);
+            chapter.StoryId = newStory.Id;
+        }
+
+        chapter.Status = ChapterStatus.Confirmed;
+
+        await _unitOfWork.SaveChangesAsync();
+
+        return MapToDetail(chapter);
+    }
+
+    public async Task DiscardAsync(Guid userId, Guid chapterId)
+    {
+        var chapter = await _chapterRepository.GetByIdWithMediaAsync(chapterId)
+            ?? throw new NotFoundException("Chapter not found.");
+
+        await _accessGuard.EnsureMemberAsync(userId, chapter.PassportId);
+
+        if (chapter.Status != ChapterStatus.Draft)
+        {
+            throw new ConflictException("Only a pending (unconfirmed) chapter can be discarded.");
+        }
+
+        // Unattach rather than delete the photos — "upload first, sort later" still
+        // holds for a discarded detection; nothing the user actually uploaded is lost.
+        foreach (var media in chapter.Media)
+        {
+            media.ChapterId = null;
+        }
+
+        chapter.IsDeleted = true;
+        chapter.DeletedOn = DateTime.UtcNow;
+        chapter.DeletedBy = userId;
+
+        await _unitOfWork.SaveChangesAsync();
+    }
+
     private static ChapterDetailDto MapToDetail(Chapter chapter) => new()
     {
         Id = chapter.Id,
+        PassportId = chapter.PassportId,
         StoryId = chapter.StoryId,
         Title = chapter.Title,
         CategoryId = chapter.CategoryId,
@@ -100,6 +221,8 @@ public class ChapterService : IChapterService
         CoverMediaId = chapter.CoverMediaId,
         EventDate = chapter.EventDate,
         DisplayOrder = chapter.DisplayOrder,
+        Status = chapter.Status,
+        Source = chapter.Source,
         Media = chapter.Media.Select(m => new MediaDto
         {
             Id = m.Id,

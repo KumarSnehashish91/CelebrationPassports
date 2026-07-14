@@ -196,10 +196,23 @@ namespace CelebrationPassports.Persistence.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
+                    b.Property<Guid>("PassportId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid?>("PlaceId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("StoryId")
+                    b.Property<int>("Source")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(2);
+
+                    b.Property<Guid?>("StoryId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Title")
@@ -214,6 +227,8 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.HasIndex("CoverMediaId");
 
                     b.HasIndex("DeletedBy");
+
+                    b.HasIndex("PassportId");
 
                     b.HasIndex("PlaceId");
 
@@ -368,6 +383,9 @@ namespace CelebrationPassports.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime?>("CapturedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid?>("ChapterId")
                         .HasColumnType("uuid");
 
@@ -381,6 +399,14 @@ namespace CelebrationPassports.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
+
+                    b.Property<decimal?>("Latitude")
+                        .HasPrecision(9, 6)
+                        .HasColumnType("numeric(9,6)");
+
+                    b.Property<decimal?>("Longitude")
+                        .HasPrecision(9, 6)
+                        .HasColumnType("numeric(9,6)");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");
@@ -1186,6 +1212,9 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.Property<string>("Gender")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("HomePlaceId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
@@ -1213,6 +1242,8 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.HasKey("UserId");
 
                     b.HasIndex("AvatarMediaId");
+
+                    b.HasIndex("HomePlaceId");
 
                     b.ToTable("UserProfiles", (string)null);
                 });
@@ -1431,6 +1462,12 @@ namespace CelebrationPassports.Persistence.Migrations
                         .HasForeignKey("DeletedBy")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("CelebrationPassports.Persistence.Entities.Passport", "Passport")
+                        .WithMany()
+                        .HasForeignKey("PassportId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("CelebrationPassports.Persistence.Entities.Place", "Place")
                         .WithMany("Chapters")
                         .HasForeignKey("PlaceId")
@@ -1439,14 +1476,15 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.HasOne("CelebrationPassports.Persistence.Entities.Story", "Story")
                         .WithMany("Chapters")
                         .HasForeignKey("StoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Category");
 
                     b.Navigation("CoverMedia");
 
                     b.Navigation("DeletedByUser");
+
+                    b.Navigation("Passport");
 
                     b.Navigation("Place");
 
@@ -1869,6 +1907,11 @@ namespace CelebrationPassports.Persistence.Migrations
                         .HasForeignKey("AvatarMediaId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("CelebrationPassports.Persistence.Entities.Place", "HomePlace")
+                        .WithMany()
+                        .HasForeignKey("HomePlaceId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("CelebrationPassports.Persistence.Entities.User", "User")
                         .WithOne("UserProfile")
                         .HasForeignKey("CelebrationPassports.Persistence.Entities.UserProfile", "UserId")
@@ -1876,6 +1919,8 @@ namespace CelebrationPassports.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("AvatarMedia");
+
+                    b.Navigation("HomePlace");
 
                     b.Navigation("User");
                 });

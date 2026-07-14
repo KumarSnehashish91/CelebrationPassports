@@ -1,76 +1,46 @@
-﻿<div class="dashboard-card recent-card">
+@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+
+<div class="dashboard-card recent-card">
 
     <div class="card-header">
-        <h4>Recent Activity</h4>
-        <a href="#">View All</a>
+        <h4>Recent Chapters</h4>
+        <a asp-controller="Stories" asp-action="Index">View All</a>
     </div>
 
-    <div class="activity-list">
-
-        <div class="activity-item">
-            <div class="activity-icon purple">
-                <i class="bi bi-calendar-event"></i>
-            </div>
-
-            <div class="activity-content">
-                <h5>Added Birthday</h5>
-                <p>Created Rahul's Birthday</p>
-            </div>
-
-            <div class="activity-date-card">
-                <span class="month">JUL</span>
-                <span class="day">06</span>
-            </div>
+    @if (Model.RecentChapters.Count == 0)
+    {
+        <div class="activity-list">
+            <p class="field-hint" style="margin:12px 0;">
+                No chapters yet — <a asp-controller="Stories" asp-action="Create">start a story</a> to see them here.
+            </p>
         </div>
+    }
+    else
+    {
+        <div class="activity-list">
 
-        <div class="activity-item">
-            <div class="activity-icon blue">
-                <i class="bi bi-camera"></i>
-            </div>
+            @foreach (var chapter in Model.RecentChapters)
+            {
+                <a asp-controller="Stories" asp-action="Chapter" asp-route-id="@chapter.Id" class="activity-item">
 
-            <div class="activity-content">
-                <h5>Uploaded Memories</h5>
-                <p>Added 20 new photos</p>
-            </div>
+                    <div class="activity-icon @(chapter.Source == 2 ? "purple" : "blue")">
+                        <i class="bi @(chapter.Source == 2 ? "bi-stars" : "bi-camera")"></i>
+                    </div>
 
-            <div class="activity-date-card">
-                <span class="month">JUL</span>
-                <span class="day">06</span>
-            </div>
+                    <div class="activity-content">
+                        <h5>@chapter.Title</h5>
+                        <p>@chapter.CategoryName &middot; @chapter.Media.Count photo@(chapter.Media.Count == 1 ? "" : "s")</p>
+                    </div>
+
+                    <div class="activity-date-card">
+                        <span class="month">@chapter.EventDate.ToString("MMM").ToUpper()</span>
+                        <span class="day">@chapter.EventDate.ToString("dd")</span>
+                    </div>
+
+                </a>
+            }
+
         </div>
-
-        <div class="activity-item">
-            <div class="activity-icon green">
-                <i class="bi bi-airplane"></i>
-            </div>
-
-            <div class="activity-content">
-                <h5>Planned Goa Trip</h5>
-                <p>Created travel itinerary</p>
-            </div>
-
-            <div class="activity-date-card">
-                <span class="month">JUL</span>
-                <span class="day">06</span>
-            </div>
-        </div>
-
-        <div class="activity-item">
-            <div class="activity-icon orange">
-                <i class="bi bi-gift"></i>
-            </div>
-
-            <div class="activity-content">
-                <h5>Invitation Accepted</h5>
-                <p>Neha joined Anniversary</p>
-            </div>
-
-            <div class="activity-date-card">
-                <span class="month">JUL</span>
-                <span class="day">06</span>
-            </div>
-        </div>
-
-    </div>
+    }
 
 </div>

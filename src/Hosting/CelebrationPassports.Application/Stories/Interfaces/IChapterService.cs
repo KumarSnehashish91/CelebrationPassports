@@ -9,4 +9,14 @@ public interface IChapterService
     Task<ChapterDetailDto> CreateAsync(Guid userId, Guid storyId, CreateChapterRequest request);
 
     Task<ChapterDetailDto> UpdateAsync(Guid userId, Guid chapterId, UpdateChapterRequest request);
+
+    // Draft = auto-detected, pending review — across all of the user's passports.
+    Task<IReadOnlyList<ChapterDetailDto>> ListDraftsForUserAsync(Guid userId);
+
+    // Confirmed chapters only, most recent first — for the Dashboard's Recent Chapters widget.
+    Task<IReadOnlyList<ChapterDetailDto>> ListRecentConfirmedForUserAsync(Guid userId, int take);
+
+    Task<ChapterDetailDto> ConfirmAsync(Guid userId, Guid chapterId, ConfirmChapterRequest request);
+
+    Task DiscardAsync(Guid userId, Guid chapterId);
 }

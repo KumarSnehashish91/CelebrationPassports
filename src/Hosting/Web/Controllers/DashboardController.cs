@@ -11,17 +11,20 @@ public class DashboardController : Controller
     private readonly IPassportService _passportService;
     private readonly IEventService _eventService;
     private readonly IInvitationService _invitationService;
+    private readonly IStoryService _storyService;
 
     public DashboardController(
         IDashboardService dashboardService,
         IPassportService passportService,
         IEventService eventService,
-        IInvitationService invitationService)
+        IInvitationService invitationService,
+        IStoryService storyService)
     {
         _dashboardService = dashboardService;
         _passportService = passportService;
         _eventService = eventService;
         _invitationService = invitationService;
+        _storyService = storyService;
     }
 
     public async Task<IActionResult> Index()
@@ -44,13 +47,15 @@ public class DashboardController : Controller
 
         var upcomingTask = _eventService.GetUpcomingAsync();
         var stampCountTask = _passportService.GetStampCountAsync();
+        var recentChaptersTask = _storyService.GetRecentChaptersAsync();
 
-        await Task.WhenAll(upcomingTask, stampCountTask);
+        await Task.WhenAll(upcomingTask, stampCountTask, recentChaptersTask);
 
         var model = _dashboardService.GetDashboard();
         model.Passports = passports;
         model.PendingInvitations = invitations;
         model.UpcomingCelebrations = upcomingTask.Result;
+        model.RecentChapters = recentChaptersTask.Result;
 
         model.Summary.UpcomingCelebrations = upcomingTask.Result.Count;
         model.Summary.Invitations = invitations.Count;
