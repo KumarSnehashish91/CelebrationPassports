@@ -1,4 +1,4 @@
-﻿using CelebrationPassports.Application.Authentication.DTOs.RequestDTO;
+using CelebrationPassports.Application.Authentication.DTOs.RequestDTO;
 using CelebrationPassports.Application.Authentication.DTOs.ResponseDTO;
 using CelebrationPassports.Application.Authentication.Interfaces;
 using CelebrationPassports.Application.Exceptions;
@@ -6,6 +6,7 @@ using CelebrationPassports.Infrastructure.Authentication.Interfaces;
 using CelebrationPassports.Persistence.Entities;
 using CelebrationPassports.Persistence.Repositories.Implementations;
 using CelebrationPassports.Persistence.Repositories.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 
 namespace CelebrationPassports.Application.Authentication.Services;
@@ -18,13 +19,19 @@ public class AuthenticationService : IAuthenticationService
     private readonly IUserLoginHistoryRepository _userLoginHistoryRepository;
     private readonly IUserSessionRepository _userLogout;
     private readonly IUserProfileRepository _userProfileRepository;
+    private readonly ITokenService _tokenService;
+    private readonly IValidator<RegisterRequest> _registerValidator;
+    private readonly IValidator<LoginRequest> _loginValidator;
     public AuthenticationService(
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
         IPasswordHasher passwordHasher,
         IUserLoginHistoryRepository userLoginHistory,
         IUserSessionRepository userLogout,
-        IUserProfileRepository userProfileRepository)
+        IUserProfileRepository userProfileRepository,
+        ITokenService tokenService,
+        IValidator<RegisterRequest> registerValidator,
+        IValidator<LoginRequest> loginValidator)
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
@@ -32,14 +39,19 @@ public class AuthenticationService : IAuthenticationService
         _userLoginHistoryRepository = userLoginHistory;
         _userLogout=    userLogout;
         _userProfileRepository = userProfileRepository;
+        _tokenService = tokenService;
+        _registerValidator = registerValidator;
+        _loginValidator = loginValidator;
     }
 
 
 
     // Methods will come here
-    
+
     public async Task<AuthenticationResponse> RegisterAsync(RegisterRequest request)
     {
+        await _registerValidator.ValidateAndThrowAsync(request);
+
         if (await _userRepository.EmailExistsAsync(request.Email))
         {
             throw new DuplicateEmailException(request.Email);
@@ -72,21 +84,32 @@ public class AuthenticationService : IAuthenticationService
 
         await _userProfileRepository.AddAsync(profile);
 
+        var accessToken = _tokenService.GenerateAccessToken(user.Id, user.Email);
+        var refreshToken = _tokenService.GenerateRefreshToken();
+        var expiresOn = _tokenService.GetAccessTokenExpiry();
+
+        await SaveUserSessionAsync(user.Id, refreshToken);
+
         await _unitOfWork.SaveChangesAsync();
 
         return new AuthenticationResponse
         {
             Id = user.Id,
-            Email = user.Email
+            Email = user.Email,
+            AccessToken = accessToken,
+            RefreshToken = refreshToken,
+            ExpiresOn = expiresOn
         };
     }
     public async Task<LoginResponse> LoginAsync(LoginRequest request)
     {
+        await _loginValidator.ValidateAndThrowAsync(request);
+
         var user = await _userRepository.GetByEmailAsync(request.EmailAddress);
 
         if (user == null)
         {
-           
+
             throw new UnauthorizedAccessException("Invalid email address or password.");
         }
 
@@ -135,10 +158,11 @@ public class AuthenticationService : IAuthenticationService
             true,
             null);
 
-        await SaveUserSessionAsync(
-           user.Id,
-           true,
-           null);
+        var accessToken = _tokenService.GenerateAccessToken(user.Id, user.Email);
+        var refreshToken = _tokenService.GenerateRefreshToken();
+        var expiresOn = _tokenService.GetAccessTokenExpiry();
+
+        await SaveUserSessionAsync(user.Id, refreshToken);
 
         await _unitOfWork.SaveChangesAsync();
 
@@ -147,13 +171,50 @@ public class AuthenticationService : IAuthenticationService
             UserId = user.Id,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            EmailAddress = user.Email
+            EmailAddress = user.Email,
+            AccessToken = accessToken,
+            RefreshToken = refreshToken,
+            ExpiresOn = expiresOn
         };
     }
 
-    public Task<AuthenticationResponse> RefreshTokenAsync(RefreshTokenRequest request)
+    public async Task<AuthenticationResponse> RefreshTokenAsync(RefreshTokenRequest request)
     {
-        throw new NotImplementedException();
+        var session = await _userLogout.GetByRefreshTokenAsync(request.RefreshToken);
+
+        if (session == null
+            || !session.IsActive
+            || session.RevokedOn != null
+            || session.RefreshTokenExpiryOn < DateTime.UtcNow)
+        {
+            throw new UnauthorizedAccessException("The refresh token is invalid or has expired.");
+        }
+
+        var user = await _userRepository.GetByIdAsync(session.UserId);
+
+        if (user == null || user.IsDeleted || user.IsLocked)
+        {
+            throw new UnauthorizedAccessException("The refresh token is invalid or has expired.");
+        }
+
+        var accessToken = _tokenService.GenerateAccessToken(user.Id, user.Email);
+        var newRefreshToken = _tokenService.GenerateRefreshToken();
+        var expiresOn = _tokenService.GetAccessTokenExpiry();
+
+        session.RefreshToken = newRefreshToken;
+        session.RefreshTokenExpiryOn = _tokenService.GetRefreshTokenExpiry();
+        session.LastActivityOn = DateTime.UtcNow;
+
+        await _unitOfWork.SaveChangesAsync();
+
+        return new AuthenticationResponse
+        {
+            Id = user.Id,
+            Email = user.Email,
+            AccessToken = accessToken,
+            RefreshToken = newRefreshToken,
+            ExpiresOn = expiresOn
+        };
     }
 
     private async Task SaveLoginHistoryAsync(
@@ -172,37 +233,40 @@ public class AuthenticationService : IAuthenticationService
             UserAgent = ""
         };
 
-        await _userLoginHistoryRepository.AddAsync(loginHistory);       
+        await _userLoginHistoryRepository.AddAsync(loginHistory);
 
         await _unitOfWork.SaveChangesAsync();
     }
 
     private async Task SaveUserSessionAsync(
     Guid userId,
-    bool isSuccessful,
-    string? failureReason)
+    string refreshToken)
     {
         var _userSession = new UserSession
         {
             Id = Guid.NewGuid(),
-            UserId = userId,            
+            UserId = userId,
             IsActive = true,
             CreatedOn = DateTime.UtcNow,
-            LoggedInOn = DateTime.UtcNow.AddHours(1),
-            RefreshTokenExpiryOn=DateTime.UtcNow.AddHours(1),
-            RefreshToken = Guid.NewGuid().ToString(),
+            LoggedInOn = DateTime.UtcNow,
+            RefreshTokenExpiryOn = _tokenService.GetRefreshTokenExpiry(),
+            RefreshToken = refreshToken,
         };
-        
+
 
         await _userLogout.AddAsync(_userSession);
 
         await _unitOfWork.SaveChangesAsync();
     }
-    public async Task LogoutAsync(LogoutRequest request)
+    public async Task LogoutAsync(Guid userId, LogoutRequest request)
     {
-        
-        var _userSessionLogout = await _userLogout.GetActiveSessionByUserIdAsync(request.UserId,request.SessionId);
 
+        var _userSessionLogout = await _userLogout.GetActiveSessionByUserIdAsync(userId, request.SessionId);
+
+        if (_userSessionLogout == null)
+        {
+            throw new NotFoundException("The session was not found.");
+        }
 
         _userSessionLogout.IsActive = false;
         _userSessionLogout.LoggedOutOn = DateTime.UtcNow;
@@ -215,13 +279,16 @@ public class AuthenticationService : IAuthenticationService
         //Update Login History
         var loginHistory =
      await _userLoginHistoryRepository
-         .GetLoginUserHistoryAsync(request.UserId);
+         .GetLoginUserHistoryAsync(userId);
 
-        loginHistory.IsLoggedIn = false;
-        loginHistory.LogoutOn = DateTime.UtcNow;
-        loginHistory.ModifiedBy = loginHistory.UserId;
-        loginHistory.ModifiedOn = DateTime.UtcNow;           
-         
+        if (loginHistory != null)
+        {
+            loginHistory.IsLoggedIn = false;
+            loginHistory.LogoutOn = DateTime.UtcNow;
+            loginHistory.ModifiedBy = loginHistory.UserId;
+            loginHistory.ModifiedOn = DateTime.UtcNow;
+        }
+
 
         await _unitOfWork.SaveChangesAsync();
     }

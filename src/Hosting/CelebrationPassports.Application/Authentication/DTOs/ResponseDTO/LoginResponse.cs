@@ -13,5 +13,11 @@ namespace CelebrationPassports.Application.Authentication.DTOs.ResponseDTO
         public string LastName { get; set; } = string.Empty;
 
         public string EmailAddress { get; set; } = string.Empty;
+
+        public string AccessToken { get; set; } = string.Empty;
+
+        public string RefreshToken { get; set; } = string.Empty;
+
+        public DateTime ExpiresOn { get; set; }
     }
 }

@@ -89,6 +89,13 @@ node_modules/
 .env.*
 
 ##############################
+# Local media uploads (dev placeholder storage)
+##############################
+
+src/Hosting/CelebrationPassports.API/wwwroot/uploads/*
+!src/Hosting/CelebrationPassports.API/wwwroot/uploads/.gitkeep
+
+##############################
 # Publish Profiles (optional)
 ##############################
 

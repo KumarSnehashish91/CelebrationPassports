@@ -1,9 +1,11 @@
-﻿using CelebrationPassports.Application.Authentication.DTOs.RequestDTO;
+﻿using CelebrationPassports.API.Extensions;
+using CelebrationPassports.Application.Authentication.DTOs.RequestDTO;
 using CelebrationPassports.Application.Authentication.DTOs.ResponseDTO;
 using CelebrationPassports.Application.Authentication.Interfaces;
 using CelebrationPassports.Application.Users.DTOs;
 using CelebrationPassports.Application.Users.Interfaces;
 using CelebrationPassports.Persistence.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CelebrationPassports.API.APIControllers.AuthenticationAPI;
@@ -41,13 +43,18 @@ public class AuthenticationController : ControllerBase
         }
         return Ok(response);
     }
-    [HttpPost("logout")]
-    public async Task Logout(LogoutRequest request)
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh(RefreshTokenRequest request)
     {
-        // Implement logout logic here, e.g., invalidate the refresh token
-        await _authenticationService.LogoutAsync(request);
-        //return Ok(new { Message = "Logged out successfully." });
+        var response = await _authenticationService.RefreshTokenAsync(request);
+        return Ok(response);
     }
 
-   
+    [Authorize]
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout(LogoutRequest request)
+    {
+        await _authenticationService.LogoutAsync(User.GetUserId(), request);
+        return Ok();
+    }
 }

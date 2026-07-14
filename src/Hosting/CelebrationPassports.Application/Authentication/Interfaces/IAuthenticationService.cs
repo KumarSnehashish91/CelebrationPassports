@@ -14,6 +14,6 @@ namespace CelebrationPassports.Application.Authentication.Interfaces
         Task<LoginResponse> LoginAsync(LoginRequest request);
 
         Task<AuthenticationResponse> RefreshTokenAsync(RefreshTokenRequest request);
-        Task LogoutAsync(LogoutRequest request);
+        Task LogoutAsync(Guid userId, LogoutRequest request);
     }
 }

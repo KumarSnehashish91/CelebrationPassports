@@ -5,6 +5,14 @@ using CelebrationPassports.Application.Authentication.Interfaces;
 using CelebrationPassports.Application.Authentication.Services;
 using CelebrationPassports.Application.Users.Interfaces;
 using CelebrationPassports.Application.Users.Services;
+using CelebrationPassports.Application.Passports.Interfaces;
+using CelebrationPassports.Application.Passports.Services;
+using CelebrationPassports.Application.Events.Interfaces;
+using CelebrationPassports.Application.Events.Services;
+using CelebrationPassports.Application.Stories.Interfaces;
+using CelebrationPassports.Application.Stories.Services;
+using CelebrationPassports.Application.Media.Interfaces;
+using CelebrationPassports.Application.Media.Services;
 
 namespace CelebrationPassports.Application;
 
@@ -18,14 +26,19 @@ public static class DependencyInjection
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
 
-       
+
 
         // Register FluentValidation
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IuserProfileService, UserProfileService>();
-        
+        services.AddScoped<IPassportAccessGuard, PassportAccessGuard>();
+        services.AddScoped<IPassportService, PassportService>();
+        services.AddScoped<IEventService, EventService>();
+        services.AddScoped<IStoryService, StoryService>();
+        services.AddScoped<IChapterService, ChapterService>();
+        services.AddScoped<IMediaService, MediaService>();
 
 
         return services;

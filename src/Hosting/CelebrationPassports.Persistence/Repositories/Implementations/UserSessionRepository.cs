@@ -16,8 +16,14 @@ namespace CelebrationPassports.Persistence.Repositories.Implementations
         public async Task<UserSession?> GetActiveSessionByUserIdAsync(Guid userId, Guid sessionId)
         {
             return await _dbcontext.UserSessions
-      
+
       .FirstOrDefaultAsync(x => x.UserId == userId && x.Id == sessionId);
+        }
+
+        public async Task<UserSession?> GetByRefreshTokenAsync(string refreshToken)
+        {
+            return await _dbcontext.UserSessions
+                .FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
         }
     }
 }

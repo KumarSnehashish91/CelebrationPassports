@@ -23,7 +23,12 @@ public static class DependencyInjection
         services.AddScoped<IUserLoginHistoryRepository, UserLoginHistoryRepository>();
         services.AddScoped<IUserSessionRepository, UserSessionRepository>();
         services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+        services.AddScoped<IPassportRepository, PassportRepository>();
+        services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<IStoryRepository, StoryRepository>();
+        services.AddScoped<IChapterRepository, ChapterRepository>();
 
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
         return services;
     }

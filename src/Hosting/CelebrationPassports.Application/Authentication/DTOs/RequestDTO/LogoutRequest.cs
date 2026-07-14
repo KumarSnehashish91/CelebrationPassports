@@ -7,10 +7,6 @@ namespace CelebrationPassports.Application.Authentication.DTOs.RequestDTO
 {
     public sealed class LogoutRequest
     {
-
         public Guid SessionId { get; set; }
-        public Guid UserId { get; set; } 
-        public bool IsActive { get; set; }       
-       
     }
 }
