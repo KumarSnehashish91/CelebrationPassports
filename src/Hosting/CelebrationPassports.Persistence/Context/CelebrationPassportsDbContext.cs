@@ -29,9 +29,21 @@ namespace CelebrationPassports.Persistence.Context
         public DbSet<PassportOwnershipHistory> PassportOwnershipHistories => Set<PassportOwnershipHistory>();
         public DbSet<Place> Places => Set<Place>();
         public DbSet<Category> Categories => Set<Category>();
-        public DbSet<Trip> Trips => Set<Trip>();
+        public DbSet<Event> Events => Set<Event>();
+        public DbSet<CalendarEvent> CalendarEvents => Set<CalendarEvent>();
+        public DbSet<Story> Stories => Set<Story>();
         public DbSet<Chapter> Chapters => Set<Chapter>();
-       
+        public DbSet<Media> Media => Set<Media>();
+        public DbSet<MediaVariant> MediaVariants => Set<MediaVariant>();
+        public DbSet<Comment> Comments => Set<Comment>();
+        public DbSet<Reaction> Reactions => Set<Reaction>();
+        public DbSet<WishlistItem> WishlistItems => Set<WishlistItem>();
+        public DbSet<ActivityLog> ActivityLogs => Set<ActivityLog>();
+        public DbSet<PassportBook> PassportBooks => Set<PassportBook>();
+        public DbSet<PassportBookChapter> PassportBookChapters => Set<PassportBookChapter>();
+        public DbSet<PassportStamp> PassportStamps => Set<PassportStamp>();
+        public DbSet<MilestoneDefinition> MilestoneDefinitions => Set<MilestoneDefinition>();
+        public DbSet<PassportMilestoneProgress> PassportMilestoneProgress => Set<PassportMilestoneProgress>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

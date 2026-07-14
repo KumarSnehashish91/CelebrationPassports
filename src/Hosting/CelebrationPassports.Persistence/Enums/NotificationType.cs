@@ -12,10 +12,14 @@ namespace CelebrationPassports.Persistence.Enums
         Comment = 4,
         Reaction = 5,
         Memory = 6,
-        Trip = 7,
+        Event = 7,
         Payment = 8,
         Subscription = 9,
         Reminder = 10,
-        Security = 11
+        Security = 11,
+        Story = 12,
+        Milestone = 13,
+        Stamp = 14,
+        Book = 15
     }
 }

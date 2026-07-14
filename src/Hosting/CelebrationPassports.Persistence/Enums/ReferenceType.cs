@@ -11,9 +11,13 @@ namespace CelebrationPassports.Persistence.Enums
         Memory = 3,
         Media = 4,
         Comment = 5,
-        Trip = 6,
+        Event = 6,
         Invitation = 7,
         Payment = 8,
-        Subscription = 9
+        Subscription = 9,
+        Story = 10,
+        Milestone = 11,
+        Stamp = 12,
+        Book = 13
     }
 }

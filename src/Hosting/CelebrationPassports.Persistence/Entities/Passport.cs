@@ -27,6 +27,8 @@ public class Passport
 
     public virtual User? DeletedByUser { get; set; }
 
+    public virtual Media? CoverMedia { get; set; }
+
     public virtual ICollection<PassportPerson> People { get; set; } = new List<PassportPerson>();
 
     public virtual ICollection<PassportInvitation> Invitations { get; set; } = new List<PassportInvitation>();
@@ -35,7 +37,15 @@ public class Passport
 
     public virtual ICollection<PassportOwnershipHistory> OwnershipHistory { get; set; } = new List<PassportOwnershipHistory>();
 
-    public virtual ICollection<Trip> Trips { get; set; } = new List<Trip>();
+    public virtual ICollection<Event> Events { get; set; } = new List<Event>();
 
-    public virtual ICollection<Chapter> Chapters { get; set; } = new List<Chapter>();
+    public virtual ICollection<Story> Stories { get; set; } = new List<Story>();
+
+    public virtual ICollection<PassportBook> PassportBooks { get; set; } = new List<PassportBook>();
+
+    public virtual ICollection<PassportStamp> PassportStamps { get; set; } = new List<PassportStamp>();
+
+    public virtual ICollection<PassportMilestoneProgress> MilestoneProgress { get; set; } = new List<PassportMilestoneProgress>();
+
+    public virtual ICollection<ActivityLog> ActivityLogs { get; set; } = new List<ActivityLog>();
 }

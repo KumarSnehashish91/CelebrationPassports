@@ -10,7 +10,11 @@ public class Place
 
     public string? Country { get; set; }
 
-    public virtual ICollection<Trip> Trips { get; set; } = new List<Trip>();
+    public virtual ICollection<Event> Events { get; set; } = new List<Event>();
+
+    public virtual ICollection<Story> Stories { get; set; } = new List<Story>();
 
     public virtual ICollection<Chapter> Chapters { get; set; } = new List<Chapter>();
+
+    public virtual ICollection<PassportStamp> PassportStamps { get; set; } = new List<PassportStamp>();
 }

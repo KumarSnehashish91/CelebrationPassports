@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CelebrationPassports.Persistence.Configurations;
 
-public class PassportConfiguration : IEntityTypeConfiguration<Passport>
+public class StoryConfiguration : IEntityTypeConfiguration<Story>
 {
-    public void Configure(EntityTypeBuilder<Passport> builder)
+    public void Configure(EntityTypeBuilder<Story> builder)
     {
-        builder.ToTable("Passports");
+        builder.ToTable("Stories");
 
         builder.HasKey(x => x.Id);
 
@@ -16,18 +16,23 @@ public class PassportConfiguration : IEntityTypeConfiguration<Passport>
             .IsRequired()
             .HasMaxLength(200);
 
-        builder.Property(x => x.Status)
-            .IsRequired();
+        builder.Property(x => x.DisplayOrder)
+            .HasDefaultValue(0);
 
-        builder.Property(x => x.CreatedOn)
+        builder.Property(x => x.CreatedAt)
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
         builder.Property(x => x.IsDeleted)
             .HasDefaultValue(false);
 
-        builder.HasOne(x => x.Owner)
-            .WithMany(x => x.OwnedPassports)
-            .HasForeignKey(x => x.OwnerUserId)
+        builder.HasOne(x => x.Passport)
+            .WithMany(x => x.Stories)
+            .HasForeignKey(x => x.PassportId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.Place)
+            .WithMany(x => x.Stories)
+            .HasForeignKey(x => x.PlaceId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Cover-media FKs use SetNull — losing the cover photo shouldn't block deleting it.
@@ -37,7 +42,7 @@ public class PassportConfiguration : IEntityTypeConfiguration<Passport>
             .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(x => x.DeletedByUser)
-            .WithMany(x => x.DeletedPassports)
+            .WithMany(x => x.DeletedStories)
             .HasForeignKey(x => x.DeletedBy)
             .OnDelete(DeleteBehavior.Restrict);
     }

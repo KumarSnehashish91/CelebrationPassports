@@ -76,9 +76,29 @@ public partial class User
 
     public virtual ICollection<PassportOwnershipHistory> OwnershipTransfersPerformed { get; set; } = new List<PassportOwnershipHistory>();
 
-    public virtual ICollection<Trip> DeletedTrips { get; set; } = new List<Trip>();
-
     public virtual ICollection<Chapter> DeletedChapters { get; set; } = new List<Chapter>();
 
-  
+    public virtual ICollection<Event> CreatedEvents { get; set; } = new List<Event>();
+
+    public virtual ICollection<Event> DeletedEvents { get; set; } = new List<Event>();
+
+    public virtual ICollection<CalendarEvent> CreatedCalendarEvents { get; set; } = new List<CalendarEvent>();
+
+    public virtual ICollection<Story> DeletedStories { get; set; } = new List<Story>();
+
+    public virtual ICollection<Media> UploadedMedia { get; set; } = new List<Media>();
+
+    public virtual ICollection<Media> DeletedMedia { get; set; } = new List<Media>();
+
+    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
+    public virtual ICollection<Comment> DeletedComments { get; set; } = new List<Comment>();
+
+    public virtual ICollection<Reaction> Reactions { get; set; } = new List<Reaction>();
+
+    public virtual ICollection<WishlistItem> WishlistItems { get; set; } = new List<WishlistItem>();
+
+    public virtual ICollection<WishlistItem> DeletedWishlistItems { get; set; } = new List<WishlistItem>();
+
+    public virtual ICollection<ActivityLog> ActivityLogs { get; set; } = new List<ActivityLog>();
 }

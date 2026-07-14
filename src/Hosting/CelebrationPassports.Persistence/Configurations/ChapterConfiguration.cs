@@ -19,11 +19,11 @@ public class ChapterConfiguration : IEntityTypeConfiguration<Chapter>
         builder.Property(x => x.IsDeleted)
             .HasDefaultValue(false);
 
-        builder.HasIndex(x => new { x.PassportId, x.EventDate });
+        builder.HasIndex(x => new { x.StoryId, x.EventDate });
 
-        builder.HasOne(x => x.Passport)
+        builder.HasOne(x => x.Story)
             .WithMany(x => x.Chapters)
-            .HasForeignKey(x => x.PassportId)
+            .HasForeignKey(x => x.StoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Category)
@@ -36,10 +36,11 @@ public class ChapterConfiguration : IEntityTypeConfiguration<Chapter>
             .HasForeignKey(x => x.PlaceId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(x => x.Trip)
-            .WithMany(x => x.Chapters)
-            .HasForeignKey(x => x.TripId)
-            .OnDelete(DeleteBehavior.Restrict);
+        // Cover-media FKs use SetNull — losing the cover photo shouldn't block deleting it.
+        builder.HasOne(x => x.CoverMedia)
+            .WithMany()
+            .HasForeignKey(x => x.CoverMediaId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(x => x.DeletedByUser)
             .WithMany(x => x.DeletedChapters)

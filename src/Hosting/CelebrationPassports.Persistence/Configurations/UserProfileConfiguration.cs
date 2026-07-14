@@ -23,5 +23,10 @@ public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
 
         builder.Property(x => x.CreatedOn)
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+        builder.HasOne(x => x.AvatarMedia)
+            .WithMany()
+            .HasForeignKey(x => x.AvatarMediaId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

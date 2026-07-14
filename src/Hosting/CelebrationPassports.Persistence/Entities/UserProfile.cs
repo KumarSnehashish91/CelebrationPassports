@@ -21,8 +21,10 @@ public partial class UserProfile : BaseEntity
 
     public string? ProfilePhotoUrl { get; set; }
 
-   
+    public Guid? AvatarMediaId { get; set; }
 
     //Navigation
     public virtual User User { get; set; } = null!;
+
+    public virtual Media? AvatarMedia { get; set; }
 }
