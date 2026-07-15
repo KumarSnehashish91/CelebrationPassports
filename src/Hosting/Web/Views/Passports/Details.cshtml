@@ -1,0 +1,50 @@
+@model CelebrationPassports.Web.Models.Passports.PassportDetailViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="dashboard">
+
+    <div class="dashboard-card" style="padding: 24px;">
+
+        <div class="card-header">
+            <div>
+                <h4 style="margin:0;">@Model.Title</h4>
+                <small>
+                    @Model.Status &middot; @Model.People.Count @(Model.People.Count == 1 ? "person" : "people")
+                    &middot; Created @Model.CreatedOn.ToString("MMM dd, yyyy")
+                    @(Model.IsOwner ? " · Owner" : "")
+                </small>
+            </div>
+            <a asp-action="Index">&larr; Back to Passports</a>
+        </div>
+
+        <h5 style="margin-top:24px;">Members</h5>
+
+        <div class="upcoming-list">
+            @foreach (var person in Model.People)
+            {
+                <div class="upcoming-item">
+                    <div>
+                        <h5 style="margin:0;">@person.Name</h5>
+                        <small>@person.Role</small>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (Model.IsOwner)
+        {
+            <h5 style="margin-top:24px;">Invite Someone</h5>
+
+            <form asp-action="Invite" method="post" style="display:flex; gap:8px;">
+                <input type="hidden" name="passportId" value="@Model.Id" />
+                <input type="email" name="email" class="form-control" placeholder="Invite by email" style="width:260px;" required />
+                <button type="submit" class="primary-btn" style="width:auto; padding: 8px 14px;">Invite</button>
+            </form>
+        }
+
+    </div>
+
+</div>

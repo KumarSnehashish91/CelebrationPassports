@@ -295,6 +295,11 @@
     background: #FEF3C7;
     color: #B45309;
 }
+
+.cancelled {
+    background: #FEE2E2;
+    color: #DC2626;
+}
 .celebration-content p {
     color: #666;
     line-height: 1.8;

@@ -66,4 +66,11 @@ public class EventsController : ControllerBase
         var result = await _eventService.AddCalendarEventAsync(User.GetUserId(), eventId, request);
         return Ok(result);
     }
+
+    [HttpPost("api/events/{id:guid}/cancel")]
+    public async Task<IActionResult> Cancel(Guid id)
+    {
+        var result = await _eventService.CancelAsync(User.GetUserId(), id);
+        return Ok(result);
+    }
 }

@@ -140,7 +140,15 @@ public class EventService : IEventService
             IsAllDay = body.IsAllDay,
             TimeZoneId = body.TimeZoneId,
             PlaceId = body.PlaceId,
-            CreatedAt = body.CreatedAt
+            CreatedAt = body.CreatedAt,
+            CalendarEvents = body.CalendarEvents.Select(c => new CalendarEventViewModel
+            {
+                Id = c.Id,
+                Title = c.Title,
+                Location = c.Location,
+                EventTime = c.EventTime,
+                ColorTag = c.ColorTag
+            }).ToList()
         };
 
         if (body.PlaceId.HasValue)
@@ -232,15 +240,37 @@ public class EventService : IEventService
         return result is not null;
     }
 
+    public async Task<bool> AddCalendarEventAsync(Guid eventId, CalendarEventViewModel model)
+    {
+        var request = new
+        {
+            title = model.Title,
+            location = model.Location,
+            eventTime = model.EventTime,
+            colorTag = model.ColorTag
+        };
+
+        var response = await _httpClient.PostAsJsonAsync($"api/events/{eventId}/calendar-events", request);
+
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> CancelAsync(Guid id)
+    {
+        var response = await _httpClient.PostAsync($"api/events/{id}/cancel", null);
+        return response.IsSuccessStatusCode;
+    }
+
     // Mirrors CelebrationPassports.Persistence.Enums.EventStatus (Draft=1, Upcoming=2,
-    // Ongoing=3, Completed=4) — duplicated as a plain mapping since Web no longer
-    // references Persistence directly.
+    // Ongoing=3, Completed=4, Cancelled=5) — duplicated as a plain mapping since Web no
+    // longer references Persistence directly.
     private static string MapStatus(int status) => status switch
     {
         1 => "Draft",
         2 => "Upcoming",
         3 => "Ongoing",
         4 => "Completed",
+        5 => "Cancelled",
         _ => "Celebration"
     };
 
@@ -271,5 +301,15 @@ public class EventService : IEventService
         public Guid? CoverMediaId { get; set; }
         public string? Notes { get; set; }
         public DateTime CreatedAt { get; set; }
+        public List<CalendarEventBody> CalendarEvents { get; set; } = [];
+    }
+
+    private sealed class CalendarEventBody
+    {
+        public Guid Id { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string? Location { get; set; }
+        public DateTime EventTime { get; set; }
+        public string ColorTag { get; set; } = string.Empty;
     }
 }

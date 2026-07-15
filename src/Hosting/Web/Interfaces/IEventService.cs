@@ -17,4 +17,8 @@ public interface IEventService
     Task<Guid?> SaveAsync(EventWizardViewModel model);
 
     Task<bool> FinalizeAsync(Guid id);
+
+    Task<bool> AddCalendarEventAsync(Guid eventId, CalendarEventViewModel model);
+
+    Task<bool> CancelAsync(Guid id);
 }

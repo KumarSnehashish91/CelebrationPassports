@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using CelebrationPassports.Web.Interfaces;
 using CelebrationPassports.Web.Models.Passports;
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +22,21 @@ public class PassportsController : Controller
     {
         var passports = await _passportService.GetMineAsync();
         return View(passports);
+    }
+
+    public async Task<IActionResult> Details(Guid id)
+    {
+        var passport = await _passportService.GetByIdAsync(id);
+
+        if (passport is null)
+        {
+            return NotFound();
+        }
+
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        passport.IsOwner = Guid.TryParse(currentUserId, out var userId) && passport.OwnerUserId == userId;
+
+        return View(passport);
     }
 
     [HttpGet]
@@ -54,6 +70,6 @@ public class PassportsController : Controller
             await _invitationService.InviteAsync(passportId, email);
         }
 
-        return RedirectToAction("Index");
+        return RedirectToAction("Details", new { id = passportId });
     }
 }

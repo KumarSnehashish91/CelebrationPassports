@@ -1,0 +1,55 @@
+@model List<CelebrationPassports.Web.Models.Events.CelebrationListItemViewModel>
+
+@{
+    ViewData["Title"] = "Calendar";
+
+    var months = Model
+        .OrderBy(e => e.StartDate)
+        .GroupBy(e => new { e.StartDate.Year, e.StartDate.Month })
+        .ToList();
+}
+
+<div class="celebration-page">
+
+    <div class="celebration-header">
+        <div>
+            <h1>Calendar</h1>
+            <p>All your events, grouped by month.</p>
+        </div>
+
+        <a asp-controller="Events" asp-action="Create" class="btn-new-celebration">
+            <i class="bi bi-plus-lg"></i>
+            New Event
+        </a>
+    </div>
+
+    @if (months.Count == 0)
+    {
+        <div class="celebration-empty">
+            <i class="bi bi-calendar-heart"></i>
+            <h3>No events yet</h3>
+            <p>Create your first event to see it here.</p>
+            <a asp-controller="Events" asp-action="Create" class="btn-new-celebration">
+                <i class="bi bi-plus-lg"></i>
+                New Event
+            </a>
+        </div>
+    }
+    else
+    {
+        foreach (var month in months)
+        {
+            <h4 style="margin: var(--space-lg) 0 var(--space-md);">
+                @(new DateOnly(month.Key.Year, month.Key.Month, 1).ToString("MMMM yyyy"))
+            </h4>
+
+            <div class="celebration-grid">
+                @foreach (var item in month)
+                {
+                    <partial name="_CelebrationCard" model="item" />
+                }
+            </div>
+        }
+    }
+
+</div>

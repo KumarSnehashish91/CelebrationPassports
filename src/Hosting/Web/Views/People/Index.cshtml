@@ -1,0 +1,46 @@
+@model List<CelebrationPassports.Web.Models.People.PassportPeopleGroupViewModel>
+
+@{
+    ViewData["Title"] = "People";
+}
+
+<div class="dashboard">
+
+    <div class="dashboard-card" style="padding: 24px;">
+
+        <div class="card-header">
+            <h4>People</h4>
+        </div>
+
+        <p>Everyone across your passports.</p>
+
+        @if (Model.Count == 0)
+        {
+            <p>You don't have any passports yet.</p>
+            <a asp-controller="Passports" asp-action="Create" class="primary-btn" style="display:inline-block;width:auto;">Create your first Passport</a>
+        }
+        else
+        {
+            foreach (var group in Model)
+            {
+                <h5 style="margin-top:24px;">
+                    <a asp-controller="Passports" asp-action="Details" asp-route-id="@group.PassportId">@group.PassportTitle</a>
+                </h5>
+
+                <div class="upcoming-list">
+                    @foreach (var person in group.People)
+                    {
+                        <div class="upcoming-item">
+                            <div>
+                                <h5 style="margin:0;">@person.Name</h5>
+                                <small>@person.Role</small>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+
+    </div>
+
+</div>

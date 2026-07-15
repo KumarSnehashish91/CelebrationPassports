@@ -29,6 +29,7 @@ public class StoriesController : Controller
     public async Task<IActionResult> Index()
     {
         var stories = await _storyService.GetMineAsync();
+        ViewData["PendingDrafts"] = await _storyService.GetDraftsAsync();
         return View(stories);
     }
 

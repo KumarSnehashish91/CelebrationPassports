@@ -3,6 +3,8 @@ using CelebrationPassports.Persistence.Repositories.Interfaces;
 using CelebrationPassports.Application.Authentication.Services;
 using CelebrationPassports.Application.Authentication.DTOs.RequestDTO;
 
+using FluentValidation;
+using FluentValidation.Results;
 using Moq;
 using Xunit;
 using CelebrationPassports.Application.Exceptions;
@@ -20,7 +22,15 @@ public class AuthenticationServiceTests
 
         var passwordHasher = new Mock<IPasswordHasher>();
         var userLoginHistory = new Mock<IUserLoginHistoryRepository>();
-        var usersession=new Mock<IUserSessionRepository>();
+        var usersession = new Mock<IUserSessionRepository>();
+        var userProfileRepository = new Mock<IUserProfileRepository>();
+        var tokenService = new Mock<ITokenService>();
+        var registerValidator = new Mock<IValidator<RegisterRequest>>();
+        var loginValidator = new Mock<IValidator<LoginRequest>>();
+
+        registerValidator
+            .Setup(v => v.ValidateAsync(It.IsAny<ValidationContext<RegisterRequest>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ValidationResult());
 
         userRepository
     .Setup(x => x.EmailExistsAsync(It.IsAny<string>()))
@@ -29,7 +39,12 @@ public class AuthenticationServiceTests
              userRepository.Object,
              unitOfWork.Object,
              passwordHasher.Object,
-             userLoginHistory.Object);
+             userLoginHistory.Object,
+             usersession.Object,
+             userProfileRepository.Object,
+             tokenService.Object,
+             registerValidator.Object,
+             loginValidator.Object);
 
         var request = new RegisterRequest
         {

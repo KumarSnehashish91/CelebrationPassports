@@ -23,7 +23,7 @@
             <div class="upcoming-list">
                 @foreach (var passport in Model)
                 {
-                    <div class="upcoming-item">
+                    <a asp-action="Details" asp-route-id="@passport.Id" class="upcoming-item" style="text-decoration:none; color:inherit;">
                         <div>
                             <h5 style="margin:0;">@passport.Title</h5>
                             <small>
@@ -32,12 +32,8 @@
                             </small>
                         </div>
 
-                        <form asp-action="Invite" method="post" style="display:flex; gap:8px; margin-left:auto;">
-                            <input type="hidden" name="passportId" value="@passport.Id" />
-                            <input type="email" name="email" class="form-control" placeholder="Invite by email" style="width:220px;" required />
-                            <button type="submit" class="primary-btn" style="width:auto; padding: 8px 14px;">Invite</button>
-                        </form>
-                    </div>
+                        <i class="bi bi-chevron-right" style="margin-left:auto;"></i>
+                    </a>
                 }
             </div>
         }

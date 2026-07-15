@@ -63,4 +63,8 @@ public class EventWizardViewModel
 
     // Used by the read-only Preview screen, not the wizard steps.
     public DateTime CreatedAt { get; set; }
+
+    // Sub-schedule items under this event (e.g. "Ceremony at 5pm", "Reception at 7pm") —
+    // used by the read-only Preview screen, not the wizard steps.
+    public List<CalendarEventViewModel> CalendarEvents { get; set; } = [];
 }

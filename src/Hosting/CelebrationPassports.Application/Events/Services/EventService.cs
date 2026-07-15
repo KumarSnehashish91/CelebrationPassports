@@ -167,6 +167,27 @@ public class EventService : IEventService
         return MapToDetail(@event);
     }
 
+    public async Task<EventDetailDto> CancelAsync(Guid userId, Guid eventId)
+    {
+        var @event = await _eventRepository.GetByIdWithCalendarEventsAsync(eventId)
+            ?? throw new NotFoundException("Event not found.");
+
+        await _accessGuard.EnsureMemberAsync(userId, @event.PassportId);
+
+        var effectiveStatus = EventStatusCalculator.GetEffectiveStatus(@event, DateTime.UtcNow);
+
+        if (effectiveStatus is EventStatus.Ongoing or EventStatus.Completed or EventStatus.Cancelled)
+        {
+            throw new ConflictException("This event can't be cancelled right now.");
+        }
+
+        @event.Status = EventStatus.Cancelled;
+
+        await _unitOfWork.SaveChangesAsync();
+
+        return MapToDetail(@event);
+    }
+
     public async Task<IReadOnlyList<EventSummaryDto>> GetUpcomingForUserAsync(Guid userId, int take)
     {
         var passports = await _passportRepository.GetForUserAsync(userId);

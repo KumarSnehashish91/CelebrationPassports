@@ -1,0 +1,94 @@
+@model CelebrationPassports.Web.Models.Profile.ProfileViewModel
+
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "_Layout";
+
+    var displayName = string.IsNullOrWhiteSpace(Model.DisplayName)
+        ? $"{Model.FirstName} {Model.LastName}".Trim()
+        : Model.DisplayName;
+}
+
+<div class="wizard-page">
+
+    <div class="wizard-header">
+        <div class="wizard-header-top">
+            <div>
+                <h1>My Profile</h1>
+                <p>Your account details.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="wizard-card" style="max-width:700px;">
+
+        <div class="event-preview-detail-row" style="margin-bottom:var(--space-lg);">
+            <img src="@(string.IsNullOrWhiteSpace(Model.ProfilePhotoUrl) ? "https://i.pravatar.cc/72" : Model.ProfilePhotoUrl)"
+                 alt="Profile photo"
+                 style="width:56px;height:56px;border-radius:50%;object-fit:cover;" />
+            <div>
+                <strong>@displayName</strong>
+                <span>@Model.Email</span>
+            </div>
+        </div>
+
+        <div class="event-preview-detail-row">
+            <i class="bi bi-person"></i>
+            <div>
+                <strong>Name</strong>
+                <span>@Model.FirstName @Model.LastName</span>
+            </div>
+        </div>
+
+        <div class="event-preview-detail-row">
+            <i class="bi bi-envelope"></i>
+            <div>
+                <strong>Email</strong>
+                <span>@Model.Email</span>
+            </div>
+        </div>
+
+        @if (Model.DateOfBirth.HasValue)
+        {
+            <div class="event-preview-detail-row">
+                <i class="bi bi-cake2"></i>
+                <div>
+                    <strong>Date of Birth</strong>
+                    <span>@Model.DateOfBirth.Value.ToString("MMMM dd, yyyy")</span>
+                </div>
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.Gender))
+        {
+            <div class="event-preview-detail-row">
+                <i class="bi bi-person-badge"></i>
+                <div>
+                    <strong>Gender</strong>
+                    <span>@Model.Gender</span>
+                </div>
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.MobileNumber))
+        {
+            <div class="event-preview-detail-row">
+                <i class="bi bi-telephone"></i>
+                <div>
+                    <strong>Mobile</strong>
+                    <span>@Model.MobileNumber</span>
+                </div>
+            </div>
+        }
+
+        <div class="event-preview-detail-row">
+            <i class="bi bi-clock-history"></i>
+            <div>
+                <strong>Member Since</strong>
+                <span>@Model.CreatedOn.ToString("MMMM dd, yyyy")</span>
+            </div>
+        </div>
+
+    </div>
+
+</div>

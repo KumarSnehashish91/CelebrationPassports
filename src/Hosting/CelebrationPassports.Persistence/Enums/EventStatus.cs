@@ -5,5 +5,6 @@ public enum EventStatus
     Draft = 1,
     Upcoming = 2,
     Ongoing = 3,
-    Completed = 4
+    Completed = 4,
+    Cancelled = 5
 }

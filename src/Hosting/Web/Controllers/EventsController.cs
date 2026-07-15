@@ -28,6 +28,10 @@ public class EventsController : Controller
     // place, rather than letting them fill it out and then hit a save error.
     private const int OngoingStatus = 3;
 
+    // Mirrors CelebrationPassports.Persistence.Enums.EventStatus.Cancelled — same reason
+    // as OngoingStatus above: a cancelled event has nothing left to edit.
+    private const int CancelledStatus = 5;
+
     public EventsController(
         IEventService eventService,
         IPlaceService placeService,
@@ -56,7 +60,7 @@ public class EventsController : Controller
                 return RedirectToAction("Index", "Celebrations");
             }
 
-            if (existing.Status == OngoingStatus)
+            if (existing.Status is OngoingStatus or CancelledStatus)
             {
                 return RedirectToAction("Preview", new { id });
             }
@@ -398,6 +402,27 @@ public class EventsController : Controller
             await _eventService.FinalizeAsync(id);
         }
 
+        return RedirectToAction("Index", "Celebrations");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddCalendarEvent(Guid id, string title, string? location, DateTime eventTime, string colorTag)
+    {
+        await _eventService.AddCalendarEventAsync(id, new CalendarEventViewModel
+        {
+            Title = title,
+            Location = location,
+            EventTime = eventTime,
+            ColorTag = colorTag
+        });
+
+        return RedirectToAction("Preview", new { id });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Cancel(Guid id)
+    {
+        await _eventService.CancelAsync(id);
         return RedirectToAction("Index", "Celebrations");
     }
 }

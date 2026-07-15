@@ -40,6 +40,39 @@ public class PassportService : IPassportService
         }).ToList() ?? new List<PassportListItemViewModel>();
     }
 
+    public async Task<PassportDetailViewModel?> GetByIdAsync(Guid id)
+    {
+        var response = await _httpClient.GetAsync($"api/Passports/{id}");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
+
+        var body = await response.Content.ReadFromJsonAsync<PassportDetailBody>(JsonOptions);
+
+        if (body is null)
+        {
+            return null;
+        }
+
+        return new PassportDetailViewModel
+        {
+            Id = body.Id,
+            Title = body.Title,
+            Status = MapStatus(body.Status),
+            OwnerUserId = body.OwnerUserId,
+            CreatedOn = body.CreatedOn,
+            People = body.People.Select(p => new PassportPersonViewModel
+            {
+                Id = p.Id,
+                UserId = p.UserId,
+                Name = p.Name,
+                Role = MapRole(p.Role)
+            }).ToList()
+        };
+    }
+
     public async Task<bool> CreateAsync(CreatePassportViewModel model)
     {
         var response = await _httpClient.PostAsJsonAsync("api/Passports", new { title = model.Title });
@@ -77,6 +110,17 @@ public class PassportService : IPassportService
         _ => "Unknown"
     };
 
+    // Mirrors CelebrationPassports.Persistence.Enums.PassportPersonRole (Owner=1,
+    // Editor=2, Contributor=3, Viewer=4).
+    private static string MapRole(int role) => role switch
+    {
+        1 => "Owner",
+        2 => "Editor",
+        3 => "Contributor",
+        4 => "Viewer",
+        _ => "Unknown"
+    };
+
     private sealed class PassportSummaryBody
     {
         public Guid Id { get; set; }
@@ -84,5 +128,23 @@ public class PassportService : IPassportService
         public int Status { get; set; }
         public int PeopleCount { get; set; }
         public bool IsOwner { get; set; }
+    }
+
+    private sealed class PassportDetailBody
+    {
+        public Guid Id { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public int Status { get; set; }
+        public Guid OwnerUserId { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public List<PassportPersonBody> People { get; set; } = new();
+    }
+
+    private sealed class PassportPersonBody
+    {
+        public Guid Id { get; set; }
+        public Guid? UserId { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public int Role { get; set; }
     }
 }

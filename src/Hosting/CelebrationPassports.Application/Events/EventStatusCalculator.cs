@@ -44,9 +44,9 @@ public static class EventStatusCalculator
         string? timeZoneId,
         DateTime nowUtc)
     {
-        if (storedStatus == EventStatus.Draft)
+        if (storedStatus is EventStatus.Draft or EventStatus.Cancelled)
         {
-            return EventStatus.Draft;
+            return storedStatus;
         }
 
         var offset = ParseUtcOffset(timeZoneId);

@@ -2,7 +2,7 @@
 @inject CelebrationPassports.Web.Interfaces.INotificationService NotificationService
 @{
     var notifications = await NotificationService.GetMineAsync(8);
-    var unreadCount = notifications.Count(n => !n.IsRead);
+    var unreadCount = await NotificationService.GetUnreadCountAsync();
 }
 <div class="topbar-container">
 
@@ -68,7 +68,7 @@
 
             <div class="profile-menu" id="profileMenu">
 
-                <a href="#">
+                <a asp-controller="Profile" asp-action="Index">
                     <i class="bi bi-person"></i>
                     My Profile
                 </a>

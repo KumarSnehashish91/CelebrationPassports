@@ -10,16 +10,19 @@
     var typeIcon = typeOption?.Icon ?? "bi-calendar-event";
 
     // Mirrors CelebrationPassports.Persistence.Enums.EventStatus (Draft=1, Upcoming=2,
-    // Ongoing=3, Completed=4) — duplicated as a plain mapping since Web no longer
-    // references Persistence directly.
+    // Ongoing=3, Completed=4, Cancelled=5) — duplicated as a plain mapping since Web no
+    // longer references Persistence directly.
     var (statusLabel, statusClass) = Model.Status switch
     {
         1 => ("Draft", "draft"),
         2 => ("Upcoming", "upcoming"),
         3 => ("Ongoing", "ongoing"),
         4 => ("Completed", "past"),
+        5 => ("Cancelled", "cancelled"),
         _ => ("Event", "upcoming")
     };
+
+    var canCancel = Model.Status is 1 or 2;
 
     var dateLabel = Model.EventDate?.ToString("MMMM dd, yyyy") ?? "Date not set";
     string? timeLabel = null;
@@ -55,6 +58,16 @@
             <span class="event-preview-readonly-note">
                 <i class="bi bi-lock-fill"></i> This event is ongoing — it can't be edited right now.
             </span>
+        }
+
+        @if (canCancel)
+        {
+            <form asp-action="Cancel" method="post" onsubmit="return confirm('Cancel this event? This can\'t be undone.');">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn-wizard-secondary">
+                    <i class="bi bi-x-circle"></i> Cancel Event
+                </button>
+            </form>
         }
     </div>
 
@@ -121,6 +134,53 @@
                             </div>
                         }
                     </div>
+                }
+            </div>
+
+            <div class="wizard-card">
+                <h4>Schedule (@Model.CalendarEvents.Count)</h4>
+
+                @if (Model.CalendarEvents.Count == 0)
+                {
+                    <p class="field-hint">No schedule items yet — add the ceremony, reception, or other parts of the day below.</p>
+                }
+                else
+                {
+                    <div class="guest-list">
+                        @foreach (var calendarEvent in Model.CalendarEvents.OrderBy(c => c.EventTime))
+                        {
+                            <div class="guest-row">
+                                <div class="guest-avatar" style="background:@(string.IsNullOrWhiteSpace(calendarEvent.ColorTag) ? "#7C3AED" : calendarEvent.ColorTag);"></div>
+                                <div class="guest-info">
+                                    <strong>@calendarEvent.Title</strong>
+                                    <span>
+                                        @calendarEvent.EventTime.ToString("MMM dd, h:mm tt")
+                                        @(!string.IsNullOrWhiteSpace(calendarEvent.Location) ? $" · {calendarEvent.Location}" : "")
+                                    </span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
+                @if (Model.Status != 3)
+                {
+                    <form asp-action="AddCalendarEvent" method="post" style="margin-top:var(--space-md);display:flex;flex-direction:column;gap:8px;">
+                        <input type="hidden" name="id" value="@Model.Id" />
+
+                        <input type="text" name="title" placeholder="e.g., Reception" required />
+
+                        <input type="text" name="location" placeholder="Location (optional)" />
+
+                        <div style="display:flex;gap:8px;">
+                            <input type="datetime-local" name="eventTime" required style="flex:1;" />
+                            <input type="color" name="colorTag" value="#7C3AED" style="width:44px;padding:2px;" />
+                        </div>
+
+                        <button type="submit" class="btn-wizard-secondary" style="width:auto;align-self:flex-start;">
+                            <i class="bi bi-plus-lg"></i> Add to Schedule
+                        </button>
+                    </form>
                 }
             </div>
 

@@ -47,7 +47,7 @@
         <ul class="sidebar-submenu" id="quickActionMenu">
 
             <li>
-                <a href="#">
+                <a asp-controller="Stories" asp-action="QuickUpload">
                     <i class="bi bi-robot"></i>
                     Create by AI
                 </a>
@@ -96,7 +96,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a asp-controller="Passports" asp-action="Index">
                     <i class="bi bi-people"></i>
                     Invite People
                 </a>
@@ -115,12 +115,16 @@
 
     </a>
 
-    <a class="sidebar-link" href="#">
+    <a asp-controller="Calendar"
+       asp-action="Index"
+       class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Calendar" ? "active" : "")">
         <i class="bi bi-calendar3"></i>
         <span>Calendar</span>
     </a>
 
-    <a class="sidebar-link" href="#">
+    <a asp-controller="People"
+       asp-action="Index"
+       class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "People" ? "active" : "")">
         <i class="bi bi-people"></i>
         <span>People</span>
     </a>

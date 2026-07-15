@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using CelebrationPassports.Web.Interfaces;
 using CelebrationPassports.Web.Models.Places;
+using CelebrationPassports.Web.Models.Profile;
 using CelebrationPassports.Web.Models.Settings;
 
 namespace CelebrationPassports.Web.Services;
@@ -55,8 +56,45 @@ public class UserProfileService : IUserProfileService
         return response.IsSuccessStatusCode;
     }
 
+    public async Task<ProfileViewModel?> GetProfileAsync()
+    {
+        var response = await _httpClient.GetAsync("api/UserControllerAPI/me");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
+
+        var body = await response.Content.ReadFromJsonAsync<ProfileBody>(JsonOptions);
+
+        if (body is null)
+        {
+            return null;
+        }
+
+        return new ProfileViewModel
+        {
+            FirstName = body.FirstName,
+            LastName = body.LastName,
+            DisplayName = body.DisplayName,
+            DateOfBirth = body.DateOfBirth,
+            Gender = body.Gender,
+            MobileNumber = body.MobileNumber,
+            ProfilePhotoUrl = body.ProfilePhotoUrl,
+            CreatedOn = body.CreatedOn
+        };
+    }
+
     private sealed class ProfileBody
     {
         public Guid? HomePlaceId { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string? DisplayName { get; set; }
+        public DateOnly? DateOfBirth { get; set; }
+        public string? Gender { get; set; }
+        public string? MobileNumber { get; set; }
+        public string? ProfilePhotoUrl { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }
