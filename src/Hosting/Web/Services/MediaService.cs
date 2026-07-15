@@ -17,14 +17,15 @@ public class MediaService : IMediaService
         _httpClient = httpClient;
     }
 
-    public async Task<Guid?> UploadAsync(IFormFile file)
+    public async Task<Guid?> UploadAsync(IFormFile file, bool pendingClustering = false)
     {
         using var content = new MultipartFormDataContent();
         await using var stream = file.OpenReadStream();
         using var streamContent = new StreamContent(stream);
         content.Add(streamContent, "file", file.FileName);
 
-        var response = await _httpClient.PostAsync("api/media", content);
+        var url = pendingClustering ? "api/media?pendingClustering=true" : "api/media";
+        var response = await _httpClient.PostAsync(url, content);
 
         if (!response.IsSuccessStatusCode)
         {

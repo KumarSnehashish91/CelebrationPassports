@@ -23,7 +23,14 @@ public class DashboardViewModel
     public PassportProgress PassportProgress { get; set; } = new();
 
     public List<QuickAction> QuickActions { get; set; } = [];
-    public MemoryHighlight MemoryHighlight { get; set; } = new();
-    public MemoryHighlight MemoryHero { get; set; } = new();
+
+    // Null when the user has no stories yet — the hero card renders an honest empty
+    // state instead of a blank/fake highlight in that case.
+    public MemoryHighlight? MemoryHero { get; set; }
+
+    // Real recent stories (excluding whichever one is the Hero), for the Memory
+    // Highlights strip — replaces the old hardcoded picsum.photos placeholder cards.
+    public List<StoryListItemViewModel> RecentStories { get; set; } = [];
+
     public List<TimelineItem> Timeline { get; set; } = new();
 }

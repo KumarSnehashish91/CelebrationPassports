@@ -51,6 +51,40 @@ function previewCoverImage(event) {
     reader.readAsDataURL(file);
 }
 
+function generateDescription() {
+    var titleInput = document.getElementById('titleInput');
+    var descriptionInput = document.getElementById('descriptionInput');
+    var btn = document.getElementById('generateDescriptionBtn');
+    var eventTypeRadio = document.querySelector('input[data-event-type-radio]:checked');
+
+    if (!descriptionInput || !btn) return;
+
+    var title = titleInput ? titleInput.value.trim() : '';
+    var eventType = eventTypeRadio ? eventTypeRadio.value : 0;
+
+    var originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Generating...';
+
+    fetch('/Events/GenerateDescription?title=' + encodeURIComponent(title) + '&eventType=' + encodeURIComponent(eventType))
+        .then(function (r) { return r.json(); })
+        .then(function (result) {
+            if (result && result.description) {
+                descriptionInput.value = result.description;
+                updateCharCount('descriptionInput', 'descriptionCount', 500);
+            } else {
+                alert('Could not generate a description right now — try again in a moment.');
+            }
+        })
+        .catch(function () {
+            alert('Could not generate a description right now — try again in a moment.');
+        })
+        .finally(function () {
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+        });
+}
+
 function selectSearchedPlace(id, name, city, country) {
     var hidden = document.getElementById('selectedPlaceIdInput');
     var venueInput = document.getElementById('venueNameInput');

@@ -36,6 +36,12 @@ public class PassportsController : Controller
         var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         passport.IsOwner = Guid.TryParse(currentUserId, out var userId) && passport.OwnerUserId == userId;
 
+        if (passport.IsOwner)
+        {
+            var invitations = await _invitationService.GetByPassportAsync(id);
+            ViewData["PendingInvitations"] = invitations.Where(i => i.Status == "Pending").ToList();
+        }
+
         return View(passport);
     }
 
@@ -67,7 +73,12 @@ public class PassportsController : Controller
     {
         if (!string.IsNullOrWhiteSpace(email))
         {
-            await _invitationService.InviteAsync(passportId, email);
+            var success = await _invitationService.InviteAsync(passportId, email);
+
+            if (!success)
+            {
+                TempData["InviteError"] = "Could not send that invitation — they may already have a pending invite to this passport.";
+            }
         }
 
         return RedirectToAction("Details", new { id = passportId });

@@ -1,14 +1,12 @@
 ﻿<div class="sidebar-logo">
 
     <div class="logo-icon">
-
-        CP
-
+        <i class="bi bi-award-fill"></i>
     </div>
 
     <div class="logo-text">
 
-        <h4>Celebration Passports</h4>
+        <h4>Celebration Passport</h4>
 
     </div>
 </div>
@@ -75,21 +73,21 @@
             </li>
 
             <li>
-                <a href="#">
+                <a asp-controller="TripPlanner" asp-action="Index">
                     <i class="bi bi-airplane"></i>
                     Plan Trip
                 </a>
             </li>
 
             <li>
-                <a href="#">
+                <a href="javascript:void(0)" title="Coming soon — wishlists aren't built yet.">
                     <i class="bi bi-gift"></i>
                     Add Gift
                 </a>
             </li>
 
             <li>
-                <a href="#">
+                <a href="javascript:void(0)" title="Coming soon — location check-ins aren't built yet.">
                     <i class="bi bi-geo-alt"></i>
                     Check In
                 </a>
@@ -129,7 +127,9 @@
         <span>People</span>
     </a>
 
-    <a class="sidebar-link" href="#">
+    <a asp-controller="Trips"
+       asp-action="Index"
+       class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() is "Trips" or "TripPlanner" ? "active" : "")">
         <i class="bi bi-airplane"></i>
         <span>Trips</span>
     </a>
@@ -139,6 +139,27 @@
        class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Stories" ? "active" : "")">
         <i class="bi bi-images"></i>
         <span>Memories</span>
+    </a>
+
+    <a asp-controller="MemoryMap"
+       asp-action="Index"
+       class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "MemoryMap" ? "active" : "")">
+        <i class="bi bi-map"></i>
+        <span>Memory Map</span>
+    </a>
+
+    <a asp-controller="TimeCapsule"
+       asp-action="Index"
+       class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "TimeCapsule" ? "active" : "")">
+        <i class="bi bi-hourglass-split"></i>
+        <span>Time Capsule</span>
+    </a>
+
+    <a asp-controller="Ideas"
+       asp-action="Index"
+       class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Ideas" ? "active" : "")">
+        <i class="bi bi-lightbulb"></i>
+        <span>Someday List</span>
     </a>
 
     <a asp-controller="Settings"
@@ -168,7 +189,7 @@
             unlimited memories.
         </p>
 
-        <button class="btn btn-premium">
+        <button class="btn btn-premium" type="button" title="Coming soon — premium plans aren't built yet." disabled>
             Upgrade Now
         </button>
 

@@ -23,4 +23,8 @@ public class EventSummaryDto
     public Guid? PlaceId { get; set; }
 
     public Guid? CoverMediaId { get; set; }
+
+    public decimal TotalBudgeted { get; set; }
+
+    public decimal TotalSpent { get; set; }
 }

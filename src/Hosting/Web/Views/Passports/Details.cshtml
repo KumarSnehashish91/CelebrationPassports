@@ -2,49 +2,87 @@
 
 @{
     ViewData["Title"] = Model.Title;
+    var pendingInvitations = ViewData["PendingInvitations"] as List<CelebrationPassports.Web.Models.Invitations.InvitationViewModel> ?? [];
 }
 
-<div class="dashboard">
+<div class="wizard-page">
 
-    <div class="dashboard-card" style="padding: 24px;">
-
-        <div class="card-header">
+    <div class="wizard-header">
+        <div class="wizard-header-top">
             <div>
-                <h4 style="margin:0;">@Model.Title</h4>
-                <small>
+                <h1>@Model.Title</h1>
+                <p>
                     @Model.Status &middot; @Model.People.Count @(Model.People.Count == 1 ? "person" : "people")
                     &middot; Created @Model.CreatedOn.ToString("MMM dd, yyyy")
-                    @(Model.IsOwner ? " · Owner" : "")
-                </small>
+                    @if (Model.IsOwner)
+                    {
+                        <span class="owner-pill"><i class="bi bi-star-fill"></i> Owner</span>
+                    }
+                </p>
             </div>
-            <a asp-action="Index">&larr; Back to Passports</a>
         </div>
 
-        <h5 style="margin-top:24px;">Members</h5>
+        <a asp-action="Index" class="btn-wizard-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Passports
+        </a>
+    </div>
 
-        <div class="upcoming-list">
+    @if (TempData["InviteError"] is string error)
+    {
+        <div class="field-error mb-3">@error</div>
+    }
+
+    <div class="wizard-card" style="margin-bottom:var(--space-xl);">
+        <h4><i class="bi bi-people"></i> Members</h4>
+
+        <div class="member-list">
             @foreach (var person in Model.People)
             {
-                <div class="upcoming-item">
-                    <div>
-                        <h5 style="margin:0;">@person.Name</h5>
-                        <small>@person.Role</small>
+                <div class="member-row">
+                    <div class="member-av">@person.Name.Substring(0, 1).ToUpper()</div>
+                    <div class="member-info">
+                        <strong>@person.Name</strong>
+                        <span class="role-badge @(person.Role == "Owner" ? "role-owner" : "")">@person.Role</span>
                     </div>
                 </div>
             }
         </div>
-
-        @if (Model.IsOwner)
-        {
-            <h5 style="margin-top:24px;">Invite Someone</h5>
-
-            <form asp-action="Invite" method="post" style="display:flex; gap:8px;">
-                <input type="hidden" name="passportId" value="@Model.Id" />
-                <input type="email" name="email" class="form-control" placeholder="Invite by email" style="width:260px;" required />
-                <button type="submit" class="primary-btn" style="width:auto; padding: 8px 14px;">Invite</button>
-            </form>
-        }
-
     </div>
+
+    @if (Model.IsOwner)
+    {
+        <div class="wizard-card">
+            <h4><i class="bi bi-person-plus"></i> Invite Someone</h4>
+            <p class="field-hint">
+                Invite by email — if they don't have an account yet, the invitation will be
+                waiting for them the moment they sign up with that address.
+            </p>
+
+            <form asp-action="Invite" method="post" class="invite-form" style="margin-bottom:var(--space-lg);">
+                <input type="hidden" name="passportId" value="@Model.Id" />
+                <input type="email" name="email" placeholder="name@example.com" required />
+                <button type="submit" class="btn-wizard-next">
+                    <i class="bi bi-send"></i> Invite
+                </button>
+            </form>
+
+            @if (pendingInvitations.Count > 0)
+            {
+                <h5 style="font-size:13px;color:var(--text-light);text-transform:uppercase;letter-spacing:.03em;margin-bottom:10px;">
+                    Pending Invitations
+                </h5>
+
+                <div class="invite-list">
+                    @foreach (var invite in pendingInvitations)
+                    {
+                        <div class="invite-pending-row">
+                            <span>@invite.Email</span>
+                            <span class="pending-tag">Pending</span>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
 
 </div>

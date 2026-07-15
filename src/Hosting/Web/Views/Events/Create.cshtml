@@ -93,6 +93,9 @@
                               placeholder="Share some details about this special occasion..."
                               oninput="updateCharCount('descriptionInput','descriptionCount',500)">@Model.Description</textarea>
                     <div class="field-char-count"><span id="descriptionCount">@(Model.Description?.Length ?? 0)</span>/500</div>
+                    <button type="button" id="generateDescriptionBtn" class="btn-wizard-secondary" style="width:auto;margin-top:8px;" onclick="generateDescription()">
+                        <i class="bi bi-stars"></i> Generate with AI
+                    </button>
                 </div>
 
                 <div class="wizard-field">

@@ -4,40 +4,59 @@
     ViewData["Title"] = "My Passports";
 }
 
-<div class="dashboard">
+<div class="wizard-page">
 
-    <div class="dashboard-card" style="padding: 24px;">
-
-        <div class="card-header">
-            <h4>My Passports</h4>
-            <a asp-action="Create">+ New Passport</a>
+    <div class="wizard-header">
+        <div class="wizard-header-top">
+            <div>
+                <h1>My Passports</h1>
+                <p>Every passport you own or belong to, in one place.</p>
+            </div>
         </div>
 
-        @if (!Model.Any())
-        {
-            <p>You don't have any passports yet.</p>
-            <a asp-action="Create" class="primary-btn" style="display:inline-block;width:auto;">Create your first Passport</a>
-        }
-        else
-        {
-            <div class="upcoming-list">
+        <a asp-action="Create" class="btn-new-celebration">
+            <i class="bi bi-plus-lg"></i>
+            New Passport
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="celebration-empty">
+            <i class="bi bi-award"></i>
+            <h3>No passports yet</h3>
+            <p>Create your first passport to start collecting celebrations, people, and memories together.</p>
+            <a asp-action="Create" class="btn-new-celebration">
+                <i class="bi bi-plus-lg"></i>
+                Create your first Passport
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="wizard-card">
+            <div class="passport-list">
                 @foreach (var passport in Model)
                 {
-                    <a asp-action="Details" asp-route-id="@passport.Id" class="upcoming-item" style="text-decoration:none; color:inherit;">
-                        <div>
-                            <h5 style="margin:0;">@passport.Title</h5>
-                            <small>
-                                @passport.Status &middot; @passport.PeopleCount @(passport.PeopleCount == 1 ? "person" : "people")
-                                @(passport.IsOwner ? " · Owner" : "")
-                            </small>
+                    <a asp-action="Details" asp-route-id="@passport.Id" class="passport-row">
+                        <div class="passport-row-icon">
+                            <i class="bi bi-award-fill"></i>
                         </div>
-
-                        <i class="bi bi-chevron-right" style="margin-left:auto;"></i>
+                        <div class="passport-row-info">
+                            <strong>
+                                @passport.Title
+                                @if (passport.IsOwner)
+                                {
+                                    <span class="owner-pill"><i class="bi bi-star-fill"></i> Owner</span>
+                                }
+                            </strong>
+                            <span>@passport.Status &middot; @passport.PeopleCount @(passport.PeopleCount == 1 ? "person" : "people")</span>
+                        </div>
+                        <i class="bi bi-chevron-right"></i>
                     </a>
                 }
             </div>
-        }
-
-    </div>
+        </div>
+    }
 
 </div>

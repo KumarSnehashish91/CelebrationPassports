@@ -18,6 +18,7 @@ namespace CelebrationPassports.Persistence.Enums
         Story = 10,
         Milestone = 11,
         Stamp = 12,
-        Book = 13
+        Book = 13,
+        TimeCapsuleMessage = 14
     }
 }

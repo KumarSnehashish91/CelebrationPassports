@@ -21,4 +21,6 @@ public interface IEventService
     Task<bool> AddCalendarEventAsync(Guid eventId, CalendarEventViewModel model);
 
     Task<bool> CancelAsync(Guid id);
+
+    Task<bool> LinkStoryAsync(Guid eventId, Guid storyId);
 }

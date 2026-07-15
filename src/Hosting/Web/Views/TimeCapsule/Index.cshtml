@@ -1,0 +1,93 @@
+@model List<CelebrationPassports.Web.Models.TimeCapsule.TimeCapsuleMessageViewModel>
+
+@{
+    ViewData["Title"] = "Time Capsule";
+    var passportId = (Guid)ViewData["PassportId"]!;
+    var minUnlockDate = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-ddTHH:mm");
+}
+
+<div class="dashboard">
+
+    <div class="dashboard-card" style="padding: 24px; max-width: 700px;">
+
+        <div class="card-header">
+            <h4><i class="bi bi-hourglass-split"></i> Time Capsule</h4>
+        </div>
+
+        <p>Write a message now, sealed until a future date — everyone in this passport gets notified the moment it unlocks.</p>
+
+        @if (TempData["TimeCapsuleError"] is string error)
+        {
+            <p class="text-danger">@error</p>
+        }
+
+        <form asp-action="Create" method="post" style="display:flex; flex-direction:column; gap:8px; margin-bottom:24px;">
+            <input type="hidden" name="passportId" value="@passportId" />
+            <input type="text" name="title" class="form-control" placeholder="e.g. For our 25th anniversary" maxlength="200" required />
+            <textarea name="content" class="form-control" rows="4" placeholder="Write your message..." maxlength="5000" required></textarea>
+            <div class="wizard-field">
+                <label>Unlocks on</label>
+                <input type="datetime-local" name="unlockDate" class="form-control" min="@minUnlockDate" required />
+            </div>
+            <button type="submit" class="primary-btn" style="width:auto;align-self:flex-start;">
+                <i class="bi bi-lock"></i> Seal Message
+            </button>
+        </form>
+
+        @if (Model.Count == 0)
+        {
+            <p>No time capsules yet — write your first one above.</p>
+        }
+        else
+        {
+            <div class="upcoming-list">
+                @foreach (var message in Model)
+                {
+                    <div class="upcoming-item">
+                        <div>
+                            <h5 style="margin:0;">
+                                @if (!message.IsUnlocked)
+                                {
+                                    <i class="bi bi-lock-fill"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-envelope-open"></i>
+                                }
+                                @message.Title
+                            </h5>
+
+                            @if (message.IsUnlocked || message.IsMine)
+                            {
+                                <small>@message.Content</small><br />
+                            }
+
+                            <small>
+                                @if (message.IsUnlocked)
+                                {
+                                    @:Unlocked @message.UnlockDate.ToString("MMM dd, yyyy")
+                                }
+                                else
+                                {
+                                    @:Unlocks @message.UnlockDate.ToString("MMM dd, yyyy 'at' h:mm tt")
+                                }
+                            </small>
+                        </div>
+
+                        @if (message.IsMine && !message.IsUnlocked)
+                        {
+                            <form asp-action="Delete" method="post" style="margin-left:auto;" onsubmit="return confirm('Delete this sealed message before it unlocks?');">
+                                <input type="hidden" name="id" value="@message.Id" />
+                                <button type="submit" class="btn-wizard-secondary" style="width:auto;">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        }
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+
+</div>

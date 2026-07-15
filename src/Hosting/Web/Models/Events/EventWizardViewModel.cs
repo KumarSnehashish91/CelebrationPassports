@@ -64,6 +64,10 @@ public class EventWizardViewModel
     // Used by the read-only Preview screen, not the wizard steps.
     public DateTime CreatedAt { get; set; }
 
+    // Set once the event is completed and its Story is generated — used by the Preview
+    // screen to scope Memory Map pins down to just this trip's chapters.
+    public Guid? StoryId { get; set; }
+
     // Sub-schedule items under this event (e.g. "Ceremony at 5pm", "Reception at 7pm") —
     // used by the read-only Preview screen, not the wizard steps.
     public List<CalendarEventViewModel> CalendarEvents { get; set; } = [];

@@ -41,6 +41,10 @@ public class Passport
 
     public virtual ICollection<Story> Stories { get; set; } = new List<Story>();
 
+    public virtual ICollection<SomedayIdea> SomedayIdeas { get; set; } = new List<SomedayIdea>();
+
+    public virtual ICollection<TimeCapsuleMessage> TimeCapsuleMessages { get; set; } = new List<TimeCapsuleMessage>();
+
     public virtual ICollection<PassportBook> PassportBooks { get; set; } = new List<PassportBook>();
 
     public virtual ICollection<PassportStamp> PassportStamps { get; set; } = new List<PassportStamp>();

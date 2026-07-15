@@ -1,22 +1,102 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Kumar\\Products\\CelebrationPassports\\",
+  "WorkspaceRootPath": "E:\\Products\\CelebrationPassports\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5C4430DE-5FEB-4948-BAB3-400A47E1F351}|src\\Hosting\\CelebrationPassports.Application\\CelebrationPassports.Application.csproj|c:\\kumar\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.application\\authentication\\services\\authenticationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|e:\\products\\celebrationpassports\\src\\hosting\\web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|e:\\products\\celebrationpassports\\src\\hosting\\web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|e:\\products\\celebrationpassports\\src\\hosting\\web\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|e:\\products\\celebrationpassports\\src\\hosting\\web\\interfaces\\ieventservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\interfaces\\ieventservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|e:\\products\\celebrationpassports\\src\\hosting\\web\\celebrationpassports.web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\celebrationpassports.web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|e:\\products\\celebrationpassports\\src\\hosting\\web\\handlers\\bearertokenhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\handlers\\bearertokenhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C4430DE-5FEB-4948-BAB3-400A47E1F351}|src\\Hosting\\CelebrationPassports.Application\\CelebrationPassports.Application.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.application\\authentication\\services\\authenticationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5C4430DE-5FEB-4948-BAB3-400A47E1F351}|src\\Hosting\\CelebrationPassports.Application\\CelebrationPassports.Application.csproj|solutionrelative:src\\hosting\\celebrationpassports.application\\authentication\\services\\authenticationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{83B278AC-DA82-4ACF-93E1-9A0AF603D79D}|src\\Hosting\\CelebrationPassports.API\\CelebrationPassports.API.csproj|c:\\kumar\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.api\\apicontrollers\\authenticationapi\\authenticationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.persistence\\repositories\\implementations\\usersessionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|solutionrelative:src\\hosting\\celebrationpassports.persistence\\repositories\\implementations\\usersessionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83B278AC-DA82-4ACF-93E1-9A0AF603D79D}|src\\Hosting\\CelebrationPassports.API\\CelebrationPassports.API.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.api\\apicontrollers\\authenticationapi\\authenticationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{83B278AC-DA82-4ACF-93E1-9A0AF603D79D}|src\\Hosting\\CelebrationPassports.API\\CelebrationPassports.API.csproj|solutionrelative:src\\hosting\\celebrationpassports.api\\apicontrollers\\authenticationapi\\authenticationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{83B278AC-DA82-4ACF-93E1-9A0AF603D79D}|src\\Hosting\\CelebrationPassports.API\\CelebrationPassports.API.csproj|c:\\kumar\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.api\\apicontrollers\\userapi\\usercontrollerapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{83B278AC-DA82-4ACF-93E1-9A0AF603D79D}|src\\Hosting\\CelebrationPassports.API\\CelebrationPassports.API.csproj|solutionrelative:src\\hosting\\celebrationpassports.api\\apicontrollers\\userapi\\usercontrollerapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|e:\\products\\celebrationpassports\\src\\hosting\\web\\views\\events\\datetime.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\views\\events\\datetime.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5C4430DE-5FEB-4948-BAB3-400A47E1F351}|src\\Hosting\\CelebrationPassports.Application\\CelebrationPassports.Application.csproj|c:\\kumar\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.application\\authentication\\dtos\\requestdto\\registerrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C4430DE-5FEB-4948-BAB3-400A47E1F351}|src\\Hosting\\CelebrationPassports.Application\\CelebrationPassports.Application.csproj|solutionrelative:src\\hosting\\celebrationpassports.application\\authentication\\dtos\\requestdto\\registerrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|e:\\products\\celebrationpassports\\src\\hosting\\web\\views\\dashboard\\_indexpassports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\views\\dashboard\\_indexpassports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|e:\\products\\celebrationpassports\\src\\hosting\\web\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3885690C-6AE5-1C23-56BD-063D54F8EF5B}|src\\Hosting\\Web\\CelebrationPassports.Web.csproj|solutionrelative:src\\hosting\\web\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.persistence\\enums\\subscriptionstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|solutionrelative:src\\hosting\\celebrationpassports.persistence\\enums\\subscriptionstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.persistence\\entities\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|solutionrelative:src\\hosting\\celebrationpassports.persistence\\entities\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.persistence\\enums\\referencetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|solutionrelative:src\\hosting\\celebrationpassports.persistence\\enums\\referencetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.persistence\\enums\\billingcycle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|solutionrelative:src\\hosting\\celebrationpassports.persistence\\enums\\billingcycle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.persistence\\entities\\subscriptionplan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|solutionrelative:src\\hosting\\celebrationpassports.persistence\\entities\\subscriptionplan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.persistence\\entities\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|solutionrelative:src\\hosting\\celebrationpassports.persistence\\entities\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.persistence\\repositories\\implementations\\userloginhistoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|solutionrelative:src\\hosting\\celebrationpassports.persistence\\repositories\\implementations\\userloginhistoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.persistence\\repositories\\interfaces\\iusersessionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|solutionrelative:src\\hosting\\celebrationpassports.persistence\\repositories\\interfaces\\iusersessionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.persistence\\repositories\\interfaces\\iuserloginhistoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|solutionrelative:src\\hosting\\celebrationpassports.persistence\\repositories\\interfaces\\iuserloginhistoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.persistence\\entities\\userloginhistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3357561-5F45-4777-B8C0-9C7B7CE54D6E}|src\\Hosting\\CelebrationPassports.Persistence\\CelebrationPassports.Persistence.csproj|solutionrelative:src\\hosting\\celebrationpassports.persistence\\entities\\userloginhistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C4430DE-5FEB-4948-BAB3-400A47E1F351}|src\\Hosting\\CelebrationPassports.Application\\CelebrationPassports.Application.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.application\\authentication\\dtos\\requestdto\\logoutrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C4430DE-5FEB-4948-BAB3-400A47E1F351}|src\\Hosting\\CelebrationPassports.Application\\CelebrationPassports.Application.csproj|solutionrelative:src\\hosting\\celebrationpassports.application\\authentication\\dtos\\requestdto\\logoutrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C4430DE-5FEB-4948-BAB3-400A47E1F351}|src\\Hosting\\CelebrationPassports.Application\\CelebrationPassports.Application.csproj|e:\\products\\celebrationpassports\\src\\hosting\\celebrationpassports.application\\invitations\\services\\passportinvitationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C4430DE-5FEB-4948-BAB3-400A47E1F351}|src\\Hosting\\CelebrationPassports.Application\\CelebrationPassports.Application.csproj|solutionrelative:src\\hosting\\celebrationpassports.application\\invitations\\services\\passportinvitationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,63 +106,310 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "AuthenticationService.cs",
-              "DocumentMoniker": "C:\\Kumar\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Application\\Authentication\\Services\\AuthenticationService.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Application\\Authentication\\Services\\AuthenticationService.cs",
               "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Application\\Authentication\\Services\\AuthenticationService.cs",
-              "ToolTip": "C:\\Kumar\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Application\\Authentication\\Services\\AuthenticationService.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Application\\Authentication\\Services\\AuthenticationService.cs",
               "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Application\\Authentication\\Services\\AuthenticationService.cs",
-              "ViewState": "AgIAACYAAAAAAAAAAIAwwDcAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAowGUAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-09T16:40:27.851Z",
+              "WhenOpened": "2026-07-12T07:08:06.259Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "RegisterRequest.cs",
-              "DocumentMoniker": "C:\\Kumar\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Application\\Authentication\\DTOs\\RequestDTO\\RegisterRequest.cs",
-              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Application\\Authentication\\DTOs\\RequestDTO\\RegisterRequest.cs",
-              "ToolTip": "C:\\Kumar\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Application\\Authentication\\DTOs\\RequestDTO\\RegisterRequest.cs",
-              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Application\\Authentication\\DTOs\\RequestDTO\\RegisterRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAA8AAAAAAAAAA==",
+              "DocumentIndex": 23,
+              "Title": "PassportInvitationService.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Application\\Invitations\\Services\\PassportInvitationService.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Application\\Invitations\\Services\\PassportInvitationService.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Application\\Invitations\\Services\\PassportInvitationService.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Application\\Invitations\\Services\\PassportInvitationService.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAAwwDYAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-09T16:39:55.731Z",
+              "WhenOpened": "2026-07-14T09:54:52.692Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AuthenticationController.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.API\\APIControllers\\AuthenticationAPI\\AuthenticationController.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.API\\APIControllers\\AuthenticationAPI\\AuthenticationController.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.API\\APIControllers\\AuthenticationAPI\\AuthenticationController.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.API\\APIControllers\\AuthenticationAPI\\AuthenticationController.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAArwDAAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T07:07:31.097Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "BearerTokenHandler.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Handlers\\BearerTokenHandler.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Handlers\\BearerTokenHandler.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Handlers\\BearerTokenHandler.cs",
+              "RelativeToolTip": "src\\Hosting\\Web\\Handlers\\BearerTokenHandler.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAwwCUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-14T07:38:05.866Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Program.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Program.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Program.cs",
+              "RelativeToolTip": "src\\Hosting\\Web\\Program.cs",
+              "ViewState": "AgIAAJ8AAAAAAAAAAAAAwK0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-15T05:12:31.004Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "AuthenticationController.cs",
-              "DocumentMoniker": "C:\\Kumar\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.API\\APIControllers\\AuthenticationAPI\\AuthenticationController.cs",
-              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.API\\APIControllers\\AuthenticationAPI\\AuthenticationController.cs",
-              "ToolTip": "C:\\Kumar\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.API\\APIControllers\\AuthenticationAPI\\AuthenticationController.cs",
-              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.API\\APIControllers\\AuthenticationAPI\\AuthenticationController.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABkAAAA8AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-09T16:31:21.167Z",
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\appsettings.json",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\appsettings.json",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\appsettings.json",
+              "RelativeToolTip": "src\\Hosting\\Web\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-07-15T05:12:05.159Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "UserControllerAPI.cs",
-              "DocumentMoniker": "C:\\Kumar\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.API\\APIControllers\\UserAPI\\UserControllerAPI.cs",
-              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.API\\APIControllers\\UserAPI\\UserControllerAPI.cs",
-              "ToolTip": "C:\\Kumar\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.API\\APIControllers\\UserAPI\\UserControllerAPI.cs",
-              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.API\\APIControllers\\UserAPI\\UserControllerAPI.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-09T16:30:12.176Z",
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Properties\\launchSettings.json",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Properties\\launchSettings.json",
+              "RelativeToolTip": "src\\Hosting\\Web\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAcAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-07-15T12:33:04.892Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IEventService.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Interfaces\\IEventService.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Interfaces\\IEventService.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Interfaces\\IEventService.cs",
+              "RelativeToolTip": "src\\Hosting\\Web\\Interfaces\\IEventService.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAzwAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-15T07:46:27.788Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Payment.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Entities\\Payment.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Persistence\\Entities\\Payment.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Entities\\Payment.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Persistence\\Entities\\Payment.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T04:49:39.646Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CelebrationPassports.Web.csproj",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\CelebrationPassports.Web.csproj",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\CelebrationPassports.Web.csproj",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\CelebrationPassports.Web.csproj",
+              "RelativeToolTip": "src\\Hosting\\Web\\CelebrationPassports.Web.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-07-14T08:31:45.782Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "SubscriptionStatus.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Enums\\SubscriptionStatus.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Persistence\\Enums\\SubscriptionStatus.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Enums\\SubscriptionStatus.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Persistence\\Enums\\SubscriptionStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T04:50:32.071Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Controllers\\AccountController.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "src\\Hosting\\Web\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-14T06:07:15.914Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UserSessionRepository.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Implementations\\UserSessionRepository.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Implementations\\UserSessionRepository.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Implementations\\UserSessionRepository.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Implementations\\UserSessionRepository.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAQwAwAAABbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T07:28:43.846Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "_IndexPassports.cshtml",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Views\\Dashboard\\_IndexPassports.cshtml",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Views\\Dashboard\\_IndexPassports.cshtml",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Views\\Dashboard\\_IndexPassports.cshtml",
+              "RelativeToolTip": "src\\Hosting\\Web\\Views\\Dashboard\\_IndexPassports.cshtml",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-14T07:20:20.329Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "DateTime.cshtml",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Views\\Events\\DateTime.cshtml",
+              "RelativeDocumentMoniker": "src\\Hosting\\Web\\Views\\Events\\DateTime.cshtml",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\Web\\Views\\Events\\DateTime.cshtml",
+              "RelativeToolTip": "src\\Hosting\\Web\\Views\\Events\\DateTime.cshtml",
+              "ViewState": "AgIAAGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-14T09:20:27.118Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ReferenceType.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Enums\\ReferenceType.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Persistence\\Enums\\ReferenceType.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Enums\\ReferenceType.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Persistence\\Enums\\ReferenceType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T04:48:15.566Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "BillingCycle.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Enums\\BillingCycle.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Persistence\\Enums\\BillingCycle.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Enums\\BillingCycle.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Persistence\\Enums\\BillingCycle.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T04:48:11.717Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "SubscriptionPlan.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Entities\\SubscriptionPlan.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Persistence\\Entities\\SubscriptionPlan.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Entities\\SubscriptionPlan.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Persistence\\Entities\\SubscriptionPlan.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T04:47:54.096Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Notification.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Entities\\Notification.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Persistence\\Entities\\Notification.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Entities\\Notification.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Persistence\\Entities\\Notification.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAkwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T14:59:31.974Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "IUserLoginHistoryRepository.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Interfaces\\IUserLoginHistoryRepository.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Interfaces\\IUserLoginHistoryRepository.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Interfaces\\IUserLoginHistoryRepository.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Interfaces\\IUserLoginHistoryRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAoAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T08:10:59.192Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "UserLoginHistoryRepository.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Implementations\\UserLoginHistoryRepository.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Implementations\\UserLoginHistoryRepository.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Implementations\\UserLoginHistoryRepository.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Implementations\\UserLoginHistoryRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T08:13:18.012Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "IUserSessionRepository.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Interfaces\\IUserSessionRepository.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Interfaces\\IUserSessionRepository.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Interfaces\\IUserSessionRepository.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Persistence\\Repositories\\Interfaces\\IUserSessionRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAkAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T07:26:36.443Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "UserLoginHistory.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Entities\\UserLoginHistory.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Persistence\\Entities\\UserLoginHistory.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Persistence\\Entities\\UserLoginHistory.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Persistence\\Entities\\UserLoginHistory.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T07:17:38.692Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "LogoutRequest.cs",
+              "DocumentMoniker": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Application\\Authentication\\DTOs\\RequestDTO\\LogoutRequest.cs",
+              "RelativeDocumentMoniker": "src\\Hosting\\CelebrationPassports.Application\\Authentication\\DTOs\\RequestDTO\\LogoutRequest.cs",
+              "ToolTip": "E:\\Products\\CelebrationPassports\\src\\Hosting\\CelebrationPassports.Application\\Authentication\\DTOs\\RequestDTO\\LogoutRequest.cs",
+              "RelativeToolTip": "src\\Hosting\\CelebrationPassports.Application\\Authentication\\DTOs\\RequestDTO\\LogoutRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T07:12:11.808Z"
             }
           ]
         }

@@ -28,6 +28,12 @@ public class MediaConfiguration : IEntityTypeConfiguration<Media>
         builder.Property(x => x.IsDeleted)
             .HasDefaultValue(false);
 
+        builder.Property(x => x.UploadedOn)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+        builder.Property(x => x.PendingClustering)
+            .HasDefaultValue(false);
+
         builder.HasOne(x => x.Chapter)
             .WithMany(x => x.Media)
             .HasForeignKey(x => x.ChapterId)

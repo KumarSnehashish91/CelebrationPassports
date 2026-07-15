@@ -4,53 +4,18 @@ using CelebrationPassports.Web.ViewModels.Dashboard;
 
 namespace CelebrationPassports.Web.Services;
 
-// Everything this returns is mock data. DashboardController overwrites Passports,
-// UpcomingCelebrations, PendingInvitations, RecentChapters, and the corresponding
-// Summary counts with real API data after calling this — Memories/Trips/Countries,
-// Memory Highlights, Life Journey Timeline, and Passport Progress still have no backing
-// endpoints (see the Dashboard plan notes) and stay mock.
+// Only PassportProgress and Timeline are still mock (no Milestone/PassportStamp
+// timeline endpoint wired up yet, and neither widget is currently rendered on the live
+// Dashboard — see Index.cshtml). Everything else DashboardController overwrites with
+// real data after calling this: Passports, UpcomingCelebrations, PendingInvitations,
+// RecentChapters, RecentStories, MemoryHero, and every Summary count.
 public class DashboardService : IDashboardService
 {
     public DashboardViewModel GetDashboard()
     {
         return new DashboardViewModel
         {
-            Summary = new DashboardSummary
-            {
-                UpcomingCelebrations = 5,
-                Invitations = 8,
-                PassportStamps = 32,
-                Memories = 1248,
-                Trips = 18,
-                Countries = 7
-            },
-
-            UpcomingCelebrations = new List<UpcomingCelebration>
-            {
-            new UpcomingCelebration
-            {
-                Title = "Son's Birthday",
-                Type = "Birthday Celebration",
-                Date = new DateTime(2026, 7, 11),
-                ImageUrl = "/images/udaipur.jpg"
-            },
-
-            new UpcomingCelebration
-            {
-                Title = "Wedding Anniversary",
-                Type = "Anniversary",
-                Date = new DateTime(2026, 12, 10),
-                ImageUrl = "/images/udaipur.jpg"
-            },
-
-            new UpcomingCelebration
-            {
-                Title = "Goa Vacation",
-                Type = "Trip",
-                Date = new DateTime(2026, 5, 18),
-                ImageUrl = "/images/udaipur.jpg"
-            }
-                },
+            Summary = new DashboardSummary(),
 
             PassportProgress = new PassportProgress
             {
@@ -59,53 +24,6 @@ public class DashboardService : IDashboardService
                 TotalItems = 50
             },
 
-            QuickActions =
-            [
-                new()
-                {
-                    Title = "New Celebration",
-                    Icon = "bi-plus-circle",
-                    Url = "#"
-                },
-                new()
-                {
-                    Title = "New Trip",
-                    Icon = "bi-airplane",
-                    Url = "#"
-                }
-            ],
-            MemoryHighlight = new MemoryHighlight
-            {
-                Title = "Wedding Anniversary",
-
-                Location = "Udaipur, Rajasthan",
-
-                Date = new DateTime(2025, 12, 10),
-
-                Photos = 120,
-
-                Videos = 3,
-
-                People = 12,
-
-                Description = "A perfect evening by Lake Pichola, beautiful memories with the one who makes life special.",
-
-                ImageUrl = "/images/udaipur.jpg"
-            },
-            MemoryHero = new MemoryHighlight
-            {
-                Title = "Wedding Anniversary",
-                Location = "Udaipur, Rajasthan",
-                Date = new DateTime(2025, 12, 10),
-
-                Photos = 120,
-                Videos = 3,
-                People = 12,
-
-                Description = "A perfect evening by Lake Pichola, beautiful memories with the one who makes life special.",
-
-                ImageUrl = "/images/udaipur.jpg"
-            },
             Timeline = new List<TimelineItem>
             {
                 new TimelineItem

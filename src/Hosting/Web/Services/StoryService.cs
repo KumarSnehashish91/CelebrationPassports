@@ -59,6 +59,7 @@ public class StoryService : IStoryService
                 result.Add(new StoryListItemViewModel
                 {
                     Id = s.Id,
+                    PassportId = passport.Id,
                     Title = s.Title,
                     StartDate = s.StartDate,
                     EndDate = s.EndDate,

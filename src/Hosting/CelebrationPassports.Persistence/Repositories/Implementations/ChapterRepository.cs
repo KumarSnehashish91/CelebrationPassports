@@ -49,4 +49,20 @@ public class ChapterRepository : GenericRepository<Chapter>, IChapterRepository
 
         return await query.ToListAsync();
     }
+
+    public async Task<IReadOnlyList<Chapter>> GetMemoryMapCandidatesAsync(Guid passportId)
+    {
+        return await _dbcontext.Chapters
+            .AsNoTracking()
+            .Include(c => c.Place)
+            .Include(c => c.Media.Where(m => !m.IsDeleted))
+            .Where(c => !c.IsDeleted
+                && c.PassportId == passportId
+                && c.Status == ChapterStatus.Confirmed
+                && c.Place != null
+                && c.Place.Latitude != null
+                && c.Place.Longitude != null)
+            .OrderByDescending(c => c.EventDate)
+            .ToListAsync();
+    }
 }

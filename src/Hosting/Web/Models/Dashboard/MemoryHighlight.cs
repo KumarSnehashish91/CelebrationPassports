@@ -12,9 +12,9 @@ public class MemoryHighlight
 
     public int Videos { get; set; }
 
-    public int People { get; set; }
-
-    public string Description { get; set; } = string.Empty;
+    public int Chapters { get; set; }
 
     public string ImageUrl { get; set; } = string.Empty;
+
+    public Guid? StoryId { get; set; }
 }

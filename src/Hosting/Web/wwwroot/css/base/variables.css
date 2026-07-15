@@ -1,16 +1,25 @@
 ﻿:root {
-    /* Brand */
-    --primary: #6C4CF6;
-    --primary-hover: #5B3FE3;
+    /* Brand — navy/gold/cream, per the Web/Mockups redesign */
+    --navy: #1E2937;
+    --navy-deep: #151F2C;
+    --cream: #FDFBF7;
+    --slate: #4B5563;
+    --gold: #D4AF37;
+    --gold-soft: #E7CE85;
+    --gold-hover: #C6A02F;
+    --line: #E9E3D4;
+
+    --primary: var(--gold);
+    --primary-hover: var(--gold-hover);
     /* Backgrounds */
-    --bg-body: #F5F7FC;
+    --bg-body: #F9FAFB;
     --bg-card: #FFFFFF;
-    --bg-sidebar: #FFFFFF;
+    --bg-sidebar: var(--navy);
     /* Text */
-    --text: #1F2937;
-    --text-light: #6B7280;
+    --text: var(--navy);
+    --text-light: var(--slate);
     /* Borders */
-    --border: #E6EAF2;
+    --border: var(--line);
     /* Radius */
     --radius-sm: 8px;
     --radius-md: 12px;
@@ -30,6 +39,8 @@
     /* Shadow */
     --shadow-card: 0 2px 10px rgba(0,0,0,.05);
     /* Typography */
+    --font-heading: 'Playfair Display', serif;
+    --font-mono: 'JetBrains Mono', monospace;
     --font-xs: 12px;
     --font-sm: 13px;
     --font-md: 14px;

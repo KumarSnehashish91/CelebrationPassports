@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using CelebrationPassports.Web.Interfaces;
 using CelebrationPassports.Web.Models.Stories;
 using Microsoft.AspNetCore.Authorization;
@@ -12,17 +13,23 @@ public class StoriesController : Controller
     private readonly IPassportService _passportService;
     private readonly ICategoryService _categoryService;
     private readonly IMediaService _mediaService;
+    private readonly IWishService _wishService;
+    private readonly IStoryNarrativeService _narrativeService;
 
     public StoriesController(
         IStoryService storyService,
         IPassportService passportService,
         ICategoryService categoryService,
-        IMediaService mediaService)
+        IMediaService mediaService,
+        IWishService wishService,
+        IStoryNarrativeService narrativeService)
     {
         _storyService = storyService;
         _passportService = passportService;
         _categoryService = categoryService;
         _mediaService = mediaService;
+        _wishService = wishService;
+        _narrativeService = narrativeService;
     }
 
     [HttpGet]
@@ -80,6 +87,21 @@ public class StoriesController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> Narrative(Guid id)
+    {
+        var story = await _storyService.GetByIdAsync(id);
+
+        if (story is null)
+        {
+            return RedirectToAction("Index");
+        }
+
+        ViewData["Narrative"] = await _narrativeService.GenerateAsync(story);
+
+        return View(story);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> AddChapter(Guid storyId)
     {
         var story = await _storyService.GetByIdAsync(storyId);
@@ -131,7 +153,38 @@ public class StoriesController : Controller
             return RedirectToAction("Index");
         }
 
+        var wishes = await _wishService.GetByChapterAsync(id);
+
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (Guid.TryParse(currentUserId, out var userId))
+        {
+            foreach (var wish in wishes)
+            {
+                wish.IsMine = wish.UserId == userId;
+            }
+        }
+
+        ViewData["Wishes"] = wishes;
+
         return View(chapter);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddWish(Guid chapterId, string text)
+    {
+        if (!string.IsNullOrWhiteSpace(text))
+        {
+            await _wishService.CreateAsync(chapterId, text);
+        }
+
+        return RedirectToAction("Chapter", new { id = chapterId });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteWish(Guid id, Guid chapterId)
+    {
+        await _wishService.DeleteAsync(id);
+        return RedirectToAction("Chapter", new { id = chapterId });
     }
 
     [HttpPost]
@@ -167,7 +220,7 @@ public class StoriesController : Controller
         {
             if (file.Length > 0)
             {
-                var mediaId = await _mediaService.UploadAsync(file);
+                var mediaId = await _mediaService.UploadAsync(file, pendingClustering: true);
 
                 if (mediaId.HasValue)
                 {

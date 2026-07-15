@@ -23,10 +23,17 @@
 
         </div>
 
-        <a asp-controller="Events" asp-action="Create" class="btn-new-celebration">
-            <i class="bi bi-plus-lg"></i>
-            New Event
-        </a>
+        <div style="display:flex;gap:10px;">
+            <a asp-controller="TripPlanner" asp-action="Index" class="btn-wizard-secondary">
+                <i class="bi bi-airplane"></i>
+                Trip Planner
+            </a>
+
+            <a asp-controller="Events" asp-action="Create" class="btn-new-celebration">
+                <i class="bi bi-plus-lg"></i>
+                New Event
+            </a>
+        </div>
 
     </div>
 
@@ -109,11 +116,11 @@
     }
     else
     {
-        <div class="celebration-grid">
+        <div class="event-list">
 
             @foreach (var item in Model)
             {
-                <partial name="_CelebrationCard" model="item" />
+                <partial name="_EventRow" model="item" />
             }
 
         </div>

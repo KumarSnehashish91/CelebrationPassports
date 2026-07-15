@@ -87,8 +87,8 @@
         height: 44px;
         border: none;
         border-radius: 12px;
-        background: var(--primary);
-        color: white;
+        background: var(--gold);
+        color: var(--navy-deep);
         font-size: 20px;
         cursor: pointer;
         z-index: 1100;

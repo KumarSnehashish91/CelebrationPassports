@@ -1,0 +1,183 @@
+/*==========================================================
+    PASSPORTS (Index / Details)
+==========================================================*/
+
+.passport-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.passport-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: .2s;
+}
+
+    .passport-row:hover {
+        background: var(--bg-body);
+        border-color: var(--gold);
+    }
+
+.passport-row-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--gold-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.passport-row-info {
+    flex: 1;
+    min-width: 0;
+}
+
+    .passport-row-info strong {
+        display: block;
+        font-family: var(--font-heading);
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .passport-row-info > span {
+        display: block;
+        font-size: var(--font-xs);
+        color: var(--text-light);
+        margin-top: 2px;
+    }
+
+.passport-row > i.bi-chevron-right {
+    color: var(--text-light);
+}
+
+.owner-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(212,175,55,.14);
+    color: var(--gold-hover);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 8px;
+}
+
+/*----------------------------------------------------------
+    Members (Passport Details)
+----------------------------------------------------------*/
+
+.member-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.member-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+    .member-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+.member-av {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gold-soft);
+    color: var(--navy-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.member-info {
+    flex: 1;
+    min-width: 0;
+}
+
+    .member-info strong {
+        display: block;
+        font-size: 14px;
+        color: var(--navy);
+    }
+
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--bg-body);
+    color: var(--text-light);
+    margin-top: 3px;
+}
+
+    .role-badge.role-owner {
+        background: rgba(212,175,55,.14);
+        color: var(--gold-hover);
+    }
+
+.invite-form {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+    .invite-form input[type="email"] {
+        flex: 1;
+    }
+
+    .invite-form .btn-wizard-next {
+        width: auto;
+        white-space: nowrap;
+    }
+
+.invite-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.invite-pending-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--bg-body);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+}
+
+    .invite-pending-row span.pending-tag {
+        font-size: 10.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #B45309;
+    }

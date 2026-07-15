@@ -57,7 +57,7 @@ public class MediaService : IMediaService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<MediaDto> UploadAsync(Guid userId, Guid? chapterId, FileUploadRequest file)
+    public async Task<MediaDto> UploadAsync(Guid userId, Guid? chapterId, FileUploadRequest file, bool pendingClustering = false)
     {
         if (file.Length <= 0)
         {
@@ -101,7 +101,9 @@ public class MediaService : IMediaService
             Type = mediaType,
             Latitude = metadata.Latitude,
             Longitude = metadata.Longitude,
-            CapturedAt = metadata.CapturedAt
+            CapturedAt = metadata.CapturedAt,
+            UploadedOn = DateTime.UtcNow,
+            PendingClustering = !chapterId.HasValue && pendingClustering
         };
 
         await _mediaRepository.AddAsync(media);

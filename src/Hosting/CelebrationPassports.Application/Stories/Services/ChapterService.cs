@@ -210,6 +210,26 @@ public class ChapterService : IChapterService
         await _unitOfWork.SaveChangesAsync();
     }
 
+    public async Task<IReadOnlyList<MemoryMapPinDto>> GetMemoryMapAsync(Guid userId, Guid passportId)
+    {
+        await _accessGuard.EnsureMemberAsync(userId, passportId);
+
+        var chapters = await _chapterRepository.GetMemoryMapCandidatesAsync(passportId);
+
+        return chapters.Select(c => new MemoryMapPinDto
+        {
+            ChapterId = c.Id,
+            StoryId = c.StoryId,
+            Title = c.Title,
+            EventDate = c.EventDate,
+            Latitude = c.Place!.Latitude!.Value,
+            Longitude = c.Place!.Longitude!.Value,
+            PlaceName = c.Place!.Name,
+            PhotoCount = c.Media.Count,
+            CoverMediaId = c.CoverMediaId
+        }).ToList();
+    }
+
     private static ChapterDetailDto MapToDetail(Chapter chapter) => new()
     {
         Id = chapter.Id,

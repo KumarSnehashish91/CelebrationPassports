@@ -59,4 +59,14 @@ public class ChaptersController : ControllerBase
         await _chapterService.DiscardAsync(User.GetUserId(), id);
         return NoContent();
     }
+
+    // Matches the api/passports/{passportId}/<resource> convention used by
+    // Events/Stories/SomedayIdeas, rather than api/chapters/... — Memory Map is
+    // conceptually a passport-scoped view, even though the query lives on IChapterService.
+    [HttpGet("/api/passports/{passportId:guid}/memory-map")]
+    public async Task<IActionResult> GetMemoryMap(Guid passportId)
+    {
+        var result = await _chapterService.GetMemoryMapAsync(User.GetUserId(), passportId);
+        return Ok(result);
+    }
 }

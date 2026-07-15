@@ -1,3 +1,5 @@
+using CelebrationPassports.Web.Models.Passports;
+
 namespace CelebrationPassports.Web.Models.Settings;
 
 public class SettingsViewModel
@@ -17,4 +19,8 @@ public class SettingsViewModel
     public decimal? Latitude { get; set; }
 
     public decimal? Longitude { get; set; }
+
+    public string? CalendarFeedUrl { get; set; }
+
+    public List<PassportListItemViewModel> Passports { get; set; } = new();
 }

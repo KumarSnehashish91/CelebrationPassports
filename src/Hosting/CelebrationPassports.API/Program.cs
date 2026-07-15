@@ -1,5 +1,9 @@
+using CelebrationPassports.API.BackgroundServices;
 using CelebrationPassports.API.Middlewares;
 using CelebrationPassports.Application;
+using CelebrationPassports.Application.Stories.Configuration;
+using CelebrationPassports.Application.Calendar.Configuration;
+using CelebrationPassports.Application.TimeCapsule.Configuration;
 using CelebrationPassports.Infrastructure.AI.Clients;
 using CelebrationPassports.Infrastructure.AI.Configuration;
 using CelebrationPassports.Infrastructure.Authentication;
@@ -37,6 +41,19 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<AIOptions>(
     builder.Configuration.GetSection("CelebrationAI"));
+
+builder.Services.Configure<ChapterClusteringOptions>(
+    builder.Configuration.GetSection("ChapterClustering"));
+
+builder.Services.Configure<CalendarFeedOptions>(
+    builder.Configuration.GetSection("CalendarFeed"));
+
+builder.Services.Configure<TimeCapsuleOptions>(
+    builder.Configuration.GetSection("TimeCapsule"));
+
+builder.Services.AddHostedService<TimeCapsuleUnlockBackgroundService>();
+
+builder.Services.AddHostedService<AutoChapterClusteringBackgroundService>();
 
 builder.Services.AddHttpClient<AIClient>();
 

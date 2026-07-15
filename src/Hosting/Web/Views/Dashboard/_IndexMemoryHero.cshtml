@@ -1,66 +1,73 @@
-﻿@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
 
-<div class="memory-hero-card">
-
-    <img src="@Model.MemoryHero.ImageUrl"
-         class="memory-image"
-         alt="Memory Hero" />
-
-    <div class="memory-overlay">
-
+@if (Model.MemoryHero is null)
+{
+    <div class="memory-hero-card memory-hero-empty">
         <div class="memory-content">
-
-            <span class="memory-badge">
-                ❤ Recent Memory
-            </span>
-
-            <h2>@Model.MemoryHero.Title</h2>
-
-            <p class="memory-location">
-
-                <i class="bi bi-geo-alt-fill"></i>
-
-                @Model.MemoryHero.Location
-
-                •
-
-                @Model.MemoryHero.Date.ToString("dd MMM yyyy")
-
+            <span class="memory-badge">&hearts; Recent Memory</span>
+            <h2>No memories yet</h2>
+            <p class="memory-description">
+                Start a story and add a few chapters — your most recent one will show up here.
             </p>
+            <a asp-controller="Stories" asp-action="Create" class="btn btn-light">Start a Story</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="memory-hero-card">
 
-            <div class="memory-stats">
+        <img src="@Model.MemoryHero.ImageUrl"
+             class="memory-image"
+             alt="Memory Hero" />
 
-                <span>
-                    <i class="bi bi-camera"></i>
-                    @Model.MemoryHero.Photos Photos
+        <div class="memory-overlay">
+
+            <div class="memory-content">
+
+                <span class="memory-badge">
+                    &hearts; Recent Memory
                 </span>
 
-                <span>
-                    <i class="bi bi-film"></i>
-                    @Model.MemoryHero.Videos Videos
-                </span>
+                <h2>@Model.MemoryHero.Title</h2>
 
-                <span>
-                    <i class="bi bi-people"></i>
-                    @Model.MemoryHero.People People
-                </span>
+                <p class="memory-location">
+
+                    <i class="bi bi-geo-alt-fill"></i>
+
+                    @(string.IsNullOrWhiteSpace(Model.MemoryHero.Location) ? "" : Model.MemoryHero.Location + " • ")@Model.MemoryHero.Date.ToString("dd MMM yyyy")
+
+                </p>
+
+                <div class="memory-stats">
+
+                    <span>
+                        <i class="bi bi-camera"></i>
+                        @Model.MemoryHero.Photos Photos
+                    </span>
+
+                    <span>
+                        <i class="bi bi-film"></i>
+                        @Model.MemoryHero.Videos Videos
+                    </span>
+
+                    <span>
+                        <i class="bi bi-collection"></i>
+                        @Model.MemoryHero.Chapters @(Model.MemoryHero.Chapters == 1 ? "Chapter" : "Chapters")
+                    </span>
+
+                </div>
+
+                @if (Model.MemoryHero.Chapters > 0)
+                {
+                    <a asp-controller="Stories" asp-action="Narrative" asp-route-id="@Model.MemoryHero.StoryId" class="btn btn-light mt-4">
+                        <i class="bi bi-stars"></i> Read the Story
+                    </a>
+                }
 
             </div>
-
-            <h5 class="mt-4">
-                AI Story
-            </h5>
-
-            <p class="memory-description">
-                @Model.MemoryHero.Description
-            </p>
-
-            <button class="btn btn-light">
-                Continue Reading
-            </button>
 
         </div>
 
     </div>
-
-</div>
+}

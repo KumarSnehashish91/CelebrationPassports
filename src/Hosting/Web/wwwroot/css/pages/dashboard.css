@@ -66,114 +66,10 @@
 }
 
 
-/*------------------------------------------
-    QUICK ACTION DROPDOWN
--------------------------------------------*/
-
-.has-submenu {
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar-dropdown-toggle {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: none;
-    background: none;
-    cursor: pointer;
-    padding: 14px 18px;
-    border-radius: 14px;
-    color: #24324B;
-    transition: .25s;
-}
-.sidebar-menu .active {
-    background: #6F4EF6;
-    color: black;
-    transform: translateX(4px);
-    box-shadow: 0 8px 20px rgba(111, 78, 246, .30);
-}
-    .sidebar-dropdown-toggle:hover {
-        background: #F7F7FB;
-    }
-
-.sidebar-arrow {
-    transition: .25s;
-    font-size: 13px;
-}
-
-.sidebar-dropdown-toggle.active .sidebar-arrow {
-    transform: rotate(180deg);
-}
-.sidebar-dropdown-toggle .sidebar-text {
-    font-size: 15px;
-    font-weight:700;
-}
-.sidebar-link span {
-    font-size: 16px;
-    font-weight: 900;
-    color: #111111;
-}
-
-.sidebar-submenu {
-    list-style: none;
-    margin: 0;
-    padding-left: 10px;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height .35s ease, opacity .25s ease, padding .25s ease;
-}
-
-    .sidebar-submenu.open {
-        max-height: 600px;
-        opacity: 1;
-        overflow: visible;
-        padding-top: 8px;
-    }
-
-    .sidebar-submenu a {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 8px 0 8px 34px;
-        text-decoration: none;
-        color: #555;
-        transition: .25s;
-    }
-
-        .sidebar-submenu a:hover {
-            color: #D69B2D;
-        }
- 
-
-    .sidebar-submenu li {
-        margin-bottom: 6px;
-    }
-
-    .sidebar-submenu a {
-        display: flex;
-        align-items: center;
-        padding: 0px 0px;
-        gap: 10px;
-        padding-left:35px;
-        font-size: 15px;
-        border-radius: 10px;
-        text-decoration: none;
-        color: #5B6478; 
-        transition: .25s;
-    }
-.sidebar-dropdown-toggle .sidebar-icon i {
-    color: #D69B2D;
-    font-size: 20px;
-}
-
-        .sidebar-submenu a:hover {
-            background: #F5F6FA;
-            color: #D68A22;
-        }
- 
+/* Sidebar styling (including the Quick Actions dropdown/submenu) lives entirely in
+   layout/sidebar.css — a duplicate, conflicting copy used to live here and, because
+   this stylesheet loads after sidebar.css, silently won the cascade and overrode the
+   navy/gold active-state styling with leftover purple values. Removed. */
 
 /* ===========================================
    ROW 3
@@ -195,7 +91,7 @@
 
 .card-header a{
     font-size:13px;
-    color:#5b5ce2;
+    color:#D4AF37;
     text-decoration:none;
     font-weight:600;
 }
@@ -280,7 +176,7 @@
 }
 
     .activity-date-card .month {
-        background: #6C4CF1;
+        background: #D4AF37;
         color: #fff;
         font-size: 10px;
         font-weight: 700;
@@ -306,7 +202,7 @@
 }
 
 .activity-icon.purple{
-    background:#7c4dff;
+    background:#D4AF37;
 }
 
 .activity-icon.blue{
@@ -358,7 +254,7 @@
     }
 
     .card-header a {
-        color: #6366F1;
+        color: #C6A02F;
         text-decoration: none;
         font-size: 14px;
         font-weight: 600;
@@ -454,7 +350,7 @@
     }
 
     .upcoming-item:hover .upcoming-info h6 {
-        color: var(--primary, #6C4CF6);
+        color: var(--primary, #D4AF37);
     }
 
 .celebration-thumb {
@@ -502,7 +398,7 @@
 
     .date-badge small {
         display: block;
-        color: #7C3AED;
+        color: #D4AF37;
         font-size: 11px;
         font-weight: 700;
     }
@@ -566,6 +462,7 @@
     font-size: 34px;
     font-weight: 700;
     margin-bottom: 12px;
+    color: #fff;
 }
 
 .memory-location {
@@ -584,6 +481,31 @@
     max-width: 520px;
     line-height: 1.7;
 }
+
+.memory-hero-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(160deg, var(--navy), var(--navy-deep));
+}
+
+    .memory-hero-empty .memory-content {
+        max-width: 380px;
+    }
+
+    .memory-hero-empty h2 {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .memory-hero-empty .memory-description {
+        opacity: .85;
+        margin: 0 auto 22px;
+    }
 
 /*==========================================================
     TIMELINE
@@ -621,7 +543,7 @@
 
     .timeline-year strong {
         display: block;
-        color: #7C3AED;
+        color: #D4AF37;
         font-size: 13px;
     }
 
@@ -689,7 +611,7 @@
     }
 
     .todays-plan a {
-        color: #6366F1;
+        color: #C6A02F;
         text-decoration: none;
         font-size: 13px;
     }
@@ -832,11 +754,11 @@
         }
 
     .quick-item.purple i {
-        background: #7C3AED;
+        background: #D4AF37;
     }
 
     .quick-item.indigo i {
-        background: #4F46E5;
+        background: #C6A02F;
     }
 
     .quick-item.orange i {
@@ -868,7 +790,7 @@
     top: 8px;
     right: 8px;
     background: #EEF2FF;
-    color: #4F46E5;
+    color: #C6A02F;
     font-size: 9px;
     padding: 2px 6px;
     border-radius: 20px;
@@ -1121,7 +1043,7 @@
     width: 100%;
     height: 10px;
     margin-top: 18px;
-    background: #EEF2FF;
+    background: var(--line);
     border-radius: 999px;
     overflow: hidden;
 }
@@ -1129,7 +1051,7 @@
 .progress-fill {
     height: 100%;
     width: 68%;
-    background: linear-gradient(90deg,#6C4CF1,#3B82F6);
+    background: linear-gradient(90deg,#C6A02F,#D4AF37);
     border-radius: 999px;
 }
 
@@ -1154,7 +1076,7 @@
 
     .passport-stat:hover {
         background: #EEF4FF;
-        border-color: #7C5CFC;
+        border-color: #E7CE85;
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(99,102,241,.12);
     }
@@ -1193,7 +1115,7 @@
         margin: 10px 0 6px;
         font-size: 15px;
         font-weight: 600;
-        color: #6C4CF1;
+        color: #D4AF37;
     }
 
     .next-milestone span {
@@ -1209,7 +1131,7 @@
     padding: 10px 16px;
     border: none;
     border-radius: 10px;
-    background: #6C4CF1;
+    background: #D4AF37;
     color: #fff;
     font-size: 13px;
     font-weight: 600;
@@ -1219,7 +1141,7 @@
 }
 
     .passport-btn:hover {
-        background: #5A3EEA;
+        background: #C6A02F;
     }
 
 
@@ -1301,10 +1223,13 @@
 }
 
 .memory-card {
+    display: block;
     overflow: hidden;
     border-radius: 16px;
     background: #fff;
     border: 1px solid #EEF2F7;
+    text-decoration: none;
+    color: inherit;
     transition: .25s;
 }
 
@@ -1502,17 +1427,17 @@
     margin-top: 28px;
     padding: 14px 30px;
     border-radius: 12px;
-    background: #6C4CF1;
-    color: white;
+    background: #D4AF37;
+    color: var(--navy-deep);
     font-weight: 600;
     text-decoration: none;
+    cursor: default;
     transition: .25s;
 }
 
     .passport-book-btn:hover {
-        background: #5A39EA;
-        color: #fff;
-        transform: translateY(-2px);
+        background: #C6A02F;
+        color: var(--navy-deep);
     }
 
 .passport-book-right {

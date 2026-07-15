@@ -16,69 +16,155 @@
         </div>
     </div>
 
-    <div class="wizard-card" style="max-width:700px;">
-        <h4>Home Location</h4>
-        <p class="field-hint">
-            Used to automatically detect trips — when you upload photos taken far from
-            here, we'll draft a chapter for you to review instead of you having to add
-            it by hand.
-        </p>
+    <div class="settings-grid">
 
-        <div asp-validation-summary="ModelOnly" class="field-error mb-3"></div>
+        <div class="settings-nav">
+            <button type="button" class="settings-nav-item active" data-tab="location">
+                <i class="bi bi-house-door"></i> Home Location
+            </button>
+            <button type="button" class="settings-nav-item" data-tab="calendar">
+                <i class="bi bi-calendar3"></i> Calendar Sync
+            </button>
+            <button type="button" class="settings-nav-item" data-tab="passports">
+                <i class="bi bi-award"></i> Passport &amp; Members
+            </button>
+        </div>
 
-        @if (!string.IsNullOrEmpty(Model.HomePlaceName))
-        {
-            <div class="event-preview-detail-row" style="margin-bottom:var(--space-lg);">
-                <i class="bi bi-house-door"></i>
-                <div>
-                    <strong>Current Home</strong>
-                    <span>@Model.HomePlaceName</span>
-                </div>
+        <div class="settings-content">
+
+            <div class="settings-panel wizard-card" data-panel="location" style="max-width:700px;">
+                <h4>Home Location</h4>
+                <p class="field-hint">
+                    Used to automatically detect trips — when you upload photos taken far from
+                    here, we'll draft a chapter for you to review instead of you having to add
+                    it by hand.
+                </p>
+
+                <div asp-validation-summary="ModelOnly" class="field-error mb-3"></div>
+
+                @if (!string.IsNullOrEmpty(Model.HomePlaceName))
+                {
+                    <div class="event-preview-detail-row" style="margin-bottom:var(--space-lg);">
+                        <i class="bi bi-house-door"></i>
+                        <div>
+                            <strong>Current Home</strong>
+                            <span>@Model.HomePlaceName</span>
+                        </div>
+                    </div>
+
+                    <form asp-action="ClearHomePlace" method="post">
+                        <button type="submit" class="btn-wizard-secondary">
+                            <i class="bi bi-x-lg"></i> Clear Home Location
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <p class="field-hint" style="color:#B45309;">
+                        <i class="bi bi-exclamation-triangle"></i> No home location set yet — trip detection is currently off.
+                    </p>
+
+                    <form asp-action="SetHomePlace" method="post">
+                        <div class="wizard-field">
+                            <label>Place Name <span class="required">*</span></label>
+                            <input type="text" name="placeName" value="@Model.PlaceName" placeholder="e.g., My House" />
+                        </div>
+
+                        <div class="wizard-field">
+                            <label>City <span class="required">*</span></label>
+                            <input type="text" name="city" value="@Model.City" placeholder="e.g., Bangalore" />
+                        </div>
+
+                        <div class="wizard-row-2">
+                            <div class="wizard-field">
+                                <label>Latitude <span class="required">*</span></label>
+                                <input type="number" step="any" id="latitudeInput" name="latitude" value="@Model.Latitude" placeholder="e.g., 12.9716" />
+                            </div>
+                            <div class="wizard-field">
+                                <label>Longitude <span class="required">*</span></label>
+                                <input type="number" step="any" id="longitudeInput" name="longitude" value="@Model.Longitude" placeholder="e.g., 77.5946" />
+                            </div>
+                        </div>
+
+                        <button type="button" id="useMyLocationBtn" class="btn-wizard-secondary" style="margin-bottom:var(--space-lg);">
+                            <i class="bi bi-geo-alt"></i> Use My Current Location
+                        </button>
+
+                        <button type="submit" class="btn-wizard-next">
+                            <i class="bi bi-house-check"></i> Set Home Location
+                        </button>
+                    </form>
+                }
             </div>
 
-            <form asp-action="ClearHomePlace" method="post">
-                <button type="submit" class="btn-wizard-secondary">
-                    <i class="bi bi-x-lg"></i> Clear Home Location
-                </button>
-            </form>
-        }
-        else
-        {
-            <p class="field-hint" style="color:#B45309;">
-                <i class="bi bi-exclamation-triangle"></i> No home location set yet — trip detection is currently off.
-            </p>
+            <div class="settings-panel wizard-card" data-panel="calendar" hidden style="max-width:700px;">
+                <h4>Calendar Sync</h4>
+                <p class="field-hint">
+                    Subscribe to this link from Google Calendar, Outlook, or Apple Calendar to see your
+                    upcoming celebrations alongside everything else — it updates automatically as your
+                    events change.
+                </p>
 
-            <form asp-action="SetHomePlace" method="post">
-                <div class="wizard-field">
-                    <label>Place Name <span class="required">*</span></label>
-                    <input type="text" name="placeName" value="@Model.PlaceName" placeholder="e.g., My House" />
-                </div>
-
-                <div class="wizard-field">
-                    <label>City <span class="required">*</span></label>
-                    <input type="text" name="city" value="@Model.City" placeholder="e.g., Bangalore" />
-                </div>
-
-                <div class="wizard-row-2">
+                @if (!string.IsNullOrEmpty(Model.CalendarFeedUrl))
+                {
                     <div class="wizard-field">
-                        <label>Latitude <span class="required">*</span></label>
-                        <input type="number" step="any" id="latitudeInput" name="latitude" value="@Model.Latitude" placeholder="e.g., 12.9716" />
+                        <input type="text" id="calendarFeedUrlInput" value="@Model.CalendarFeedUrl" readonly onclick="this.select();" />
                     </div>
-                    <div class="wizard-field">
-                        <label>Longitude <span class="required">*</span></label>
-                        <input type="number" step="any" id="longitudeInput" name="longitude" value="@Model.Longitude" placeholder="e.g., 77.5946" />
+
+                    <button type="button" id="copyCalendarFeedBtn" class="btn-wizard-secondary">
+                        <i class="bi bi-clipboard"></i> Copy Link
+                    </button>
+                }
+                else
+                {
+                    <p class="field-hint" style="color:#B45309;">
+                        <i class="bi bi-exclamation-triangle"></i> Could not load your calendar link right now — try refreshing this page.
+                    </p>
+                }
+            </div>
+
+            <div class="settings-panel wizard-card" data-panel="passports" hidden style="max-width:700px;">
+                <h4><i class="bi bi-award"></i> Passport &amp; Members</h4>
+                <p class="field-hint">
+                    Every passport you own or belong to. Open one to see its full member list,
+                    roles, and to invite people.
+                </p>
+
+                @if (Model.Passports.Count == 0)
+                {
+                    <p class="field-hint">You don't have any passports yet.</p>
+                    <a asp-controller="Passports" asp-action="Create" class="btn-wizard-next" style="display:inline-flex;width:auto;">
+                        <i class="bi bi-plus-lg"></i> Create your first Passport
+                    </a>
+                }
+                else
+                {
+                    <div class="passport-list">
+                        @foreach (var passport in Model.Passports)
+                        {
+                            <a asp-controller="Passports" asp-action="Details" asp-route-id="@passport.Id" class="passport-row">
+                                <div class="passport-row-icon">
+                                    <i class="bi bi-award-fill"></i>
+                                </div>
+                                <div class="passport-row-info">
+                                    <strong>
+                                        @passport.Title
+                                        @if (passport.IsOwner)
+                                        {
+                                            <span class="owner-pill"><i class="bi bi-star-fill"></i> Owner</span>
+                                        }
+                                    </strong>
+                                    <span>@passport.Status &middot; @passport.PeopleCount @(passport.PeopleCount == 1 ? "person" : "people")</span>
+                                </div>
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        }
                     </div>
-                </div>
+                }
+            </div>
 
-                <button type="button" id="useMyLocationBtn" class="btn-wizard-secondary" style="margin-bottom:var(--space-lg);">
-                    <i class="bi bi-geo-alt"></i> Use My Current Location
-                </button>
+        </div>
 
-                <button type="submit" class="btn-wizard-next">
-                    <i class="bi bi-house-check"></i> Set Home Location
-                </button>
-            </form>
-        }
     </div>
 
 </div>
@@ -96,6 +182,31 @@
                 document.getElementById('longitudeInput').value = position.coords.longitude.toFixed(6);
             }, function () {
                 alert('Could not get your location — enter coordinates manually.');
+            });
+        });
+
+        document.getElementById('copyCalendarFeedBtn')?.addEventListener('click', function () {
+            var input = document.getElementById('calendarFeedUrlInput');
+            var btn = this;
+
+            navigator.clipboard.writeText(input.value).then(function () {
+                var original = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check-lg"></i> Copied!';
+                setTimeout(function () { btn.innerHTML = original; }, 2000);
+            });
+        });
+
+        document.querySelectorAll('.settings-nav-item').forEach(function (navItem) {
+            navItem.addEventListener('click', function () {
+                var tab = navItem.getAttribute('data-tab');
+
+                document.querySelectorAll('.settings-nav-item').forEach(function (n) {
+                    n.classList.toggle('active', n === navItem);
+                });
+
+                document.querySelectorAll('.settings-panel').forEach(function (panel) {
+                    panel.hidden = panel.getAttribute('data-panel') !== tab;
+                });
             });
         });
     </script>

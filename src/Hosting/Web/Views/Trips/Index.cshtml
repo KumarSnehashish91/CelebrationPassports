@@ -1,0 +1,68 @@
+@model List<CelebrationPassports.Web.Models.Events.CelebrationListItemViewModel>
+
+@{
+    ViewData["Title"] = "Trips";
+    var activeTab = ViewData["ActiveTab"] as string ?? "all";
+}
+
+<div class="celebration-page">
+
+    <div class="celebration-header">
+
+        <div>
+            <h1>Trips</h1>
+            <p>All your vacations — upcoming, ongoing, past, and cancelled.</p>
+        </div>
+
+        <a asp-controller="TripPlanner" asp-action="Index" class="btn-new-celebration">
+            <i class="bi bi-stars"></i>
+            Plan a Trip
+        </a>
+
+    </div>
+
+    <div class="celebration-toolbar">
+
+        <div class="celebration-tabs">
+
+            <a asp-action="Index" asp-route-tab="all" class="@(activeTab == "all" ? "active" : "")">All</a>
+
+            <a asp-action="Index" asp-route-tab="upcoming" class="@(activeTab == "upcoming" ? "active" : "")">Upcoming</a>
+
+            <a asp-action="Index" asp-route-tab="ongoing" class="@(activeTab == "ongoing" ? "active" : "")">Ongoing</a>
+
+            <a asp-action="Index" asp-route-tab="past" class="@(activeTab == "past" ? "active" : "")">Past</a>
+
+            <a asp-action="Index" asp-route-tab="draft" class="@(activeTab == "draft" ? "active" : "")">Draft</a>
+
+            <a asp-action="Index" asp-route-tab="cancelled" class="@(activeTab == "cancelled" ? "active" : "")">Cancelled</a>
+
+        </div>
+
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="celebration-empty">
+            <i class="bi bi-airplane"></i>
+            <h3>No trips here yet</h3>
+            <p>@(activeTab == "all" ? "Plan your first trip to get started." : $"You don't have any {activeTab} trips yet.")</p>
+            <a asp-controller="TripPlanner" asp-action="Index" class="btn-new-celebration">
+                <i class="bi bi-stars"></i>
+                Plan a Trip
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="event-list">
+
+            @foreach (var item in Model)
+            {
+                <partial name="_TripCard" model="item" />
+            }
+
+        </div>
+    }
+
+</div>

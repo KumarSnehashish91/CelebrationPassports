@@ -30,16 +30,20 @@ public class MediaController : ControllerBase
     }
 
     // Unattached upload — "upload first, sort later" (e.g. an Event's cover photo,
-    // which has no Chapter/Story/Passport guard context of its own yet).
+    // which has no Chapter/Story/Passport guard context of its own yet, or a
+    // Stories/QuickUpload batch awaiting the auto-chapter clustering sweep).
+    // pendingClustering=true is what Stories/QuickUpload sends — it's what makes this
+    // upload eligible for AutoChapterClusteringBackgroundService; anything else
+    // (e.g. an Event cover photo) must never set it, or it'll get swept into a chapter.
     [HttpPost]
     [RequestSizeLimit(25 * 1024 * 1024)]
-    public async Task<IActionResult> UploadUnattached(IFormFile file)
+    public async Task<IActionResult> UploadUnattached(IFormFile file, [FromQuery] bool pendingClustering = false)
     {
-        var result = await UploadInternalAsync(null, file);
+        var result = await UploadInternalAsync(null, file, pendingClustering);
         return Ok(result);
     }
 
-    private async Task<MediaDto> UploadInternalAsync(Guid? chapterId, IFormFile file)
+    private async Task<MediaDto> UploadInternalAsync(Guid? chapterId, IFormFile file, bool pendingClustering = false)
     {
         await using var stream = file.OpenReadStream();
 
@@ -48,7 +52,7 @@ public class MediaController : ControllerBase
             Content = stream,
             FileName = file.FileName,
             Length = file.Length
-        });
+        }, pendingClustering);
     }
 
     [HttpGet("chapters/{chapterId:guid}")]

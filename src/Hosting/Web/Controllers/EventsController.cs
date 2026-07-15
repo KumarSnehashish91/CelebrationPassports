@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using CelebrationPassports.Web.Interfaces;
 using CelebrationPassports.Web.Models.Events;
 using CelebrationPassports.Web.Models.Places;
@@ -20,6 +21,12 @@ public class EventsController : Controller
     private readonly IMediaService _mediaService;
     private readonly IInvitationService _invitationService;
     private readonly IPassportService _passportService;
+    private readonly IAIService _aiService;
+    private readonly IExpenseService _expenseService;
+    private readonly ITripItineraryService _itineraryService;
+    private readonly ITripPlannerService _tripPlannerService;
+    private readonly IMemoryMapService _memoryMapService;
+    private readonly IStoryService _storyService;
 
     // Mirrors CelebrationPassports.Persistence.Enums.EventStatus.Ongoing — the API
     // computes Upcoming/Ongoing/Completed live from the event's schedule (see
@@ -32,18 +39,49 @@ public class EventsController : Controller
     // as OngoingStatus above: a cancelled event has nothing left to edit.
     private const int CancelledStatus = 5;
 
+    // Mirrors CelebrationPassports.Web.Models.Events.EventTypeOption's Vacation entry
+    // (Value=4) — Itinerary and Memory Map on the Preview page only make sense for a
+    // trip, same "Trip" == Vacation-type Event mapping used by TripPlannerController.
+    private const int VacationEventType = 4;
+
     public EventsController(
         IEventService eventService,
         IPlaceService placeService,
         IMediaService mediaService,
         IInvitationService invitationService,
-        IPassportService passportService)
+        IPassportService passportService,
+        IAIService aiService,
+        IExpenseService expenseService,
+        ITripItineraryService itineraryService,
+        ITripPlannerService tripPlannerService,
+        IMemoryMapService memoryMapService,
+        IStoryService storyService)
     {
         _eventService = eventService;
         _placeService = placeService;
         _mediaService = mediaService;
         _invitationService = invitationService;
         _passportService = passportService;
+        _aiService = aiService;
+        _expenseService = expenseService;
+        _itineraryService = itineraryService;
+        _tripPlannerService = tripPlannerService;
+        _memoryMapService = memoryMapService;
+        _storyService = storyService;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GenerateDescription(string title, int eventType)
+    {
+        var typeLabel = EventTypeOption.All.FirstOrDefault(o => o.Value == eventType)?.Label ?? "celebration";
+
+        var prompt = string.IsNullOrWhiteSpace(title)
+            ? $"Write a short, warm 2-sentence description (under 40 words) for a {typeLabel} event. No preamble, just the description."
+            : $"Write a short, warm 2-sentence description (under 40 words) for a {typeLabel} event titled '{title}'. No preamble, just the description.";
+
+        var description = await _aiService.GenerateAsync(prompt);
+
+        return Json(new { description = description?.Trim() });
     }
 
     // ---------- Step 1: Event Details ----------
@@ -384,7 +422,120 @@ public class EventsController : Controller
 
         model.Guests = await _invitationService.GetByPassportAsync(model.PassportId);
 
+        ViewData["Budget"] = await _expenseService.GetBudgetSummaryAsync(id);
+
+        var expenses = await _expenseService.GetExpensesAsync(id);
+
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (Guid.TryParse(currentUserId, out var userId))
+        {
+            foreach (var expense in expenses)
+            {
+                expense.IsMine = expense.CreatedByUserId == userId;
+            }
+        }
+
+        ViewData["Expenses"] = expenses;
+
+        if (model.EventType == VacationEventType)
+        {
+            ViewData["Itinerary"] = await _itineraryService.GetByEventAsync(id);
+
+            if (model.StoryId.HasValue)
+            {
+                var allPins = await _memoryMapService.GetByPassportAsync(model.PassportId);
+
+                // Pins are per-Chapter, and a Chapter only ties back to a trip through
+                // its linked Story.
+                ViewData["TripPins"] = allPins.Where(p => p.StoryId == model.StoryId).ToList();
+
+                var story = await _storyService.GetByIdAsync(model.StoryId.Value);
+
+                if (story is not null)
+                {
+                    var photos = new List<string>();
+
+                    // Chapter summaries don't carry full media, so this pulls each
+                    // chapter's photos individually — the same N+1-but-small-lists
+                    // tradeoff already used for place/cover-image resolution elsewhere,
+                    // fine at trip scale (a handful of chapters).
+                    foreach (var chapterSummary in story.Chapters)
+                    {
+                        var chapter = await _storyService.GetChapterByIdAsync(chapterSummary.Id);
+
+                        if (chapter is not null)
+                        {
+                            photos.AddRange(chapter.Media.Where(m => m.Type == 1).Select(m => m.Url));
+                        }
+                    }
+
+                    ViewData["TripPhotoCount"] = photos.Count;
+                    ViewData["TripPhotos"] = photos.Take(8).ToList();
+                }
+            }
+            else
+            {
+                // No Story linked yet — offer to link one instead of silently showing
+                // an empty map, so there's an actual next step to get real pins.
+                var stories = await _storyService.GetMineAsync();
+                ViewData["LinkableStories"] = stories.Where(s => s.PassportId == model.PassportId).ToList();
+            }
+        }
+
         return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> LinkStory(Guid id, Guid storyId)
+    {
+        await _eventService.LinkStoryAsync(id, storyId);
+        return RedirectToAction("Preview", new { id });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> GenerateItinerary(Guid id, string destination, int days, string? notes)
+    {
+        var plan = await _tripPlannerService.GenerateAsync(destination, days, notes);
+
+        if (plan is not null && plan.Itinerary.Count > 0)
+        {
+            await _itineraryService.SaveItineraryAsync(id, plan.Itinerary);
+        }
+        else
+        {
+            TempData["ItineraryError"] = "Could not generate an itinerary right now — the local AI model may be unavailable. Please try again.";
+        }
+
+        return RedirectToAction("Preview", new { id });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddExpense(Guid id, int category, string? description, decimal amount, DateOnly? spentOn)
+    {
+        if (amount > 0)
+        {
+            await _expenseService.AddExpenseAsync(id, category, description, amount, spentOn);
+        }
+
+        return RedirectToAction("Preview", new { id });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteExpense(Guid id, Guid expenseId)
+    {
+        await _expenseService.DeleteExpenseAsync(expenseId);
+        return RedirectToAction("Preview", new { id });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SetCategoryBudget(Guid id, int category, decimal budgetedAmount)
+    {
+        if (budgetedAmount >= 0)
+        {
+            await _expenseService.SetCategoryBudgetAsync(id, category, budgetedAmount);
+        }
+
+        return RedirectToAction("Preview", new { id });
     }
 
     [HttpPost]

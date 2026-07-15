@@ -11,9 +11,17 @@
             <i class="bi bi-arrow-left"></i> Back to Memories
         </a>
 
-        <a asp-action="AddChapter" asp-route-storyId="@Model.Id" class="btn-wizard-next">
-            <i class="bi bi-plus-lg"></i> Add Chapter
-        </a>
+        <div style="display:flex;gap:10px;">
+            @if (Model.Chapters.Count > 0)
+            {
+                <a asp-action="Narrative" asp-route-id="@Model.Id" class="btn-wizard-secondary">
+                    <i class="bi bi-stars"></i> Read the Story
+                </a>
+            }
+            <a asp-action="AddChapter" asp-route-storyId="@Model.Id" class="btn-wizard-next">
+                <i class="bi bi-plus-lg"></i> Add Chapter
+            </a>
+        </div>
     </div>
 
     <div class="event-preview-hero @(!string.IsNullOrEmpty(Model.CoverImageUrl) ? "has-cover" : "")"

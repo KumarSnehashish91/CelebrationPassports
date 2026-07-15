@@ -24,6 +24,8 @@ builder.Services.AddTransient<BearerTokenHandler>();
 
 builder.Services.AddScoped<IGreetingService, GreetingService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<ITripPlannerService, TripPlannerService>();
+builder.Services.AddScoped<IStoryNarrativeService, StoryNarrativeService>();
 
 // No BearerTokenHandler here — refresh calls carry the refresh token, not an access
 // token, and this is the client BearerTokenHandler itself calls out to.
@@ -78,6 +80,46 @@ builder.Services.AddHttpClient<INotificationService, NotificationService>(client
 }).AddHttpMessageHandler<BearerTokenHandler>();
 
 builder.Services.AddHttpClient<IUserProfileService, UserProfileService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<IAIService, AIService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<ISomedayIdeaService, SomedayIdeaService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<IMemoryMapService, MemoryMapService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<ITimeCapsuleService, TimeCapsuleService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<IWishService, WishService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<IExpenseService, ExpenseService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<ITripItineraryService, TripItineraryService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<IDashboardStatsService, DashboardStatsService>(client =>
 {
     client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<BearerTokenHandler>();

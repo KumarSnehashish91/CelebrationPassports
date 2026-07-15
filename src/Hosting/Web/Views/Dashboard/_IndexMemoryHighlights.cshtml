@@ -1,4 +1,6 @@
-﻿<div class="dashboard-card memory-highlights-card">
+@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+
+<div class="dashboard-card memory-highlights-card">
 
     <div class="card-header">
 
@@ -11,78 +13,34 @@
 
     </div>
 
-    <div class="memory-gallery">
+    @if (Model.RecentStories.Count == 0)
+    {
+        <p class="field-hint" style="margin:12px 0;">
+            No other stories yet — <a asp-controller="Stories" asp-action="Create">start one</a> to see it here.
+        </p>
+    }
+    else
+    {
+        <div class="memory-gallery">
 
-        <div class="memory-card">
+            @foreach (var story in Model.RecentStories)
+            {
+                <a asp-controller="Stories" asp-action="Details" asp-route-id="@story.Id" class="memory-card">
 
-            <img src="https://picsum.photos/400/300?1" alt="">
+                    <img src="@(string.IsNullOrWhiteSpace(story.CoverImageUrl) ? "/images/udaipur.jpg" : story.CoverImageUrl)" alt="@story.Title" />
 
-            <div class="memory-info">
+                    <div class="memory-info">
 
-                <h5>Udaipur, Rajasthan</h5>
+                        <h5>@story.Title</h5>
 
-                <span>10 Dec 2025</span>
+                        <span>@(story.StartDate?.ToString("dd MMM yyyy") ?? $"{story.ChapterCount} {(story.ChapterCount == 1 ? "chapter" : "chapters")}")</span>
 
-            </div>
+                    </div>
 
-        </div>
-
-        <div class="memory-card">
-
-            <img src="https://picsum.photos/400/300?2" alt="">
-
-            <div class="memory-info">
-
-                <h5>Son's Birthday Party</h5>
-
-                <span>06 Jul 2026</span>
-
-            </div>
-
-        </div>
-
-        <div class="memory-card">
-
-            <img src="https://picsum.photos/400/300?3" alt="">
-
-            <div class="memory-info">
-
-                <h5>Goa Vacation</h5>
-
-                <span>18 May 2026</span>
-
-            </div>
+                </a>
+            }
 
         </div>
-
-        <div class="memory-card">
-
-            <img src="https://picsum.photos/400/300?4" alt="">
-
-            <div class="memory-info">
-
-                <h5>Holi Celebration</h5>
-
-                <span>14 Mar 2026</span>
-
-            </div>
-
-        </div>
-
-        <div class="memory-card more-memory">
-
-            <img src="https://picsum.photos/400/300?5" alt="">
-
-            <div class="overlay">
-
-                <h2>+124</h2>
-
-                <span>More Memories</span>
-
-            </div>
-
-        </div>
-
-    </div>
+    }
 
 </div>

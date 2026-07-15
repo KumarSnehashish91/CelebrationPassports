@@ -100,5 +100,17 @@ public partial class User
 
     public virtual ICollection<WishlistItem> DeletedWishlistItems { get; set; } = new List<WishlistItem>();
 
+    public virtual ICollection<SomedayIdea> CreatedSomedayIdeas { get; set; } = new List<SomedayIdea>();
+
+    public virtual ICollection<SomedayIdea> DeletedSomedayIdeas { get; set; } = new List<SomedayIdea>();
+
+    public virtual ICollection<TimeCapsuleMessage> AuthoredTimeCapsuleMessages { get; set; } = new List<TimeCapsuleMessage>();
+
+    public virtual ICollection<TimeCapsuleMessage> DeletedTimeCapsuleMessages { get; set; } = new List<TimeCapsuleMessage>();
+
     public virtual ICollection<ActivityLog> ActivityLogs { get; set; } = new List<ActivityLog>();
+
+    public virtual ICollection<Expense> CreatedExpenses { get; set; } = new List<Expense>();
+
+    public virtual ICollection<Expense> DeletedExpenses { get; set; } = new List<Expense>();
 }

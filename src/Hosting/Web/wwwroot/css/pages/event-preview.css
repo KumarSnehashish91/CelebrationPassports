@@ -29,7 +29,7 @@
     position: relative;
     min-height: 260px;
     border-radius: var(--radius-lg);
-    background: linear-gradient(135deg, #4C1D95, #1E1B4B);
+    background: linear-gradient(160deg, var(--navy), var(--navy-deep));
     background-size: cover;
     background-position: center;
     display: flex;
@@ -89,6 +89,7 @@
         margin: 0 0 8px;
         font-size: 30px;
         font-weight: 700;
+        color: #fff;
     }
 
     .event-preview-hero-content p {
@@ -220,4 +221,267 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
+}
+
+/*==========================================================
+    BUDGET (Event/Trip Preview sidebar)
+==========================================================*/
+
+.budget-mini {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 12.5px;
+}
+
+.budget-mini .lbl {
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+.budget-mini .amt {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 12px;
+}
+
+.budget-bar {
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+    .budget-bar .fill {
+        height: 100%;
+        background: var(--gold);
+    }
+
+    .budget-bar .fill.over {
+        background: #A03D3D;
+    }
+
+.budget-total-row {
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+}
+
+    .budget-total-row .lbl {
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+.budget-set-form {
+    display: flex;
+    gap: 6px;
+    margin-top: var(--space-md);
+}
+
+    .budget-set-form select,
+    .budget-set-form input {
+        font-size: 12.5px;
+        padding: 8px 10px;
+    }
+
+    .budget-set-form select {
+        flex: 1;
+    }
+
+    .budget-set-form input[type="number"] {
+        width: 90px;
+    }
+
+.expense-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    .expense-form .expense-form-row {
+        display: flex;
+        gap: 8px;
+    }
+
+    .expense-form select {
+        flex: 1;
+    }
+
+    .expense-form input[type="number"] {
+        width: 110px;
+    }
+
+    .expense-form input[type="date"] {
+        width: 140px;
+    }
+
+.expense-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--space-md);
+}
+
+.expense-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+    .expense-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+.expense-cat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-body);
+    color: var(--gold-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 13px;
+}
+
+.expense-info {
+    flex: 1;
+    min-width: 0;
+}
+
+    .expense-info strong {
+        display: block;
+        font-size: 13px;
+        color: var(--navy);
+    }
+
+    .expense-info span {
+        display: block;
+        font-size: 11.5px;
+        color: var(--text-light);
+        margin-top: 2px;
+    }
+
+.expense-amt {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.expense-delete {
+    flex-shrink: 0;
+}
+
+    .expense-delete button {
+        border: none;
+        background: none;
+        color: var(--text-light);
+        cursor: pointer;
+        font-size: 13px;
+        padding: 4px;
+    }
+
+        .expense-delete button:hover {
+            color: #A03D3D;
+        }
+
+/*==========================================================
+    ITINERARY (Trip Detail — vacation events only)
+==========================================================*/
+
+.itin-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.itin-day {
+    display: flex;
+    gap: 16px;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+    .itin-day:last-child {
+        border: none;
+        margin: 0;
+        padding: 0;
+    }
+
+.itin-day-num {
+    width: 52px;
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 10.5px;
+    color: var(--gold-hover);
+}
+
+.itin-day-txt {
+    font-size: 13px;
+    color: var(--navy);
+    line-height: 1.6;
+}
+
+    .itin-day-txt strong {
+        color: var(--navy);
+    }
+
+.itin-generate-form {
+    display: flex;
+    gap: 8px;
+    margin-top: var(--space-md);
+}
+
+    .itin-generate-form input[type="number"] {
+        width: 70px;
+        flex-shrink: 0;
+    }
+
+/*==========================================================
+    TRIP PHOTOS (Trip Detail — vacation events only)
+==========================================================*/
+
+.trip-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.trip-photo-item {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--bg-body);
+}
+
+    .trip-photo-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+@media (max-width: 560px) {
+    .trip-photo-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/*==========================================================
+    MEMORY MAP MINI (Trip Detail — vacation events only)
+==========================================================*/
+
+.map-mini {
+    height: 160px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: linear-gradient(135deg, #DCE4E8, #B8C4CC);
 }

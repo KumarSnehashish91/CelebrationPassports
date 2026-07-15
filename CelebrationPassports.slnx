@@ -11,6 +11,8 @@
     <File Path="C:/Users/Dev/Downloads/Celebration_Passports_ERD (1).pdf" />
     <File Path="C:/Users/Dev/Downloads/Celebration_Passports_ERD.png" />
     <File Path="C:/Users/Dev/Downloads/Celebration_Passports_Schema_Reference (1).md" />
+    <File Path="src/Data/auto-chapter-detection.md" />
+    <File Path="src/Data/feature-backlog-v1.1.md" />
   </Folder>
   <Folder Name="/src/Hosting/">
     <Project Path="src/Hosting/CelebrationPassports.API/CelebrationPassports.API.csproj" Id="83b278ac-da82-4acf-93e1-9a0af603d79d" />

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = Model.Title;
+    var wishes = ViewData["Wishes"] as List<CelebrationPassports.Web.Models.Stories.WishViewModel> ?? [];
 }
 
 <div class="event-preview-page">
@@ -12,20 +13,32 @@
         </a>
     </div>
 
+    @{
+        var photoCount = Model.Media.Count(m => m.Type == 1);
+        var videoCount = Model.Media.Count(m => m.Type == 2);
+        var audioCount = Model.Media.Count(m => m.Type == 3);
+        var countParts = new List<string>();
+        if (photoCount > 0) countParts.Add($"{photoCount} {(photoCount == 1 ? "photo" : "photos")}");
+        if (videoCount > 0) countParts.Add($"{videoCount} {(videoCount == 1 ? "video" : "videos")}");
+        if (audioCount > 0) countParts.Add($"{audioCount} {(audioCount == 1 ? "voice note" : "voice notes")}");
+    }
+
     <div class="wizard-card" style="margin-bottom: var(--space-xl);">
         <h1 style="margin:0 0 6px;font-size:26px;">@Model.Title</h1>
         <p class="field-hint" style="margin:0;">
-            @Model.CategoryName &middot; @Model.EventDate.ToString("MMMM dd, yyyy") &middot; @Model.Media.Count @(Model.Media.Count == 1 ? "photo" : "photos")
+            @Model.CategoryName &middot; @Model.EventDate.ToString("MMMM dd, yyyy")
+            @(countParts.Count > 0 ? " · " + string.Join(", ", countParts) : "")
         </p>
     </div>
 
     <div class="wizard-card" style="margin-bottom: var(--space-xl);">
-        <h4>Add Photos</h4>
+        <h4>Add Photos &amp; Voice Notes</h4>
         <form asp-action="UploadMedia" method="post" enctype="multipart/form-data">
             <input type="hidden" name="chapterId" value="@Model.Id" />
 
             <div class="wizard-field" style="margin-bottom:0;">
-                <input type="file" name="files" accept=".jpg,.jpeg,.png,.webp" multiple />
+                <input type="file" name="files" accept=".jpg,.jpeg,.png,.webp,.heic,.mp3,.wav,.m4a" multiple />
+                <p class="field-hint">Photos or short voice notes (MP3, WAV, M4A).</p>
             </div>
 
             <button type="submit" class="btn-wizard-next" style="margin-top:var(--space-md);">
@@ -35,19 +48,74 @@
     </div>
 
     <div class="wizard-card">
-        <h4>Photos</h4>
+        <h4>Memories</h4>
 
         @if (Model.Media.Count == 0)
         {
-            <p class="field-hint">No photos yet — add some above.</p>
+            <p class="field-hint">No photos or voice notes yet — add some above.</p>
         }
         else
         {
             <div class="chapter-media-grid">
-                @foreach (var media in Model.Media)
+                @foreach (var media in Model.Media.Where(m => m.Type != 3))
                 {
                     <div class="chapter-media-item">
                         <img src="@media.Url" alt="@Model.Title" loading="lazy" />
+                    </div>
+                }
+            </div>
+
+            @if (audioCount > 0)
+            {
+                <div class="voice-note-list">
+                    @foreach (var media in Model.Media.Where(m => m.Type == 3))
+                    {
+                        <div class="voice-note-row">
+                            <div class="voice-note-icon"><i class="bi bi-mic-fill"></i></div>
+                            <audio controls preload="none" src="@media.Url"></audio>
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+
+    <div class="wizard-card">
+        <h4><i class="bi bi-heart"></i> Wishes from Loved Ones <span class="wish-count">&middot; @wishes.Count</span></h4>
+
+        <form asp-action="AddWish" method="post" class="wish-form">
+            <input type="hidden" name="chapterId" value="@Model.Id" />
+            <textarea name="text" rows="2" maxlength="1000" placeholder="Leave a wish for this memory..." required></textarea>
+            <button type="submit" class="btn-wizard-secondary" style="width:auto;align-self:flex-end;">
+                <i class="bi bi-send"></i> Send Wish
+            </button>
+        </form>
+
+        @if (wishes.Count == 0)
+        {
+            <p class="field-hint">No wishes yet — be the first to leave one.</p>
+        }
+        else
+        {
+            <div class="wish-list">
+                @foreach (var wish in wishes)
+                {
+                    <div class="wish">
+                        <div class="wish-av">@wish.AuthorName.Substring(0, 1).ToUpper()</div>
+                        <div class="wish-body">
+                            <div class="wish-name">@wish.AuthorName</div>
+                            <div class="wish-text">@wish.Text</div>
+                            <div class="wish-date">@wish.CreatedAt.ToString("MMM dd, yyyy")</div>
+                        </div>
+
+                        @if (wish.IsMine)
+                        {
+                            <form asp-action="DeleteWish" method="post" class="wish-delete">
+                                <input type="hidden" name="id" value="@wish.Id" />
+                                <input type="hidden" name="chapterId" value="@Model.Id" />
+                                <button type="submit" title="Delete"><i class="bi bi-trash"></i></button>
+                            </form>
+                        }
                     </div>
                 }
             </div>

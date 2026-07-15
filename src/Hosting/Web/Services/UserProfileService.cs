@@ -47,7 +47,31 @@ public class UserProfileService : IUserProfileService
             model.HomePlaceName = place is null ? null : place.Name + (!string.IsNullOrWhiteSpace(place.City) ? $", {place.City}" : "");
         }
 
+        model.CalendarFeedUrl = await GetCalendarFeedUrlAsync();
+
         return model;
+    }
+
+    private async Task<string?> GetCalendarFeedUrlAsync()
+    {
+        var response = await _httpClient.GetAsync("api/users/me/calendar-feed");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
+
+        var body = await response.Content.ReadFromJsonAsync<CalendarFeedBody>(JsonOptions);
+
+        if (body is null || _httpClient.BaseAddress is null)
+        {
+            return null;
+        }
+
+        // Path is API-relative (e.g. "/api/calendar/{userId}/{token}.ics") — resolve
+        // against the API's own base address, same pattern as MediaService.GetUrlAsync,
+        // since Web and API run on different ports/hosts.
+        return new Uri(_httpClient.BaseAddress, body.Path).ToString();
     }
 
     public async Task<bool> SetHomePlaceAsync(Guid? placeId)
@@ -83,6 +107,11 @@ public class UserProfileService : IUserProfileService
             ProfilePhotoUrl = body.ProfilePhotoUrl,
             CreatedOn = body.CreatedOn
         };
+    }
+
+    private sealed class CalendarFeedBody
+    {
+        public string Path { get; set; } = string.Empty;
     }
 
     private sealed class ProfileBody

@@ -92,13 +92,13 @@
 }
 
 .wizard-step.active .wizard-step-circle {
-    background: var(--primary);
-    color: #fff;
+    background: var(--gold);
+    color: var(--navy-deep);
 }
 
 .wizard-step.done .wizard-step-circle {
-    background: var(--primary);
-    color: #fff;
+    background: var(--gold);
+    color: var(--navy-deep);
 }
 
 .wizard-step-line {
@@ -245,7 +245,7 @@
 
     .event-type-card.selected {
         border-color: var(--primary);
-        background: #F4F1FF;
+        background: #FBF6E8;
     }
 
         .event-type-card.selected i {
@@ -259,8 +259,8 @@
         width: 18px;
         height: 18px;
         border-radius: 50%;
-        background: var(--primary);
-        color: #fff;
+        background: var(--gold);
+        color: var(--navy-deep);
         display: none;
         align-items: center;
         justify-content: center;
@@ -401,7 +401,7 @@
         width: 32px;
         height: 32px;
         border-radius: 8px;
-        background: #F4F1FF;
+        background: #FBF6E8;
         color: var(--primary);
         display: flex;
         align-items: center;
@@ -440,8 +440,8 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: var(--primary);
-    color: #fff;
+    background: var(--gold);
+    color: var(--navy-deep);
     border: none;
     border-radius: var(--radius-md);
     padding: 10px 20px;
@@ -535,7 +535,7 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: #F4F1FF;
+    background: #FBF6E8;
     color: var(--primary);
     display: flex;
     align-items: center;
@@ -577,7 +577,7 @@
     }
 
 .wizard-info-banner {
-    background: #F4F1FF;
+    background: #FBF6E8;
     border-radius: var(--radius-md);
     padding: var(--space-lg);
     margin-top: var(--space-lg);

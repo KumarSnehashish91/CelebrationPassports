@@ -1,0 +1,86 @@
+@model List<CelebrationPassports.Web.Models.MemoryMap.MemoryMapPinViewModel>
+@using System.Text.Json
+
+@{
+    ViewData["Title"] = "Memory Map";
+    var pinsJson = JsonSerializer.Serialize(Model.Select(p => new
+    {
+        lat = p.Latitude,
+        lng = p.Longitude,
+        title = p.Title,
+        date = p.EventDate.ToString("MMM dd, yyyy"),
+        place = p.PlaceName,
+        photoCount = p.PhotoCount,
+        url = p.StoryId.HasValue ? Url.Action("Details", "Stories", new { id = p.StoryId }) : null
+    }));
+}
+
+<div class="dashboard">
+
+    <div class="dashboard-card" style="padding: 24px;">
+
+        <div class="card-header">
+            <h4><i class="bi bi-map"></i> Memory Map</h4>
+        </div>
+
+        <p>Every place your confirmed memories happened.</p>
+
+        @if (Model.Count == 0)
+        {
+            <p>No geo-tagged memories yet — chapters get a pin here once they're confirmed and have a location.</p>
+        }
+        else
+        {
+            <div id="memoryMap" style="height:520px;border-radius:var(--radius-md);overflow:hidden;"></div>
+        }
+
+    </div>
+
+</div>
+
+@if (Model.Count > 0)
+{
+    @section Styles {
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+              integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    }
+
+    @section Scripts {
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <script>
+            (function () {
+                var pins = @Html.Raw(pinsJson);
+
+                var map = L.map('memoryMap');
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 18,
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                var markers = [];
+
+                pins.forEach(function (pin) {
+                    var marker = L.marker([pin.lat, pin.lng]).addTo(map);
+
+                    var popupHtml = '<strong>' + pin.title + '</strong><br>' +
+                        pin.date + (pin.place ? ' &middot; ' + pin.place : '') + '<br>' +
+                        pin.photoCount + (pin.photoCount === 1 ? ' photo' : ' photos');
+
+                    if (pin.url) {
+                        popupHtml += '<br><a href="' + pin.url + '">View memory</a>';
+                    }
+
+                    marker.bindPopup(popupHtml);
+                    markers.push(marker);
+                });
+
+                if (markers.length === 1) {
+                    map.setView([pins[0].lat, pins[0].lng], 10);
+                } else {
+                    map.fitBounds(L.featureGroup(markers).getBounds().pad(0.2));
+                }
+            })();
+        </script>
+    }
+}

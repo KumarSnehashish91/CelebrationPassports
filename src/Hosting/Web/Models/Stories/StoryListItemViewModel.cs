@@ -4,6 +4,8 @@ public class StoryListItemViewModel
 {
     public Guid Id { get; set; }
 
+    public Guid PassportId { get; set; }
+
     public string Title { get; set; } = string.Empty;
 
     public string? PlaceName { get; set; }

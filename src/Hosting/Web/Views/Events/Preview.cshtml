@@ -1,9 +1,25 @@
 @model CelebrationPassports.Web.Models.Events.EventWizardViewModel
 @using CelebrationPassports.Web.Models.Events
+@using CelebrationPassports.Web.Models.Expenses
+@using CelebrationPassports.Web.Models.TripPlanner
+@using CelebrationPassports.Web.Models.MemoryMap
+@using CelebrationPassports.Web.Models.Stories
+@using System.Text.Json
 @using System.Linq
 
 @{
     ViewData["Title"] = "Event Preview";
+
+    var budget = ViewData["Budget"] as EventBudgetSummaryViewModel ?? new EventBudgetSummaryViewModel { EventId = Model.Id ?? Guid.Empty };
+    var expenses = ViewData["Expenses"] as List<ExpenseViewModel> ?? [];
+
+    // Mirrors CelebrationPassports.Web.Controllers.EventsController.VacationEventType.
+    var isVacation = Model.EventType == 4;
+    var itinerary = ViewData["Itinerary"] as List<TripPlanDayViewModel> ?? [];
+    var tripPins = ViewData["TripPins"] as List<MemoryMapPinViewModel> ?? [];
+    var linkableStories = ViewData["LinkableStories"] as List<StoryListItemViewModel> ?? [];
+    var tripPhotos = ViewData["TripPhotos"] as List<string> ?? [];
+    var tripPhotoCount = ViewData["TripPhotoCount"] as int? ?? 0;
 
     var typeOption = EventTypeOption.All.FirstOrDefault(o => o.Value == Model.EventType);
     var typeLabel = typeOption?.Label ?? "Event";
@@ -23,6 +39,11 @@
     };
 
     var canCancel = Model.Status is 1 or 2;
+
+    // Budget/expenses stay editable through Ongoing and Completed — unlike the
+    // read-only wizard fields above, this is exactly when people are actually spending
+    // and settling up. Only a Cancelled event has nothing left to log.
+    var canEditBudget = Model.Status != 5;
 
     var dateLabel = Model.EventDate?.ToString("MMMM dd, yyyy") ?? "Date not set";
     string? timeLabel = null;
@@ -112,6 +133,90 @@
                 <p>@(string.IsNullOrWhiteSpace(Model.Description) ? "No description added yet." : Model.Description)</p>
             </div>
 
+            @if (isVacation)
+            {
+                <div class="wizard-card">
+                    <h4><i class="bi bi-map"></i> Itinerary</h4>
+
+                    @if (TempData["ItineraryError"] is string itineraryError)
+                    {
+                        <div class="field-error mb-3">@itineraryError</div>
+                    }
+
+                    @if (itinerary.Count == 0)
+                    {
+                        <p class="field-hint">No itinerary yet — generate a day-by-day plan with AI.</p>
+                    }
+                    else
+                    {
+                        <div class="itin-list">
+                            @foreach (var day in itinerary)
+                            {
+                                <div class="itin-day">
+                                    <div class="itin-day-num">DAY @day.DayNumber</div>
+                                    <div class="itin-day-txt"><strong>@day.Title.</strong> @day.Description</div>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    @if (canEditBudget)
+                    {
+                        <form asp-action="GenerateItinerary" method="post" class="itin-generate-form">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <input type="hidden" name="destination" value="@(locationLabel ?? Model.Title)" />
+                            <input type="number" name="days" min="1" max="14" value="3" title="Number of days" />
+                            <input type="text" name="notes" placeholder="Preferences (optional)" style="flex:1;" maxlength="300" />
+                            <button type="submit" class="btn-wizard-secondary" style="width:auto;">
+                                <i class="bi bi-stars"></i> @(itinerary.Count == 0 ? "Generate" : "Regenerate")
+                            </button>
+                        </form>
+
+                        @if (itinerary.Count > 0)
+                        {
+                            <p class="field-hint" style="margin-top:8px;">Regenerating replaces the itinerary above.</p>
+                        }
+                    }
+                </div>
+            }
+
+            @if (isVacation && Model.StoryId.HasValue)
+            {
+                <div class="wizard-card">
+                    <h4>
+                        Trip Photos
+                        @if (tripPhotoCount > 0)
+                        {
+                            <span style="font-weight:400;font-size:12px;color:var(--text-light);"> &middot; @tripPhotoCount @(tripPhotoCount == 1 ? "photo" : "photos")</span>
+                        }
+                    </h4>
+
+                    @if (tripPhotos.Count == 0)
+                    {
+                        <p class="field-hint">
+                            No photos yet — add some to a chapter in the linked story and
+                            they'll show up here.
+                        </p>
+                    }
+                    else
+                    {
+                        <div class="trip-photo-grid">
+                            @foreach (var url in tripPhotos)
+                            {
+                                <div class="trip-photo-item"><img src="@url" alt="Trip photo" loading="lazy" /></div>
+                            }
+                        </div>
+
+                        @if (tripPhotoCount > tripPhotos.Count)
+                        {
+                            <a asp-controller="Stories" asp-action="Details" asp-route-id="@Model.StoryId" class="field-hint" style="display:block;margin-top:10px;">
+                                View all @tripPhotoCount photos in the story &rarr;
+                            </a>
+                        }
+                    }
+                </div>
+            }
+
             <div class="wizard-card">
                 <h4>Guests (@Model.Guests.Count)</h4>
 
@@ -150,7 +255,7 @@
                         @foreach (var calendarEvent in Model.CalendarEvents.OrderBy(c => c.EventTime))
                         {
                             <div class="guest-row">
-                                <div class="guest-avatar" style="background:@(string.IsNullOrWhiteSpace(calendarEvent.ColorTag) ? "#7C3AED" : calendarEvent.ColorTag);"></div>
+                                <div class="guest-avatar" style="background:@(string.IsNullOrWhiteSpace(calendarEvent.ColorTag) ? "#D4AF37" : calendarEvent.ColorTag);"></div>
                                 <div class="guest-info">
                                     <strong>@calendarEvent.Title</strong>
                                     <span>
@@ -174,7 +279,7 @@
 
                         <div style="display:flex;gap:8px;">
                             <input type="datetime-local" name="eventTime" required style="flex:1;" />
-                            <input type="color" name="colorTag" value="#7C3AED" style="width:44px;padding:2px;" />
+                            <input type="color" name="colorTag" value="#D4AF37" style="width:44px;padding:2px;" />
                         </div>
 
                         <button type="submit" class="btn-wizard-secondary" style="width:auto;align-self:flex-start;">
@@ -232,6 +337,164 @@
                 </div>
             </div>
 
+            <div class="wizard-card">
+                <h4><i class="bi bi-wallet2"></i> Budget</h4>
+
+                @if (budget.Categories.Count == 0)
+                {
+                    <p class="field-hint">No budget set yet — set one below to start tracking spend by category.</p>
+                }
+                else
+                {
+                    @foreach (var cat in budget.Categories)
+                    {
+                        <div class="budget-mini">
+                            <div class="lbl">@cat.CategoryName</div>
+                            <div class="amt">
+                                &#8377; @cat.SpentAmount.ToString("N0") @(cat.BudgetedAmount > 0 ? $"/ ₹ {cat.BudgetedAmount:N0}" : "")
+                            </div>
+                        </div>
+                        @if (cat.BudgetedAmount > 0)
+                        {
+                            <div class="budget-bar">
+                                <div class="fill @(cat.IsOverBudget ? "over" : "")" style="width:@(cat.PercentSpent)%;"></div>
+                            </div>
+                        }
+                    }
+
+                    <div class="budget-mini budget-total-row">
+                        <div class="lbl">Total</div>
+                        <div class="amt">
+                            &#8377; @budget.TotalSpent.ToString("N0") @(budget.TotalBudgeted > 0 ? $"/ ₹ {budget.TotalBudgeted:N0}" : "")
+                        </div>
+                    </div>
+                }
+
+                @if (canEditBudget)
+                {
+                    <form asp-action="SetCategoryBudget" method="post" class="budget-set-form">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <select name="category" required>
+                            @foreach (var opt in ExpenseCategoryOption.All)
+                            {
+                                <option value="@opt.Value">@opt.Label</option>
+                            }
+                        </select>
+                        <input type="number" name="budgetedAmount" min="0" step="1" placeholder="₹ Budget" required />
+                        <button type="submit" class="btn-wizard-secondary" style="width:auto;">Set</button>
+                    </form>
+                }
+            </div>
+
+            <div class="wizard-card">
+                <h4><i class="bi bi-receipt"></i> Expenses (@expenses.Count)</h4>
+
+                @if (canEditBudget)
+                {
+                    <form asp-action="AddExpense" method="post" class="expense-form" style="margin-bottom:var(--space-md);">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="expense-form-row">
+                            <select name="category" required>
+                                @foreach (var opt in ExpenseCategoryOption.All)
+                                {
+                                    <option value="@opt.Value">@opt.Label</option>
+                                }
+                            </select>
+                            <input type="number" name="amount" min="0.01" step="0.01" placeholder="₹ Amount" required />
+                        </div>
+                        <div class="expense-form-row">
+                            <input type="text" name="description" placeholder="What was it for? (optional)" style="flex:1;" maxlength="300" />
+                            <input type="date" name="spentOn" />
+                        </div>
+                        <button type="submit" class="btn-wizard-secondary" style="width:auto;align-self:flex-start;">
+                            <i class="bi bi-plus-lg"></i> Log Expense
+                        </button>
+                    </form>
+                }
+
+                @if (expenses.Count == 0)
+                {
+                    <p class="field-hint">No expenses logged yet.</p>
+                }
+                else
+                {
+                    <div class="expense-list">
+                        @foreach (var expense in expenses)
+                        {
+                            var catOpt = ExpenseCategoryOption.All.FirstOrDefault(o => o.Value == expense.Category);
+                            <div class="expense-row">
+                                <div class="expense-cat-icon"><i class="bi @(catOpt?.Icon ?? "bi-tag")"></i></div>
+                                <div class="expense-info">
+                                    <strong>@(string.IsNullOrWhiteSpace(expense.Description) ? expense.CategoryName : expense.Description)</strong>
+                                    <span>@expense.CategoryName &middot; @expense.SpentOn.ToString("MMM dd") &middot; @expense.CreatedByName</span>
+                                </div>
+                                <div class="expense-amt">&#8377; @expense.Amount.ToString("N0")</div>
+
+                                @if (expense.IsMine)
+                                {
+                                    <form asp-action="DeleteExpense" method="post" class="expense-delete">
+                                        <input type="hidden" name="id" value="@Model.Id" />
+                                        <input type="hidden" name="expenseId" value="@expense.Id" />
+                                        <button type="submit" title="Delete"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+
+            @if (isVacation)
+            {
+                <div class="wizard-card">
+                    <h4><i class="bi bi-pin-map"></i> Memory Map</h4>
+
+                    @if (!Model.StoryId.HasValue)
+                    {
+                        <p class="field-hint">
+                            Link this trip to one of your Memories stories to pull in real
+                            location pins from its chapters.
+                        </p>
+
+                        @if (linkableStories.Count == 0)
+                        {
+                            <p class="field-hint">
+                                No stories yet in this passport —
+                                <a asp-controller="Stories" asp-action="Create">create one</a>
+                                and add geo-tagged chapters, then come back to link it here.
+                            </p>
+                        }
+                        else
+                        {
+                            <form asp-action="LinkStory" method="post" class="budget-set-form">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <select name="storyId" required>
+                                    @foreach (var story in linkableStories)
+                                    {
+                                        <option value="@story.Id">@story.Title (@story.ChapterCount @(story.ChapterCount == 1 ? "chapter" : "chapters"))</option>
+                                    }
+                                </select>
+                                <button type="submit" class="btn-wizard-secondary" style="width:auto;">Link</button>
+                            </form>
+                        }
+                    }
+                    else if (tripPins.Count == 0)
+                    {
+                        <p class="field-hint">
+                            No locations pinned yet — pins appear here once photos with a
+                            place are confirmed into chapters in the linked story.
+                        </p>
+                    }
+                    else
+                    {
+                        <div id="tripMemoryMap" class="map-mini"></div>
+                        <div class="field-hint" style="margin-top:8px;">
+                            @tripPins.Count @(tripPins.Count == 1 ? "location" : "locations") pinned across this trip
+                        </div>
+                    }
+                </div>
+            }
+
             @if (!string.IsNullOrEmpty(Model.CoverImageUrl))
             {
                 <div class="wizard-card">
@@ -248,3 +511,44 @@
     </div>
 
 </div>
+
+@if (isVacation && tripPins.Count > 0)
+{
+    var pinsJson = JsonSerializer.Serialize(tripPins.Select(p => new
+    {
+        lat = p.Latitude,
+        lng = p.Longitude,
+        title = p.Title,
+        place = p.PlaceName
+    }));
+
+    @section Styles {
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+              integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    }
+
+    @section Scripts {
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <script>
+            (function () {
+                var pins = @Html.Raw(pinsJson);
+
+                var map = L.map('tripMemoryMap', { zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false });
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+
+                var markers = pins.map(function (pin) {
+                    var marker = L.marker([pin.lat, pin.lng]).addTo(map);
+                    marker.bindPopup('<strong>' + pin.title + '</strong>' + (pin.place ? '<br>' + pin.place : ''));
+                    return marker;
+                });
+
+                if (markers.length === 1) {
+                    map.setView([pins[0].lat, pins[0].lng], 11);
+                } else {
+                    map.fitBounds(L.featureGroup(markers).getBounds().pad(0.3));
+                }
+            })();
+        </script>
+    }
+}

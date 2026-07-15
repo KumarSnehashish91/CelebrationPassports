@@ -1,0 +1,51 @@
+@model CelebrationPassports.Web.Models.Events.CelebrationListItemViewModel
+
+@{
+    // Mirrors CelebrationPassports.Persistence.Enums.EventStatus (Draft=1, Upcoming=2,
+    // Ongoing=3, Completed=4, Cancelled=5) — duplicated as a plain mapping since Web no
+    // longer references Persistence directly.
+    var (statusLabel, statusClass) = Model.Status switch
+    {
+        1 => ("Draft", "draft"),
+        2 => ("Upcoming", "upcoming"),
+        3 => ("Ongoing", "ongoing"),
+        4 => ("Completed", "done"),
+        5 => ("Cancelled", "cancelled"),
+        _ => ("Trip", "upcoming")
+    };
+
+    // Draft and Upcoming trips can still be updated, so they open the edit wizard.
+    // Ongoing/Completed/Cancelled trips are preview-only.
+    var linkAction = Model.Status is 1 or 2 ? "Create" : "Preview";
+
+    var countdownLabel = Model.IsPast ? "Days Ago" : "Days Left";
+
+    var budgetLabel = Model.IsPast ? "Spent" : "Budget";
+    var budgetAmount = Model.IsPast ? Model.TotalSpent : Model.TotalBudgeted;
+}
+
+<a asp-controller="Events" asp-action="@linkAction" asp-route-id="@Model.Id" class="event-row">
+
+    <img src="@Model.ImageUrl" alt="@Model.Title" class="event-row-cover" />
+
+    <div class="event-row-info">
+        <h5>@Model.Title</h5>
+        <div class="event-row-meta">
+            <span>@Model.StartDate.ToString("MMM dd, yyyy")</span>
+            <span><i class="bi bi-airplane"></i> @(Model.PlaceName ?? "Trip")</span>
+        </div>
+    </div>
+
+    <div class="event-row-budget">
+        <div class="lbl">@budgetLabel</div>
+        <div class="amt">@(budgetAmount > 0 ? $"₹ {budgetAmount:N0}" : "—")</div>
+    </div>
+
+    <div class="countdown-mini">
+        <div class="num">@Model.CountdownDays</div>
+        <div class="lbl">@countdownLabel</div>
+    </div>
+
+    <div class="status-pill @statusClass">@statusLabel</div>
+
+</a>

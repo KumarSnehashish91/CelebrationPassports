@@ -1,0 +1,65 @@
+@model CelebrationPassports.Web.Models.Stories.StoryDetailViewModel
+
+@{
+    ViewData["Title"] = Model.Title + " — Story";
+    var narrative = ViewData["Narrative"] as string;
+    var paragraphs = string.IsNullOrWhiteSpace(narrative)
+        ? new List<string>()
+        : narrative.Split("\n\n", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+}
+
+<div class="narrative-page">
+
+    <div class="event-preview-topbar">
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn-wizard-secondary">
+            <i class="bi bi-arrow-left"></i> Back to @Model.Title
+        </a>
+    </div>
+
+    <div class="event-preview-hero narrative-hero @(!string.IsNullOrEmpty(Model.CoverImageUrl) ? "has-cover" : "")"
+         style="@(!string.IsNullOrEmpty(Model.CoverImageUrl) ? $"background-image:url('{Model.CoverImageUrl}')" : "")">
+        <div class="event-preview-hero-content">
+            <h1>@Model.Title</h1>
+            <div class="event-preview-hero-meta">
+                @if (Model.StartDate.HasValue)
+                {
+                    <span><i class="bi bi-calendar3"></i> @Model.StartDate.Value.ToString("MMMM yyyy")</span>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.PlaceName))
+                {
+                    <span><i class="bi bi-geo-alt"></i> @Model.PlaceName</span>
+                }
+                <span><i class="bi bi-collection"></i> @Model.Chapters.Count @(Model.Chapters.Count == 1 ? "chapter" : "chapters")</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="narrative-badge"><i class="bi bi-stars"></i> Written by AI from your chapters</div>
+
+    @if (paragraphs.Count == 0)
+    {
+        <div class="narrative-empty">
+            <i class="bi bi-cloud-slash"></i>
+            <p>
+                Couldn't generate a story right now — the local AI model may be unavailable.
+                Try again in a moment.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="narrative-body">
+            @foreach (var paragraph in paragraphs)
+            {
+                <p>@paragraph</p>
+            }
+        </div>
+    }
+
+    <div class="narrative-footer">
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn-wizard-secondary">
+            <i class="bi bi-collection"></i> View All Chapters
+        </a>
+    </div>
+
+</div>

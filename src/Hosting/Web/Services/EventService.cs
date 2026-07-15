@@ -95,12 +95,26 @@ public class EventService : IEventService
                 Title = e.Title,
                 EventType = e.EventType,
                 Status = e.Status,
-                StartDate = DateOnly.FromDateTime(e.StartDate)
+                StartDate = DateOnly.FromDateTime(e.StartDate),
+                TotalBudgeted = e.TotalBudgeted,
+                TotalSpent = e.TotalSpent
             };
 
             if (imageUrl is not null)
             {
                 item.ImageUrl = imageUrl;
+            }
+
+            if (e.PlaceId.HasValue)
+            {
+                var place = await _placeService.GetByIdAsync(e.PlaceId.Value);
+
+                if (place is not null)
+                {
+                    item.PlaceName = string.IsNullOrWhiteSpace(place.City)
+                        ? place.Name
+                        : $"{place.Name}, {place.City}";
+                }
             }
 
             result.Add(item);
@@ -141,6 +155,7 @@ public class EventService : IEventService
             TimeZoneId = body.TimeZoneId,
             PlaceId = body.PlaceId,
             CreatedAt = body.CreatedAt,
+            StoryId = body.StoryId,
             CalendarEvents = body.CalendarEvents.Select(c => new CalendarEventViewModel
             {
                 Id = c.Id,
@@ -261,6 +276,12 @@ public class EventService : IEventService
         return response.IsSuccessStatusCode;
     }
 
+    public async Task<bool> LinkStoryAsync(Guid eventId, Guid storyId)
+    {
+        var response = await _httpClient.PutAsJsonAsync($"api/events/{eventId}/story", new { storyId });
+        return response.IsSuccessStatusCode;
+    }
+
     // Mirrors CelebrationPassports.Persistence.Enums.EventStatus (Draft=1, Upcoming=2,
     // Ongoing=3, Completed=4, Cancelled=5) — duplicated as a plain mapping since Web no
     // longer references Persistence directly.
@@ -282,6 +303,9 @@ public class EventService : IEventService
         public int Status { get; set; }
         public DateTime StartDate { get; set; }
         public Guid? CoverMediaId { get; set; }
+        public Guid? PlaceId { get; set; }
+        public decimal TotalBudgeted { get; set; }
+        public decimal TotalSpent { get; set; }
     }
 
     private sealed class EventDetailBody
@@ -300,6 +324,7 @@ public class EventService : IEventService
         public Guid? PlaceId { get; set; }
         public Guid? CoverMediaId { get; set; }
         public string? Notes { get; set; }
+        public Guid? StoryId { get; set; }
         public DateTime CreatedAt { get; set; }
         public List<CalendarEventBody> CalendarEvents { get; set; } = [];
     }

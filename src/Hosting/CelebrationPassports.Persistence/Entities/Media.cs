@@ -24,6 +24,18 @@ public class Media
 
     public DateTime? CapturedAt { get; set; }
 
+    // When this row was uploaded (not when the photo was taken — see CapturedAt for
+    // that). Drives the auto-chapter clustering debounce: the background sweep only
+    // considers unassigned media whose upload has "settled" for a few minutes, so a
+    // rapid burst of uploads clusters once instead of repeatedly mid-upload.
+    public DateTime UploadedOn { get; set; }
+
+    // True only for uploads meant to eventually land in a Chapter via auto-clustering
+    // (Stories/QuickUpload). False for unattached uploads used for something else
+    // entirely (e.g. an Event's cover photo) — those also have ChapterId == null while
+    // pending, but must never be swept into an auto-generated chapter.
+    public bool PendingClustering { get; set; }
+
     public bool IsDeleted { get; set; }
 
     public DateTime? DeletedOn { get; set; }

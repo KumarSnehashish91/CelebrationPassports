@@ -1,0 +1,127 @@
+@model CelebrationPassports.Web.Models.TripPlanner.TripPlanViewModel
+
+@{
+    ViewData["Title"] = "Trip Planner";
+}
+
+<div class="dashboard">
+
+    <div class="dashboard-card" style="padding: 24px; max-width: 800px;">
+
+        <div class="card-header">
+            <h4><i class="bi bi-airplane"></i> Trip Planner</h4>
+        </div>
+
+        <p>Tell us where you're headed and AI will draft an itinerary to get you started.</p>
+
+        <form asp-action="Index" method="post" id="tripPlannerForm">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-4">
+                <label asp-for="Destination"></label>
+                <input asp-for="Destination" class="form-control" placeholder="e.g. Udaipur, Rajasthan" />
+                <span asp-validation-for="Destination" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Days"></label>
+                <input asp-for="Days" type="number" min="1" max="14" class="form-control" style="max-width:120px;" />
+                <span asp-validation-for="Days" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Notes"></label>
+                <textarea asp-for="Notes" class="form-control" rows="2" placeholder="e.g. traveling with kids, love hiking, budget-friendly"></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+
+            <button type="submit" id="tripPlannerSubmit" class="primary-btn" style="width:auto;">
+                <i class="bi bi-stars"></i> Generate Trip Plan
+            </button>
+
+        </form>
+
+    </div>
+
+    @if (Model.HasResult)
+    {
+        <div class="dashboard-card" style="padding: 24px; max-width: 800px; margin-top: 20px;">
+
+            <div class="card-header">
+                <h4>@Model.Destination &middot; @Model.Days @(Model.Days == 1 ? "Day" : "Days")</h4>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Overview))
+            {
+                <p>@Model.Overview</p>
+            }
+
+            @if (Model.PhotoUrls.Count > 0)
+            {
+                <div class="memory-gallery" style="grid-template-columns:repeat(5,1fr);">
+                    @foreach (var photoUrl in Model.PhotoUrls)
+                    {
+                        <div class="memory-card">
+                            <img src="@photoUrl" alt="@Model.Destination" />
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (Model.Itinerary.Count > 0)
+            {
+                <h5 style="margin-top:24px;">Itinerary</h5>
+
+                <div class="chapter-list">
+                    @foreach (var day in Model.Itinerary)
+                    {
+                        <div class="chapter-row" style="cursor:default;">
+                            <div class="chapter-row-icon">
+                                <i class="bi bi-calendar-day"></i>
+                            </div>
+                            <div class="chapter-row-info">
+                                <strong>Day @day.DayNumber &middot; @day.Title</strong>
+                                <span>@day.Description</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+            <p class="field-hint" style="margin-top:16px;">
+                <i class="bi bi-info-circle"></i>
+                AI-generated draft — double-check details like hours, prices, and availability before booking.
+                Photos are generic placeholders, not real photos of @Model.Destination.
+            </p>
+
+            <form asp-action="SaveAsTrip" method="post" style="margin-top:16px;">
+                <input type="hidden" name="destination" value="@Model.Destination" />
+                <input type="hidden" name="description" value="@Model.BuildSavableDescription()" />
+                @for (var i = 0; i < Model.Itinerary.Count; i++)
+                {
+                    <input type="hidden" name="itinerary[@i].DayNumber" value="@Model.Itinerary[i].DayNumber" />
+                    <input type="hidden" name="itinerary[@i].Title" value="@Model.Itinerary[i].Title" />
+                    <input type="hidden" name="itinerary[@i].Description" value="@Model.Itinerary[i].Description" />
+                }
+                <button type="submit" class="primary-btn" style="width:auto;">
+                    <i class="bi bi-bookmark-plus"></i> Save as Trip
+                </button>
+            </form>
+
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('tripPlannerForm')?.addEventListener('submit', function () {
+            var btn = document.getElementById('tripPlannerSubmit');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Generating... this can take a moment';
+            }
+        });
+    </script>
+}

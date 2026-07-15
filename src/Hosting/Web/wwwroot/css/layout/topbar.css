@@ -38,7 +38,7 @@
 }
 
     .search-box input:focus {
-        border-color: #6f4ef6;
+        border-color: var(--gold);
     }
 .top-icons {
     display: flex;
@@ -57,7 +57,7 @@
     }
 
         .top-icons button:hover {
-            background: #ece8ff;
+            background: #FBF6E8;
         }
 .profile {
     display: flex;
@@ -171,7 +171,7 @@
     }
 
         .profile-menu a:hover {
-            background: #F6F4FF;
+            background: #FBF6E8;
         }
 
     .profile-menu hr {
@@ -253,12 +253,12 @@
 }
 
     .notification-item:hover {
-        background: #F6F4FF;
+        background: #FBF6E8;
     }
 
     .notification-item.unread {
-        background: #FAF9FF;
-        border-left-color: #6f4ef6;
+        background: #FBF6E8;
+        border-left-color: var(--gold);
     }
 
     .notification-item strong {

@@ -14,6 +14,9 @@ public class EventService : IEventService
 {
     private readonly IEventRepository _eventRepository;
     private readonly IGenericRepository<CalendarEvent> _calendarEventRepository;
+    private readonly IGenericRepository<Expense> _expenseRepository;
+    private readonly IGenericRepository<ExpenseCategoryBudget> _budgetRepository;
+    private readonly IGenericRepository<Story> _storyRepository;
     private readonly IPassportRepository _passportRepository;
     private readonly IPassportAccessGuard _accessGuard;
     private readonly IUnitOfWork _unitOfWork;
@@ -24,6 +27,9 @@ public class EventService : IEventService
     public EventService(
         IEventRepository eventRepository,
         IGenericRepository<CalendarEvent> calendarEventRepository,
+        IGenericRepository<Expense> expenseRepository,
+        IGenericRepository<ExpenseCategoryBudget> budgetRepository,
+        IGenericRepository<Story> storyRepository,
         IPassportRepository passportRepository,
         IPassportAccessGuard accessGuard,
         IUnitOfWork unitOfWork,
@@ -33,6 +39,9 @@ public class EventService : IEventService
     {
         _eventRepository = eventRepository;
         _calendarEventRepository = calendarEventRepository;
+        _expenseRepository = expenseRepository;
+        _budgetRepository = budgetRepository;
+        _storyRepository = storyRepository;
         _passportRepository = passportRepository;
         _accessGuard = accessGuard;
         _unitOfWork = unitOfWork;
@@ -57,7 +66,10 @@ public class EventService : IEventService
             summaries = summaries.Where(e => e.Status == status.Value);
         }
 
-        return summaries.ToList();
+        var result = summaries.ToList();
+        await AttachBudgetTotalsAsync(result);
+
+        return result;
     }
 
     public async Task<EventDetailDto> GetByIdAsync(Guid userId, Guid eventId)
@@ -188,6 +200,28 @@ public class EventService : IEventService
         return MapToDetail(@event);
     }
 
+    public async Task<EventDetailDto> LinkStoryAsync(Guid userId, Guid eventId, Guid storyId)
+    {
+        var @event = await _eventRepository.GetByIdWithCalendarEventsAsync(eventId)
+            ?? throw new NotFoundException("Event not found.");
+
+        await _accessGuard.EnsureMemberAsync(userId, @event.PassportId);
+
+        var story = await _storyRepository.GetByIdAsync(storyId)
+            ?? throw new NotFoundException("Story not found.");
+
+        if (story.PassportId != @event.PassportId)
+        {
+            throw new ValidationException("That story belongs to a different passport.");
+        }
+
+        @event.StoryId = storyId;
+
+        await _unitOfWork.SaveChangesAsync();
+
+        return MapToDetail(@event);
+    }
+
     public async Task<IReadOnlyList<EventSummaryDto>> GetUpcomingForUserAsync(Guid userId, int take)
     {
         var passports = await _passportRepository.GetForUserAsync(userId);
@@ -231,7 +265,42 @@ public class EventService : IEventService
             summaries = summaries.Where(e => e.Status == status.Value);
         }
 
-        return summaries.ToList();
+        var result = summaries.ToList();
+        await AttachBudgetTotalsAsync(result);
+
+        return result;
+    }
+
+    // Two batched queries (all budgets/expenses for the visible events) instead of one
+    // per event — the event list repository methods return already-materialized lists,
+    // not IQueryable, so this can't be folded into the original DB query without a
+    // repository change; batching here still keeps it at a fixed 2 extra round-trips
+    // regardless of list size.
+    private async Task AttachBudgetTotalsAsync(List<EventSummaryDto> summaries)
+    {
+        if (summaries.Count == 0)
+        {
+            return;
+        }
+
+        var eventIds = summaries.Select(s => s.Id).ToHashSet();
+
+        var budgets = await _budgetRepository.FindAsync(b => eventIds.Contains(b.EventId));
+        var expenses = await _expenseRepository.FindAsync(e => eventIds.Contains(e.EventId) && !e.IsDeleted);
+
+        var budgetByEvent = budgets
+            .GroupBy(b => b.EventId)
+            .ToDictionary(g => g.Key, g => g.Sum(b => b.BudgetedAmount));
+
+        var spentByEvent = expenses
+            .GroupBy(e => e.EventId)
+            .ToDictionary(g => g.Key, g => g.Sum(e => e.Amount));
+
+        foreach (var summary in summaries)
+        {
+            summary.TotalBudgeted = budgetByEvent.GetValueOrDefault(summary.Id);
+            summary.TotalSpent = spentByEvent.GetValueOrDefault(summary.Id);
+        }
     }
 
     private static EventSummaryDto MapToSummary(Event @event) => new()

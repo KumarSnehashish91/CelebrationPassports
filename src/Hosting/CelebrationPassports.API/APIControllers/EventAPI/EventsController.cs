@@ -73,4 +73,11 @@ public class EventsController : ControllerBase
         var result = await _eventService.CancelAsync(User.GetUserId(), id);
         return Ok(result);
     }
+
+    [HttpPut("api/events/{id:guid}/story")]
+    public async Task<IActionResult> LinkStory(Guid id, LinkStoryRequest request)
+    {
+        var result = await _eventService.LinkStoryAsync(User.GetUserId(), id, request.StoryId);
+        return Ok(result);
+    }
 }

@@ -19,4 +19,6 @@ public interface IChapterService
     Task<ChapterDetailDto> ConfirmAsync(Guid userId, Guid chapterId, ConfirmChapterRequest request);
 
     Task DiscardAsync(Guid userId, Guid chapterId);
+
+    Task<IReadOnlyList<MemoryMapPinDto>> GetMemoryMapAsync(Guid userId, Guid passportId);
 }

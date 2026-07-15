@@ -11,17 +11,20 @@ public class SettingsController : Controller
 {
     private readonly IUserProfileService _userProfileService;
     private readonly IPlaceService _placeService;
+    private readonly IPassportService _passportService;
 
-    public SettingsController(IUserProfileService userProfileService, IPlaceService placeService)
+    public SettingsController(IUserProfileService userProfileService, IPlaceService placeService, IPassportService passportService)
     {
         _userProfileService = userProfileService;
         _placeService = placeService;
+        _passportService = passportService;
     }
 
     [HttpGet]
     public async Task<IActionResult> Index()
     {
         var model = await _userProfileService.GetSettingsAsync();
+        model.Passports = await _passportService.GetMineAsync();
         return View(model);
     }
 

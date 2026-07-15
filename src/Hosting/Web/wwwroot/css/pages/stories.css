@@ -49,7 +49,7 @@
 
 .story-card-cover {
     height: 160px;
-    background: linear-gradient(135deg, #4C1D95, #1E1B4B);
+    background: linear-gradient(160deg, var(--navy), var(--navy-deep));
     background-size: cover;
     background-position: center;
     display: flex;
@@ -166,3 +166,222 @@
         object-fit: cover;
         display: block;
     }
+
+/*==========================================================
+    VOICE NOTES (Chapter detail page)
+==========================================================*/
+
+.voice-note-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: var(--space-md);
+}
+
+.voice-note-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--bg-body);
+    border-radius: var(--radius-sm);
+}
+
+.voice-note-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--gold-soft);
+    color: var(--navy-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+}
+
+.voice-note-row audio {
+    flex: 1;
+    height: 36px;
+}
+
+/*==========================================================
+    WISHES (Chapter detail page)
+==========================================================*/
+
+.wish-count {
+    color: var(--gold);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.wish-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+}
+
+    .wish-form textarea {
+        background: var(--bg-body);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 12px 14px;
+        font-family: inherit;
+        font-size: 13.5px;
+        color: var(--text);
+        resize: vertical;
+    }
+
+        .wish-form textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+.wish-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.wish {
+    display: flex;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+    .wish:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+.wish-av {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--gold-soft);
+    color: var(--navy-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.wish-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.wish-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.wish-text {
+    font-size: 12.5px;
+    color: var(--text-light);
+    margin-top: 3px;
+    line-height: 1.5;
+}
+
+.wish-date {
+    font-size: 11px;
+    color: #A39C86;
+    margin-top: 4px;
+}
+
+.wish-delete {
+    flex-shrink: 0;
+}
+
+    .wish-delete button {
+        border: none;
+        background: none;
+        color: var(--text-light);
+        cursor: pointer;
+        font-size: 14px;
+        padding: 4px;
+    }
+
+        .wish-delete button:hover {
+            color: #A03D3D;
+        }
+
+/*==========================================================
+    IMMERSIVE STORY NARRATIVE
+==========================================================*/
+
+.narrative-page {
+    padding: var(--space-xl);
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.narrative-hero {
+    min-height: 340px;
+    padding: 48px var(--space-xl) var(--space-xl);
+}
+
+    .narrative-hero .event-preview-hero-content h1 {
+        font-family: var(--font-heading);
+        font-size: 40px;
+        line-height: 1.15;
+    }
+
+.narrative-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(212,175,55,.14);
+    color: var(--gold-hover);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+}
+
+.narrative-body {
+    font-family: var(--font-heading);
+    font-size: 19px;
+    line-height: 1.85;
+    color: var(--navy);
+}
+
+    .narrative-body p {
+        margin: 0 0 22px;
+    }
+
+        .narrative-body p:first-of-type::first-letter {
+            font-size: 58px;
+            font-weight: 700;
+            line-height: .8;
+            float: left;
+            padding: 6px 10px 0 0;
+            color: var(--gold-hover);
+        }
+
+.narrative-empty {
+    text-align: center;
+    padding: var(--space-xl) 0;
+    color: var(--text-light);
+}
+
+    .narrative-empty i {
+        font-size: 32px;
+        color: var(--gold-soft);
+        margin-bottom: 10px;
+        display: block;
+    }
+
+.narrative-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-xl);
+}
