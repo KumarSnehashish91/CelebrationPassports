@@ -28,4 +28,12 @@ public class LocalFileStorageService : IFileStorageService
 
         return $"/{UploadsFolder}/{storedFileName}";
     }
+
+    public async Task<byte[]> ReadAsync(string url, CancellationToken cancellationToken = default)
+    {
+        var fileName = Path.GetFileName(url);
+        var filePath = Path.Combine(_uploadsPath, fileName);
+
+        return await File.ReadAllBytesAsync(filePath, cancellationToken);
+    }
 }

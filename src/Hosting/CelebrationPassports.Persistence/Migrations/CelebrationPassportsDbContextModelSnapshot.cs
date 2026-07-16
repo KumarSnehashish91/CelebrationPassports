@@ -535,6 +535,156 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.ToTable("ExpenseCategoryBudgets", (string)null);
                 });
 
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.GeneratedStory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("BodyParagraphsJson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClosingParagraph")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("GeneratedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("GiftDraftId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("OpeningParagraph")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("PullQuoteOrigin")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PullQuoteText")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int>("RegenerationCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GiftDraftId")
+                        .IsUnique();
+
+                    b.ToTable("GeneratedStories", (string)null);
+                });
+
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.GiftDraft", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("DeliveryMode")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("MessageMediaUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int?>("MessageType")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("PassportGiftId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PassportTitle")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("PersonalMessage")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<int?>("PrintFormat")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RecipientEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("RecipientName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime?>("ScheduledDeliveryDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("SenderUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PassportGiftId")
+                        .IsUnique()
+                        .HasFilter("\"PassportGiftId\" IS NOT NULL");
+
+                    b.HasIndex("SenderUserId");
+
+                    b.ToTable("GiftDrafts", (string)null);
+                });
+
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.GiftPhoto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AiGeneratedInsight")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("GiftDraftId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("UserInsight")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GiftDraftId", "DisplayOrder");
+
+                    b.ToTable("GiftPhotos", (string)null);
+                });
+
             modelBuilder.Entity("CelebrationPassports.Persistence.Entities.GuestbookSubmission", b =>
                 {
                     b.Property<Guid>("Id")
@@ -915,6 +1065,81 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.HasIndex("ChapterId");
 
                     b.ToTable("PassportBookChapters", (string)null);
+                });
+
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.PassportGift", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<Guid?>("ClaimedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ClaimedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DeliveryMode")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("GiftMessage")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("MessageMediaUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int?>("MessageType")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("PassportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PurchasedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("PurchasedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("RecipientEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("RecipientName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("RedemptionCode")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<DateTime?>("ScheduledDeliveryDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClaimedByUserId");
+
+                    b.HasIndex("PassportId")
+                        .IsUnique();
+
+                    b.HasIndex("PurchasedByUserId");
+
+                    b.HasIndex("RedemptionCode")
+                        .IsUnique();
+
+                    b.ToTable("PassportGifts", (string)null);
                 });
 
             modelBuilder.Entity("CelebrationPassports.Persistence.Entities.PassportInvitation", b =>
@@ -2073,6 +2298,46 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.Navigation("Event");
                 });
 
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.GeneratedStory", b =>
+                {
+                    b.HasOne("CelebrationPassports.Persistence.Entities.GiftDraft", "GiftDraft")
+                        .WithOne("Story")
+                        .HasForeignKey("CelebrationPassports.Persistence.Entities.GeneratedStory", "GiftDraftId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GiftDraft");
+                });
+
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.GiftDraft", b =>
+                {
+                    b.HasOne("CelebrationPassports.Persistence.Entities.PassportGift", "PassportGift")
+                        .WithOne()
+                        .HasForeignKey("CelebrationPassports.Persistence.Entities.GiftDraft", "PassportGiftId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CelebrationPassports.Persistence.Entities.User", "SenderUser")
+                        .WithMany("SentGiftDrafts")
+                        .HasForeignKey("SenderUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PassportGift");
+
+                    b.Navigation("SenderUser");
+                });
+
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.GiftPhoto", b =>
+                {
+                    b.HasOne("CelebrationPassports.Persistence.Entities.GiftDraft", "GiftDraft")
+                        .WithMany("Photos")
+                        .HasForeignKey("GiftDraftId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GiftDraft");
+                });
+
             modelBuilder.Entity("CelebrationPassports.Persistence.Entities.GuestbookSubmission", b =>
                 {
                     b.HasOne("CelebrationPassports.Persistence.Entities.Media", "ApprovedMedia")
@@ -2224,6 +2489,32 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("Chapter");
+                });
+
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.PassportGift", b =>
+                {
+                    b.HasOne("CelebrationPassports.Persistence.Entities.User", "ClaimedByUser")
+                        .WithMany("ClaimedPassportGifts")
+                        .HasForeignKey("ClaimedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CelebrationPassports.Persistence.Entities.Passport", "Passport")
+                        .WithOne()
+                        .HasForeignKey("CelebrationPassports.Persistence.Entities.PassportGift", "PassportId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CelebrationPassports.Persistence.Entities.User", "PurchasedByUser")
+                        .WithMany("PurchasedPassportGifts")
+                        .HasForeignKey("PurchasedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ClaimedByUser");
+
+                    b.Navigation("Passport");
+
+                    b.Navigation("PurchasedByUser");
                 });
 
             modelBuilder.Entity("CelebrationPassports.Persistence.Entities.PassportInvitation", b =>
@@ -2618,6 +2909,13 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.Navigation("CalendarEvents");
                 });
 
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.GiftDraft", b =>
+                {
+                    b.Navigation("Photos");
+
+                    b.Navigation("Story");
+                });
+
             modelBuilder.Entity("CelebrationPassports.Persistence.Entities.Media", b =>
                 {
                     b.Navigation("Comments");
@@ -2695,6 +2993,8 @@ namespace CelebrationPassports.Persistence.Migrations
 
                     b.Navigation("AuthoredTimeCapsuleMessages");
 
+                    b.Navigation("ClaimedPassportGifts");
+
                     b.Navigation("Comments");
 
                     b.Navigation("CreatedCalendarEvents");
@@ -2741,7 +3041,11 @@ namespace CelebrationPassports.Persistence.Migrations
 
                     b.Navigation("PassportPeople");
 
+                    b.Navigation("PurchasedPassportGifts");
+
                     b.Navigation("Reactions");
+
+                    b.Navigation("SentGiftDrafts");
 
                     b.Navigation("SentPassportInvitations");
 

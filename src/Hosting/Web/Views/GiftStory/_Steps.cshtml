@@ -1,0 +1,28 @@
+@{
+    var currentStep = (int)(ViewData["CurrentStep"] ?? 1);
+    var steps = new[] { "Photos", "Insights", "Story", "Passport Preview", "Your Message" };
+}
+
+<div class="wizard-steps">
+    @for (var i = 1; i <= steps.Length; i++)
+    {
+        var stepState = i < currentStep ? "done" : (i == currentStep ? "active" : "");
+        <div class="wizard-step @stepState">
+            <div class="wizard-step-circle">
+                @if (i < currentStep)
+                {
+                    <i class="bi bi-check-lg"></i>
+                }
+                else
+                {
+                    @i
+                }
+            </div>
+            <span>@steps[i - 1]</span>
+        </div>
+        if (i < steps.Length)
+        {
+            <div class="wizard-step-line @(i < currentStep ? "done" : "")"></div>
+        }
+    }
+</div>

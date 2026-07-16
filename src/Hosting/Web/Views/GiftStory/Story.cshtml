@@ -1,0 +1,81 @@
+@model CelebrationPassports.Web.Models.GiftStories.GeneratedStoryViewModel
+
+@{
+    ViewData["Title"] = "Your Story, Ready to Read";
+    ViewData["CurrentStep"] = 3;
+    var draft = ViewData["Draft"] as CelebrationPassports.Web.Models.GiftStories.GiftDraftViewModel;
+    var coverPhoto = draft?.Photos.FirstOrDefault();
+}
+
+<div class="wizard-page">
+
+    <div class="wizard-header">
+        <div class="wizard-header-top">
+            <div>
+                <h1>Your Story, Ready to Read</h1>
+                <p>Review it, tweak anything that doesn't feel right, then move on to the printed preview.</p>
+            </div>
+            <a asp-action="Insights" asp-route-id="@draft?.Id" class="btn-wizard-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Insights
+            </a>
+        </div>
+
+        <partial name="_Steps" />
+    </div>
+
+    <div class="gs-story-toolbar">
+        <div class="t">
+            <i class="bi bi-stars"></i>
+            Generated from @(draft?.Photos.Count ?? 0) photos &middot; @Model.UserSourcedCount of your insights, @Model.AiSourcedCount AI-written
+        </div>
+        <form asp-action="Regenerate" method="post">
+            <input type="hidden" name="id" value="@draft?.Id" />
+            <button type="submit" class="btn-wizard-secondary">
+                <i class="bi bi-arrow-repeat"></i> Regenerate
+            </button>
+        </form>
+    </div>
+
+    <div class="gs-story-doc">
+        <div class="gs-eyebrow">A Gift Story &middot; For @draft?.RecipientName</div>
+        <h1>@Model.Title</h1>
+        <div class="gs-meta">A chapter written for @draft?.RecipientName's Passport &middot; @(draft?.Photos.Count ?? 0) photos</div>
+
+        @if (coverPhoto is not null)
+        {
+            <img src="@coverPhoto.Url" alt="Cover" style="width:100%;height:220px;object-fit:cover;border-radius:6px;margin-bottom:26px;" />
+        }
+
+        <p class="ai-written">@Model.OpeningParagraph</p>
+
+        @if (Model.BodyParagraphs.Count > 0)
+        {
+            <p class="@(Model.BodyParagraphs[0].IsAiWritten ? "ai-written" : "")">@Model.BodyParagraphs[0].Text</p>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.PullQuoteText))
+        {
+            <div class="gs-pullquote">"@Model.PullQuoteText"</div>
+        }
+
+        @for (var i = 1; i < Model.BodyParagraphs.Count; i++)
+        {
+            <p class="@(Model.BodyParagraphs[i].IsAiWritten ? "ai-written" : "")">@Model.BodyParagraphs[i].Text</p>
+        }
+
+        <p class="ai-written">@Model.ClosingParagraph</p>
+
+        <div class="gs-legend">
+            <div class="item"><div class="dot user"></div>Your words</div>
+            <div class="item"><div class="dot ai"></div>AI-written</div>
+        </div>
+    </div>
+
+    <div class="wizard-footer" style="max-width:700px;margin:0 auto;">
+        <a asp-action="Insights" asp-route-id="@draft?.Id" class="btn-wizard-secondary">Back to Insights</a>
+        <a asp-action="Print" asp-route-id="@draft?.Id" class="btn-wizard-next">
+            Continue to Passport Preview <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+</div>

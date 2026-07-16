@@ -1,10 +1,16 @@
 using System.Net.Http.Json;
+using System.Text.Json;
 using CelebrationPassports.Web.Interfaces;
 
 namespace CelebrationPassports.Web.Services;
 
 public class AIService : IAIService
 {
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     private readonly HttpClient _httpClient;
 
     public AIService(HttpClient httpClient)
@@ -12,15 +18,22 @@ public class AIService : IAIService
         _httpClient = httpClient;
     }
 
-    public async Task<string?> GenerateAsync(string prompt)
+    public async Task<string?> GenerateAsync(string prompt, int? maxTokens = null)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/ai/generate", prompt);
+        var url = maxTokens is null ? "api/ai/generate" : $"api/ai/generate?maxTokens={maxTokens}";
+        var response = await _httpClient.PostAsJsonAsync(url, prompt);
 
         if (!response.IsSuccessStatusCode)
         {
             return null;
         }
 
-        return await response.Content.ReadFromJsonAsync<string>();
+        var body = await response.Content.ReadFromJsonAsync<GenerateResponseBody>(JsonOptions);
+        return body?.Response;
+    }
+
+    private sealed class GenerateResponseBody
+    {
+        public string? Response { get; set; }
     }
 }

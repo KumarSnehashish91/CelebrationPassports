@@ -85,9 +85,14 @@ builder.Services.AddHttpClient<IUserProfileService, UserProfileService>(client =
     client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<BearerTokenHandler>();
 
+// Same reasoning as the API's AIClient registration — local Ollama inference (trip
+// itineraries, Gift Story generation) can legitimately take longer than the default
+// 100s HttpClient timeout, which otherwise surfaces here as a transport-level read
+// failure rather than a clean timeout.
 builder.Services.AddHttpClient<IAIService, AIService>(client =>
 {
     client.BaseAddress = new Uri(apiBaseUrl);
+    client.Timeout = TimeSpan.FromMinutes(5);
 }).AddHttpMessageHandler<BearerTokenHandler>();
 
 builder.Services.AddHttpClient<ISomedayIdeaService, SomedayIdeaService>(client =>
@@ -138,6 +143,22 @@ builder.Services.AddHttpClient<IChapterSharingService, ChapterSharingService>(cl
 builder.Services.AddHttpClient<IImportService, ImportService>(client =>
 {
     client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<IPassportGiftService, PassportGiftService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+// Generous timeout, not the 5-minute one used for the plain-text AI passthrough — Generate
+// makes one vision call PER PHOTO (up to 30) plus two more for the narrative, all
+// sequential, on the same CPU-only local Ollama setup where a single vision call alone
+// has been observed taking ~100s. The default 100s (or even 5 minutes) was nowhere near
+// enough and surfaced as a dropped-connection error on this specific endpoint.
+builder.Services.AddHttpClient<IGiftStoryService, GiftStoryService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+    client.Timeout = TimeSpan.FromMinutes(30);
 }).AddHttpMessageHandler<BearerTokenHandler>();
 
 var app = builder.Build();

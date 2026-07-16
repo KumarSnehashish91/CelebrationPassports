@@ -13,8 +13,13 @@ public class CelebrationAIService : ICelebrationAIService
         _aiClient = aiClient;
     }
 
-    public async Task<string> GenerateAsync(string prompt)
+    public async Task<string> GenerateAsync(string prompt, int? maxTokens = null)
     {
-        return await _aiClient.GenerateAsync(prompt);
+        return await _aiClient.GenerateAsync(prompt, maxTokens);
+    }
+
+    public async Task<string> GenerateWithImageAsync(string prompt, byte[] imageBytes, int? maxTokens = null, double? temperature = null)
+    {
+        return await _aiClient.GenerateWithImageAsync(prompt, imageBytes, maxTokens, temperature);
     }
 }

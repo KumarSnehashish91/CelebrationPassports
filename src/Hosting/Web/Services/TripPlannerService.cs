@@ -27,7 +27,13 @@ public class TripPlannerService : ITripPlannerService
     public async Task<TripPlanViewModel?> GenerateAsync(string destination, int days, string? notes)
     {
         var prompt = BuildPrompt(destination, days, notes);
-        var raw = await _aiService.GenerateAsync(prompt);
+
+        // Uncapped generation was a real contributor to how long this took — bounded
+        // generously per day (overview + a title/description line each) rather than
+        // left open-ended, on the same CPU-only local Ollama setup where every extra
+        // generated token is measurable wall-clock time.
+        var maxTokens = 80 + (days * 100);
+        var raw = await _aiService.GenerateAsync(prompt, maxTokens);
 
         if (string.IsNullOrWhiteSpace(raw))
         {

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Celebration Passport — Gift Message &amp; Claim Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2937; --navy-deep:#151F2C; --cream:#FDFBF7; --slate:#4B5563;
+    --gold:#D4AF37; --gold-soft:#E7CE85; --soft:#F9FAFB; --line:#E9E3D4; --radius:8px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ font-family:'Inter',sans-serif; background:#DFD9C8; padding:50px; display:flex; flex-direction:column; align-items:center; gap:64px; }
+  h1,h2,h3,h4{ font-family:'Playfair Display',serif; color:var(--navy); font-weight:700; }
+  a{ text-decoration:none; color:inherit; }
+  .frame-label{ font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#6B6355; margin-bottom:16px; text-align:center; }
+  .browser{ width:1360px; border-radius:12px; overflow:hidden; box-shadow:0 40px 80px -30px rgba(20,25,35,.4); background:#fff; }
+  .browser-top{ height:42px; background:#EDE7D8; display:flex; align-items:center; padding:0 16px; gap:16px; border-bottom:1px solid var(--line); }
+  .dots{ display:flex; gap:7px; }
+  .dots span{ width:11px;height:11px;border-radius:50%; }
+  .url{ flex:1; background:#fff; border-radius:6px; height:25px; display:flex; align-items:center; padding:0 12px; gap:6px; }
+  .url svg{ width:11px;height:11px; stroke:var(--slate); }
+  .url span{ font-family:'JetBrains Mono'; font-size:11px; color:var(--slate); }
+
+  .app-shell{ display:flex; height:900px; }
+  .app-sidebar{ width:220px; flex-shrink:0; background:var(--navy); padding:22px 14px; display:flex; flex-direction:column; }
+  .app-brand{ display:flex; align-items:center; gap:9px; padding:0 6px 22px; }
+  .app-brand .mark{ width:28px;height:28px;border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; }
+  .app-brand .mark svg{ width:13px;height:13px; }
+  .app-brand span{ font-family:'Playfair Display'; font-weight:700; font-size:14px; color:var(--cream); }
+  .app-nav-item{ display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:6px; font-size:12.5px; font-weight:600; color:#A9B1BD; margin-bottom:1px; }
+  .app-nav-item svg{ width:14px;height:14px; stroke:#8791A0; }
+  .app-nav-item.active{ background:rgba(212,175,55,.14); color:var(--gold-soft); }
+  .app-nav-item.active svg{ stroke:var(--gold); }
+  .app-main{ flex:1; background:var(--soft); padding:28px 36px; overflow-y:auto; }
+
+  .page-top{ margin-bottom:22px; }
+  .breadcrumb{ display:flex; align-items:center; gap:8px; font-size:12px; color:var(--slate); margin-bottom:8px; }
+  .breadcrumb svg{ width:11px;height:11px; }
+  .breadcrumb b{ color:var(--navy); }
+  .page-top h2{ font-size:24px; margin-bottom:4px; }
+  .page-top .sub{ font-size:13px; color:var(--slate); }
+
+  .steps{ display:flex; align-items:center; gap:0; margin-bottom:26px; }
+  .step-chip{ display:flex; align-items:center; gap:7px; padding:8px 12px 8px 6px; }
+  .step-chip .n{ width:22px;height:22px;border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono'; font-size:10px; font-weight:700; }
+  .step-chip.done .n{ background:var(--gold); color:var(--navy-deep); }
+  .step-chip.active .n{ background:var(--navy); color:var(--gold); border:1.5px solid var(--gold); }
+  .step-chip.upcoming .n{ background:#fff; border:1.5px solid var(--line); color:var(--slate); }
+  .step-chip span.t{ font-size:11px; font-weight:700; color:var(--slate); }
+  .step-chip.active span.t{ color:var(--navy); }
+  .step-sep{ width:22px; height:1px; background:var(--line); }
+
+  /* Message type selector */
+  .msg-type-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px; }
+  .msg-type-card{ background:#fff; border:1.5px solid var(--line); border-radius:var(--radius); padding:22px; text-align:center; }
+  .msg-type-card.active{ border-color:var(--gold); background:#FBF6E8; }
+  .msg-type-card .ic{ width:46px;height:46px;border-radius:50%; background:var(--navy); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; }
+  .msg-type-card .ic svg{ width:20px;height:20px; }
+  .msg-type-card h5{ font-family:'Inter'; font-weight:700; font-size:13.5px; color:var(--navy); margin-bottom:4px; }
+  .msg-type-card p{ font-size:11px; color:var(--slate); }
+
+  .recorder-card{ background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:28px; margin-bottom:22px; }
+  .recorder-card .lbl{ font-size:13px; font-weight:700; color:var(--navy); margin-bottom:16px; }
+  .waveform-box{ background:var(--navy); border-radius:var(--radius); padding:22px; display:flex; align-items:center; gap:16px; margin-bottom:14px; }
+  .rec-btn{ width:44px;height:44px;border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .rec-btn svg{ width:18px;height:18px; }
+  .wave-row{ flex:1; display:flex; align-items:center; gap:2.5px; height:36px; }
+  .wave-row div{ width:3px; background:var(--gold-soft); border-radius:2px; }
+  .rec-time{ font-family:'JetBrains Mono'; color:var(--cream); font-size:12px; flex-shrink:0; }
+  .recorder-hint{ font-size:11.5px; color:var(--slate); text-align:center; }
+
+  .textarea-card{ background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:22px; margin-bottom:22px; }
+  .textarea-card .lbl{ font-size:13px; font-weight:700; color:var(--navy); margin-bottom:12px; }
+  .msg-textarea{ background:var(--soft); border:1.5px solid var(--line); border-radius:6px; padding:16px; min-height:100px; font-size:13px; color:#A39C86; }
+
+  .schedule-card{ background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:22px; margin-bottom:24px; }
+  .schedule-card .lbl{ font-size:13px; font-weight:700; color:var(--navy); margin-bottom:14px; }
+  .schedule-options{ display:flex; gap:12px; }
+  .sched-opt{ flex:1; border:1.5px solid var(--line); border-radius:6px; padding:14px 16px; display:flex; align-items:center; gap:12px; }
+  .sched-opt.active{ border-color:var(--gold); background:#FBF6E8; }
+  .sched-opt .radio{ width:18px;height:18px;border-radius:50%; border:2px solid var(--line); flex-shrink:0; }
+  .sched-opt.active .radio{ border-color:var(--gold); background:var(--gold); box-shadow:inset 0 0 0 3px #fff; }
+  .sched-opt .t{ font-size:12.5px; font-weight:700; color:var(--navy); }
+  .sched-opt .s{ font-size:10.5px; color:var(--slate); margin-top:2px; }
+  .date-field{ margin-top:12px; background:var(--soft); border:1.5px solid var(--gold); border-radius:6px; padding:12px 15px; font-size:12.5px; color:var(--navy); font-weight:600; }
+
+  .btn-gold-lg{ display:flex; align-items:center; justify-content:center; gap:9px; background:var(--gold); color:var(--navy-deep); border-radius:var(--radius); padding:16px; font-weight:700; font-size:14.5px; }
+  .btn-gold-lg svg{ width:16px;height:16px; }
+  .btn-mini{ display:flex; align-items:center; gap:6px; border:1.5px solid var(--line); border-radius:6px; padding:9px 14px; font-size:11.5px; font-weight:700; color:var(--navy); background:#fff; width:fit-content; }
+  .btn-mini svg{ width:12px;height:12px; }
+
+  /* ============ CLAIM PAGE (recipient-facing, public) ============ */
+  .claim-page{ min-height:900px; background:linear-gradient(165deg,var(--navy) 0%, var(--navy-deep) 60%); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+  .claim-page::before{ content:""; position:absolute; top:-140px; right:-140px; width:420px;height:420px;border-radius:50%; border:1px solid rgba(212,175,55,.15); }
+  .claim-page::after{ content:""; position:absolute; bottom:-120px; left:-120px; width:340px;height:340px;border-radius:50%; border:1px solid rgba(212,175,55,.1); }
+  .claim-card{ position:relative; z-index:2; width:520px; text-align:center; }
+  .claim-stamp{ width:70px;height:70px;border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; box-shadow:0 20px 40px rgba(0,0,0,.35); }
+  .claim-stamp svg{ width:30px;height:30px; }
+  .claim-eyebrow{ font-family:'JetBrains Mono'; font-size:11px; color:var(--gold-soft); letter-spacing:.14em; text-transform:uppercase; margin-bottom:14px; }
+  .claim-card h1{ color:var(--cream); font-size:32px; margin-bottom:14px; line-height:1.25; }
+  .claim-card .from{ color:#C9CFD8; font-size:14px; margin-bottom:28px; }
+  .claim-card .from b{ color:var(--gold-soft); }
+  .claim-preview{ background:rgba(253,251,247,.06); backdrop-filter:blur(8px); border:1px solid rgba(212,175,55,.3); border-radius:var(--radius); padding:20px; margin-bottom:28px; text-align:left; }
+  .claim-preview .cover{ height:130px; border-radius:6px; margin-bottom:14px; }
+  .claim-preview h4{ color:var(--cream); font-size:16px; margin-bottom:8px; }
+  .claim-preview p{ color:#DDD4C0; font-size:12.5px; font-style:italic; font-family:'Playfair Display'; line-height:1.6; }
+  .claim-btn{ display:block; background:var(--gold); color:var(--navy-deep); border-radius:var(--radius); padding:16px; font-weight:700; font-size:15px; margin-bottom:16px; }
+  .claim-footer{ color:#8791A0; font-size:11.5px; }
+
+  /* ============ CONTINUE ONBOARDING (post-claim) ============ */
+  .continue-hero{ background:#fff; border-radius:var(--radius); padding:36px 40px; text-align:center; margin-bottom:24px; border:1px solid var(--line); }
+  .continue-hero .welcome-badge{ display:inline-flex; align-items:center; gap:7px; background:rgba(212,175,55,.12); color:var(--gold); font-family:'JetBrains Mono'; font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; border-radius:20px; padding:6px 14px; margin-bottom:16px; }
+  .continue-hero h2{ font-size:26px; margin-bottom:8px; }
+  .continue-hero p{ font-size:13.5px; color:var(--slate); max-width:480px; margin:0 auto; }
+  .onboard-steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:24px; }
+  .onboard-step{ background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:20px; position:relative; }
+  .onboard-step.done{ background:#FBF6E8; border-color:var(--gold); }
+  .onboard-step .num{ width:26px;height:26px;border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono'; font-weight:700; font-size:12px; margin-bottom:12px; }
+  .onboard-step.done .num{ background:var(--gold); color:var(--navy-deep); }
+  .onboard-step:not(.done) .num{ background:var(--soft); border:1.5px solid var(--line); color:var(--slate); }
+  .onboard-step h5{ font-family:'Inter'; font-weight:700; font-size:13.5px; color:var(--navy); margin-bottom:5px; }
+  .onboard-step p{ font-size:11.5px; color:var(--slate); margin:0; }
+  .onboard-step.done::after{ content:"✓"; position:absolute; top:16px; right:16px; color:var(--gold); font-weight:700; }
+  .gifted-story-card{ background:linear-gradient(160deg,var(--navy),var(--navy-deep)); border-radius:var(--radius); padding:24px; display:flex; align-items:center; gap:20px; }
+  .gifted-story-card .cover{ width:100px;height:100px;border-radius:8px; flex-shrink:0; }
+  .gifted-story-card h4{ color:var(--cream); font-size:17px; margin-bottom:6px; }
+  .gifted-story-card p{ color:#C9CFD8; font-size:12px; margin-bottom:10px; }
+  .gifted-story-card a{ color:var(--gold); font-size:12px; font-weight:700; }
+
+  .g1{background:linear-gradient(135deg,#C9A86A,#8C6F3F);} .g2{background:linear-gradient(135deg,#9AAAB8,#4B5F73);}
+</style>
+</head>
+<body>
+
+<!-- ============ SCREEN: PERSONAL MESSAGE + SCHEDULE ============ -->
+<div>
+  <div class="frame-label">Gift Story — Step 5: Add a Personal Message &amp; Schedule Delivery</div>
+  <div class="browser">
+    <div class="browser-top"><div class="dots"><span style="background:#FF5F57"></span><span style="background:#FEBC2E"></span><span style="background:#28C840"></span></div>
+      <div class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg><span>celebrationpassports.com/gift/new/message</span></div>
+    </div>
+    <div class="app-shell">
+      <div class="app-sidebar">
+        <div class="app-brand"><div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#1E2937" stroke-width="2.2"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2L12 16.4 5.7 21l2.3-7.2-6-4.6h7.6z"/></svg></div><span>Celebration Passport</span></div>
+        <div class="app-nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6M2 7h20v5H2zM12 22V7M12 7c-2 0-4-1.5-4-3.5S9 1 11 2s1 3 1 5zM12 7c2 0 4-1.5 4-3.5S15 1 13 2s-1 3-1 5z"/></svg>Quick Actions</div>
+        <div class="app-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</div>
+        <div class="app-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.7"/><path d="M21 15l-5-5L5 21"/></svg>Memories</div>
+        <div class="app-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87M4.6 15a1.7 1.7 0 01-.34 1.87M12 3v2M12 19v2"/></svg>Settings</div>
+      </div>
+      <div class="app-main">
+        <div class="page-top">
+          <div class="breadcrumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>Gift a Passport <span>/</span> <b>Aarav's Story</b></div>
+          <h2>Add a Personal Touch</h2>
+          <div class="sub">A voice or video message makes this land so much better than text alone — but text works too.</div>
+        </div>
+
+        <div class="steps">
+          <div class="step-chip done"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#1E2937" stroke-width="3" width="10" height="10"><path d="M5 13l4 4L19 7"/></svg></div><span class="t">Photos</span></div><div class="step-sep"></div>
+          <div class="step-chip done"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#1E2937" stroke-width="3" width="10" height="10"><path d="M5 13l4 4L19 7"/></svg></div><span class="t">Insights</span></div><div class="step-sep"></div>
+          <div class="step-chip done"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#1E2937" stroke-width="3" width="10" height="10"><path d="M5 13l4 4L19 7"/></svg></div><span class="t">Story</span></div><div class="step-sep"></div>
+          <div class="step-chip done"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#1E2937" stroke-width="3" width="10" height="10"><path d="M5 13l4 4L19 7"/></svg></div><span class="t">Print</span></div><div class="step-sep"></div>
+          <div class="step-chip active"><div class="n">5</div><span class="t">Your Message</span></div>
+        </div>
+
+        <div class="msg-type-grid">
+          <div class="msg-type-card active">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2"><path d="M12 19v3M8 22h8"/><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0"/></svg></div>
+            <h5>Voice Message</h5>
+            <p>Record up to 60 seconds</p>
+          </div>
+          <div class="msg-type-card">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="M17 10l5-3v10l-5-3"/></svg></div>
+            <h5>Video Message</h5>
+            <p>Record or upload a clip</p>
+          </div>
+          <div class="msg-type-card">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 6l8 7 8-7"/></svg></div>
+            <h5>Written Message</h5>
+            <p>A note in your own words</p>
+          </div>
+        </div>
+
+        <div class="recorder-card">
+          <div class="lbl">Your Voice Message</div>
+          <div class="waveform-box">
+            <div class="rec-btn"><svg viewBox="0 0 24 24" fill="#1E2937"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></div>
+            <div class="wave-row">
+              <div style="height:10px"></div><div style="height:20px"></div><div style="height:14px"></div><div style="height:28px"></div><div style="height:12px"></div><div style="height:24px"></div><div style="height:16px"></div><div style="height:26px"></div><div style="height:10px"></div><div style="height:18px"></div><div style="height:13px"></div><div style="height:22px"></div><div style="height:9px"></div><div style="height:17px"></div><div style="height:20px"></div><div style="height:11px"></div><div style="height:15px"></div><div style="height:23px"></div>
+            </div>
+            <div class="rec-time">0:34</div>
+          </div>
+          <div class="recorder-hint">Recording saved. You can re-record or continue.</div>
+        </div>
+
+        <div class="schedule-card">
+          <div class="lbl">When should this gift arrive?</div>
+          <div class="schedule-options">
+            <div class="sched-opt active"><div class="radio"></div><div><div class="t">Send Right Away</div><div class="s">Delivered as soon as payment completes</div></div></div>
+            <div class="sched-opt"><div class="radio"></div><div><div class="t">Schedule for a Date</div><div class="s">Perfect for birthdays &amp; anniversaries</div></div></div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div class="btn-mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>Back to Print Preview</div>
+          <div class="btn-gold-lg" style="max-width:260px;">Continue to Payment<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: RECIPIENT CLAIM PAGE ============ -->
+<div>
+  <div class="frame-label">Recipient-Facing — Claim Your Gifted Passport (Public Link, No Login Required)</div>
+  <div class="browser">
+    <div class="browser-top"><div class="dots"><span style="background:#FF5F57"></span><span style="background:#FEBC2E"></span><span style="background:#28C840"></span></div>
+      <div class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg><span>celebrationpassports.com/claim/7XQ2K9PL</span></div>
+    </div>
+    <div class="claim-page">
+      <div class="claim-card">
+        <div class="claim-stamp"><svg viewBox="0 0 24 24" fill="none" stroke="#1E2937" stroke-width="2.2"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2L12 16.4 5.7 21l2.3-7.2-6-4.6h7.6z"/></svg></div>
+        <div class="claim-eyebrow">You've Received a Passport</div>
+        <h1>Someone put together a whole story, just for you.</h1>
+        <div class="from">From <b>Kumar Sharma</b>, with a voice message inside</div>
+        <div class="claim-preview">
+          <div class="cover g1"></div>
+          <h4>Every Day Was a Small Adventure</h4>
+          <p>"We got lost finding the restaurant, and it became our favorite story."</p>
+        </div>
+        <a class="claim-btn">Claim Your Passport</a>
+        <div class="claim-footer">Takes less than a minute. No credit card required.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: POST-CLAIM CONTINUE ONBOARDING ============ -->
+<div>
+  <div class="frame-label">Recipient-Facing — Welcome &amp; Continue Your Passport (Post-Claim)</div>
+  <div class="browser">
+    <div class="browser-top"><div class="dots"><span style="background:#FF5F57"></span><span style="background:#FEBC2E"></span><span style="background:#28C840"></span></div>
+      <div class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg><span>celebrationpassports.com/dashboard?welcome=true</span></div>
+    </div>
+    <div class="app-shell">
+      <div class="app-sidebar">
+        <div class="app-brand"><div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#1E2937" stroke-width="2.2"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2L12 16.4 5.7 21l2.3-7.2-6-4.6h7.6z"/></svg></div><span>Celebration Passport</span></div>
+        <div class="app-nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</div>
+        <div class="app-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2L12 16.4 5.7 21l2.3-7.2-6-4.6h7.6z"/></svg>Events</div>
+        <div class="app-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.7"/><path d="M21 15l-5-5L5 21"/></svg>Memories</div>
+        <div class="app-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87M4.6 15a1.7 1.7 0 01-.34 1.87M12 3v2M12 19v2"/></svg>Settings</div>
+      </div>
+      <div class="app-main">
+        <div class="continue-hero">
+          <div class="welcome-badge">✨ Welcome, Aarav</div>
+          <h2>Your Passport Already Has Its First Chapter</h2>
+          <p>Kumar gave you a story to start with. Everything from here — your own photos, your own chapters — is yours to build.</p>
+        </div>
+
+        <div class="gifted-story-card">
+          <div class="cover g2"></div>
+          <div>
+            <h4>Every Day Was a Small Adventure</h4>
+            <p>Gifted by Kumar Sharma · 8 photos · includes a voice message</p>
+            <a>Read the full story →</a>
+          </div>
+        </div>
+
+        <div style="height:24px;"></div>
+
+        <div class="onboard-steps">
+          <div class="onboard-step done">
+            <div class="num"><svg viewBox="0 0 24 24" fill="none" stroke="#1E2937" stroke-width="3" width="12" height="12"><path d="M5 13l4 4L19 7"/></svg></div>
+            <h5>Passport Claimed</h5>
+            <p>Your first chapter is already here.</p>
+          </div>
+          <div class="onboard-step">
+            <div class="num">2</div>
+            <h5>Add Your First Memory</h5>
+            <p>Upload a photo — we'll take it from there.</p>
+          </div>
+          <div class="onboard-step">
+            <div class="num">3</div>
+            <h5>Invite Someone Into It</h5>
+            <p>Share your passport with someone close to you.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

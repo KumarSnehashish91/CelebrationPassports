@@ -47,6 +47,10 @@ namespace CelebrationPassports.Persistence.Context
         public DbSet<SomedayIdea> SomedayIdeas => Set<SomedayIdea>();
         public DbSet<TimeCapsuleMessage> TimeCapsuleMessages => Set<TimeCapsuleMessage>();
         public DbSet<ImportJob> ImportJobs => Set<ImportJob>();
+        public DbSet<PassportGift> PassportGifts => Set<PassportGift>();
+        public DbSet<GiftDraft> GiftDrafts => Set<GiftDraft>();
+        public DbSet<GiftPhoto> GiftPhotos => Set<GiftPhoto>();
+        public DbSet<GeneratedStory> GeneratedStories => Set<GeneratedStory>();
         public DbSet<Expense> Expenses => Set<Expense>();
         public DbSet<ExpenseCategoryBudget> ExpenseCategoryBudgets => Set<ExpenseCategoryBudget>();
         public DbSet<TripItineraryDay> TripItineraryDays => Set<TripItineraryDay>();

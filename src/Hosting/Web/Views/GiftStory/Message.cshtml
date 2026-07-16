@@ -1,0 +1,132 @@
+@model CelebrationPassports.Web.Models.GiftStories.GiftDraftViewModel
+
+@{
+    ViewData["Title"] = "Add a Personal Touch";
+    ViewData["CurrentStep"] = 5;
+    var format = ViewData["Format"] as string ?? "LifeBook";
+}
+
+<div class="wizard-page">
+
+    <div class="wizard-header">
+        <div class="wizard-header-top">
+            <div>
+                <h1>Add a Personal Touch</h1>
+                <p>A voice or video message makes this land so much better than text alone — but text works too.</p>
+            </div>
+            <a asp-action="Print" asp-route-id="@Model.Id" asp-route-format="@format" class="btn-wizard-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Print Preview
+            </a>
+        </div>
+
+        <partial name="_Steps" />
+    </div>
+
+    <form asp-action="SaveMessageAndFinalize" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="hidden" name="format" value="@format" />
+
+        <div class="msg-type-grid" id="msgTypeGrid">
+            <label class="msg-type-card" data-value="Written">
+                <input type="radio" name="messageType" value="Written" checked style="display:none;" />
+                <div class="ic"><i class="bi bi-chat-square-text"></i></div>
+                <h5>Written Message</h5>
+                <p>A note in your own words</p>
+            </label>
+            <label class="msg-type-card" data-value="Voice">
+                <input type="radio" name="messageType" value="Voice" style="display:none;" />
+                <div class="ic"><i class="bi bi-mic"></i></div>
+                <h5>Voice Message</h5>
+                <p>Record or upload audio</p>
+            </label>
+            <label class="msg-type-card" data-value="Video">
+                <input type="radio" name="messageType" value="Video" style="display:none;" />
+                <div class="ic"><i class="bi bi-camera-video"></i></div>
+                <h5>Video Message</h5>
+                <p>Record or upload a clip</p>
+            </label>
+        </div>
+
+        <div class="textarea-card" data-msg-section="Written">
+            <div class="lbl">Your Written Message</div>
+            <textarea name="writtenText" class="msg-textarea" rows="4" placeholder="Write something from the heart...">@Model.PersonalMessage</textarea>
+        </div>
+
+        <div class="recorder-card" data-msg-section="Voice" style="display:none;">
+            <div class="lbl">Your Voice Message</div>
+            <input type="file" name="media" accept="audio/*" capture />
+            <p class="gs-insight-hint">Up to 25 MB. On a phone, this opens your microphone recorder directly.</p>
+        </div>
+
+        <div class="recorder-card" data-msg-section="Video" style="display:none;">
+            <div class="lbl">Your Video Message</div>
+            <input type="file" name="media" accept="video/*" capture />
+            <p class="gs-insight-hint">Up to 25 MB. On a phone, this opens your camera recorder directly.</p>
+        </div>
+
+        <div class="schedule-card">
+            <div class="lbl">When should this gift arrive?</div>
+            <div class="schedule-options">
+                <label class="sched-opt" data-value="Immediate">
+                    <input type="radio" name="deliveryMode" value="Immediate" checked style="display:none;" />
+                    <div class="radio"></div>
+                    <div>
+                        <div class="t">Send Right Away</div>
+                        <div class="s">Delivered as soon as payment completes</div>
+                    </div>
+                </label>
+                <label class="sched-opt" data-value="Scheduled">
+                    <input type="radio" name="deliveryMode" value="Scheduled" style="display:none;" />
+                    <div class="radio"></div>
+                    <div>
+                        <div class="t">Schedule for a Date</div>
+                        <div class="s">Perfect for birthdays &amp; anniversaries</div>
+                    </div>
+                </label>
+            </div>
+            <input type="date" name="scheduledDate" class="date-field" id="scheduledDateInput" style="display:none;width:100%;" min="@DateTime.UtcNow.ToString("yyyy-MM-dd")" />
+        </div>
+
+        <div class="wizard-footer">
+            <a asp-action="Print" asp-route-id="@Model.Id" asp-route-format="@format" class="btn-wizard-secondary">Back to Print Preview</a>
+            <button type="submit" class="btn-wizard-next">
+                <i class="bi bi-credit-card"></i> Continue to Payment
+            </button>
+        </div>
+    </form>
+
+</div>
+
+@section Scripts {
+    <script>
+        function wireCardGroup(groupSelector, onChange) {
+            document.querySelectorAll(groupSelector + ' input[type="radio"]').forEach(function (input) {
+                input.addEventListener('change', onChange);
+            });
+        }
+
+        function refreshCardActive(groupSelector) {
+            document.querySelectorAll(groupSelector).forEach(function (card) {
+                var input = card.querySelector('input[type="radio"]');
+                card.classList.toggle('active', input.checked);
+            });
+        }
+
+        refreshCardActive('#msgTypeGrid .msg-type-card');
+        refreshCardActive('.sched-opt');
+
+        wireCardGroup('#msgTypeGrid', function () {
+            refreshCardActive('#msgTypeGrid .msg-type-card');
+            var selected = document.querySelector('#msgTypeGrid input[name="messageType"]:checked').value;
+            document.querySelectorAll('[data-msg-section]').forEach(function (section) {
+                section.style.display = section.dataset.msgSection === selected ? '' : 'none';
+            });
+        });
+
+        wireCardGroup('.schedule-options', function () {
+            refreshCardActive('.sched-opt');
+            var selected = document.querySelector('input[name="deliveryMode"]:checked').value;
+            document.getElementById('scheduledDateInput').style.display = selected === 'Scheduled' ? '' : 'none';
+        });
+    </script>
+}

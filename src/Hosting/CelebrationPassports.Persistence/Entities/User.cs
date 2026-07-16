@@ -115,4 +115,10 @@ public partial class User
     public virtual ICollection<Expense> DeletedExpenses { get; set; } = new List<Expense>();
 
     public virtual ICollection<ImportJob> CreatedImportJobs { get; set; } = new List<ImportJob>();
+
+    public virtual ICollection<PassportGift> PurchasedPassportGifts { get; set; } = new List<PassportGift>();
+
+    public virtual ICollection<PassportGift> ClaimedPassportGifts { get; set; } = new List<PassportGift>();
+
+    public virtual ICollection<GiftDraft> SentGiftDrafts { get; set; } = new List<GiftDraft>();
 }

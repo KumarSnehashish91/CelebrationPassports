@@ -43,6 +43,10 @@ using CelebrationPassports.Application.Sharing.Interfaces;
 using CelebrationPassports.Application.Sharing.Services;
 using CelebrationPassports.Application.Imports.Interfaces;
 using CelebrationPassports.Application.Imports.Services;
+using CelebrationPassports.Application.Gifting.Interfaces;
+using CelebrationPassports.Application.Gifting.Services;
+using CelebrationPassports.Application.GiftStories.Interfaces;
+using CelebrationPassports.Application.GiftStories.Services;
 
 namespace CelebrationPassports.Application;
 
@@ -91,6 +95,8 @@ public static class DependencyInjection
         services.AddScoped<IChapterSharingService, ChapterSharingService>();
         services.AddScoped<IImportService, ImportService>();
         services.AddScoped<IImportProcessingService, ImportProcessingService>();
+        services.AddScoped<IPassportGiftService, PassportGiftService>();
+        services.AddScoped<IGiftStoryService, GiftStoryService>();
 
 
         return services;

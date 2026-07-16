@@ -1,4 +1,5 @@
 ﻿using CelebrationPassports.Web.Models.Dashboard;
+using CelebrationPassports.Web.Models.Gifting;
 using CelebrationPassports.Web.Models.Invitations;
 using CelebrationPassports.Web.Models.Passports;
 using CelebrationPassports.Web.Models.Sharing;
@@ -48,4 +49,8 @@ public class DashboardViewModel
     public bool ShowOnboarding { get; set; }
 
     public List<OnboardingStepViewModel> OnboardingSteps { get; set; } = [];
+
+    // gift-message-schedule-claim.md — set only on the one visit right after claiming a
+    // gift (see GiftController.ClaimConfirm's ?welcomePassportId redirect).
+    public ClaimedGiftSummaryViewModel? JustClaimedGift { get; set; }
 }

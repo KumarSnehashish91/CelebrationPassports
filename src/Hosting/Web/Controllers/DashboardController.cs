@@ -15,6 +15,7 @@ public class DashboardController : Controller
     private readonly IStoryService _storyService;
     private readonly IDashboardStatsService _statsService;
     private readonly IChapterSharingService _sharingService;
+    private readonly IPassportGiftService _giftService;
 
     public DashboardController(
         IDashboardService dashboardService,
@@ -23,7 +24,8 @@ public class DashboardController : Controller
         IInvitationService invitationService,
         IStoryService storyService,
         IDashboardStatsService statsService,
-        IChapterSharingService sharingService)
+        IChapterSharingService sharingService,
+        IPassportGiftService giftService)
     {
         _dashboardService = dashboardService;
         _passportService = passportService;
@@ -32,9 +34,10 @@ public class DashboardController : Controller
         _storyService = storyService;
         _statsService = statsService;
         _sharingService = sharingService;
+        _giftService = giftService;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(Guid? welcomePassportId)
     {
         var passportsTask = _passportService.GetMineAsync();
         var invitationsTask = _invitationService.GetPendingAsync();
@@ -109,6 +112,44 @@ public class DashboardController : Controller
         // has their first real memory, regardless of how many events they've planned —
         // the stats/grid dashboard has nothing meaningful to show before that.
         model.ShowOnboarding = !hasFirstMemory;
+
+        // gift-message-schedule-claim.md — post-claim first-run screen. A story-gift
+        // claim already creates the recipient's first Chapter, so hasFirstMemory alone
+        // would otherwise skip straight past onboarding to the normal stats dashboard;
+        // this one visit still gets the welcome treatment regardless.
+        if (welcomePassportId.HasValue && passports.Any(p => p.Id == welcomePassportId.Value))
+        {
+            model.JustClaimedGift = await _giftService.GetClaimedGiftSummaryAsync(welcomePassportId.Value);
+
+            if (model.JustClaimedGift is not null)
+            {
+                model.ShowOnboarding = true;
+                model.OnboardingSteps =
+                [
+                    new()
+                    {
+                        Number = 1,
+                        Title = "Passport Claimed",
+                        Description = "Your first chapter is already here.",
+                        IsDone = true
+                    },
+                    new()
+                    {
+                        Number = 2,
+                        Title = "Add Your First Memory",
+                        Description = "Upload a photo — we'll take it from there.",
+                        IsDone = false
+                    },
+                    new()
+                    {
+                        Number = 3,
+                        Title = "Invite Someone Into It",
+                        Description = "Share your passport with someone close to you.",
+                        IsDone = hasInvitedSomeone
+                    }
+                ];
+            }
+        }
 
         if (model.ShowOnboarding)
         {

@@ -1,0 +1,113 @@
+@model List<CelebrationPassports.Web.Models.Gifting.PassportGiftViewModel>
+
+@{
+    ViewData["Title"] = "Gift a Passport";
+    var justPurchasedClaimUrl = ViewData["JustPurchasedClaimUrl"] as string;
+    var error = ViewData["Error"] as string;
+}
+
+<div class="dashboard">
+
+    <div class="dashboard-card" style="padding: 24px; max-width: 700px;">
+
+        <div class="card-header">
+            <h4><i class="bi bi-gift"></i> Gift a Passport</h4>
+        </div>
+
+        <p>
+            Give someone their own Celebration Passport — a place to start collecting their
+            story. They'll get a link to claim it and make it their own.
+        </p>
+
+        @if (!string.IsNullOrWhiteSpace(justPurchasedClaimUrl))
+        {
+            <div class="alert alert-success">
+                <strong>Gift created!</strong> Share this link with them so they can claim it:
+                <div class="wizard-field" style="margin-top:8px;">
+                    <input type="text" class="gift-link-input" value="@justPurchasedClaimUrl" readonly onclick="this.select();" />
+                </div>
+                <button type="button" class="btn-wizard-secondary copy-gift-link-btn" style="margin-top:8px;">
+                    <i class="bi bi-clipboard"></i> Copy Link
+                </button>
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(error))
+        {
+            <div class="alert alert-danger">@error</div>
+        }
+
+        <form asp-action="Purchase" method="post" style="display:flex; flex-direction:column; gap:8px; margin-bottom:24px;">
+            <input type="text" name="RecipientName" class="form-control" placeholder="Recipient's name" maxlength="200" required />
+            <input type="email" name="RecipientEmail" class="form-control" placeholder="Recipient's email (optional)" maxlength="256" />
+            <input type="text" name="PassportTitle" class="form-control" placeholder="Passport title (optional — e.g. &quot;Aarav &amp; Meera's Story&quot;)" maxlength="200" />
+            <textarea name="GiftMessage" class="form-control" rows="2" placeholder="A personal message (optional)" maxlength="1000"></textarea>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button type="submit" class="primary-btn" style="width:auto;">
+                    <i class="bi bi-gift"></i> Pay &#8377; 999 &amp; Send Gift
+                </button>
+                <button type="submit" asp-controller="GiftStory" asp-action="Start" class="btn-wizard-secondary" style="width:auto;">
+                    <i class="bi bi-images"></i> Add a Personalized Photo Story First
+                </button>
+            </div>
+            <small class="field-hint">Mock payment for now — no real charge is made.</small>
+        </form>
+
+        @if (Model.Count == 0)
+        {
+            <p>No gifts sent yet.</p>
+        }
+        else
+        {
+            <div class="upcoming-list">
+                @foreach (var gift in Model)
+                {
+                    <div class="upcoming-item">
+                        <div>
+                            <h5 style="margin:0;">@gift.RecipientName</h5>
+                            <small>
+                                @gift.Status &middot; sent @gift.PurchasedOn.ToString("MMM d, yyyy")
+                                @if (gift.Status == "Claimed" && gift.ClaimedOn.HasValue)
+                                {
+                                    <text> &middot; claimed @gift.ClaimedOn.Value.ToString("MMM d, yyyy")</text>
+                                }
+                            </small>
+                        </div>
+
+                        @if (gift.Status != "Claimed")
+                        {
+                            <div style="margin-left:auto;">
+                                <button type="button" class="btn-wizard-secondary copy-gift-link-btn" style="width:auto;" data-link="@gift.ClaimUrl">
+                                    <i class="bi bi-clipboard"></i> Copy Link
+                                </button>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.copy-gift-link-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var link = btn.dataset.link || btn.parentElement.querySelector('.gift-link-input')?.value;
+
+                if (!link) {
+                    return;
+                }
+
+                navigator.clipboard.writeText(link).then(function () {
+                    var original = btn.innerHTML;
+                    btn.innerHTML = '<i class="bi bi-check-lg"></i> Copied!';
+                    setTimeout(function () { btn.innerHTML = original; }, 2000);
+                });
+            });
+        });
+    </script>
+}

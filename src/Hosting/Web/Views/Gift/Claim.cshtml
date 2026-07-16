@@ -1,0 +1,95 @@
+@model CelebrationPassports.Web.Models.Gifting.GiftClaimInfoViewModel
+
+@{
+    ViewData["Title"] = "You've Been Gifted a Passport";
+    Layout = null;
+
+    var code = ViewData["Code"] as string;
+    var isAuthenticated = User.Identity?.IsAuthenticated == true;
+    var claimUrl = Url.Action("Claim", "Gift", new { code }, Context.Request.Scheme);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+    <link href="~/css/pages/gift.css" rel="stylesheet" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+
+    <div class="gift-page">
+        <div class="gift-card">
+
+            @if (Model.AlreadyClaimed)
+            {
+                <div class="gift-claimed">
+                    <i class="bi bi-check-circle"></i>
+                    <h1>Already Claimed</h1>
+                    <p>This gift has already been claimed. If that was you, it's waiting in your Passports list.</p>
+                </div>
+            }
+            else if (Model.IsScheduledAndNotYetDue)
+            {
+                <div class="gift-claimed">
+                    <i class="bi bi-hourglass-split"></i>
+                    <h1>Not Quite Yet</h1>
+                    <p>
+                        @Model.GifterName has a gift waiting for you — it unlocks on
+                        @Model.ScheduledDeliveryDate?.ToString("MMMM d, yyyy"). Come back then!
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="gift-stamp"><i class="bi bi-gift-fill"></i></div>
+                <div class="gift-eyebrow">You've Been Gifted a Passport</div>
+                <h1>Someone put together a whole story, just for you.</h1>
+                <p class="gift-sub">
+                    From <strong>@Model.GifterName</strong>@(Model.HasMessage ? $", with {Model.MessageTypeLabel} inside" : "")
+                </p>
+
+                @if (!string.IsNullOrWhiteSpace(Model.CoverPhotoUrl) || !string.IsNullOrWhiteSpace(Model.PullQuoteText))
+                {
+                    <div class="gift-message" style="text-align:left;">
+                        @if (!string.IsNullOrWhiteSpace(Model.CoverPhotoUrl))
+                        {
+                            <img src="@Model.CoverPhotoUrl" alt="Cover" style="width:100%;height:130px;object-fit:cover;border-radius:6px;margin-bottom:12px;" />
+                        }
+                        <strong style="display:block;margin-bottom:6px;">@Model.PassportTitle</strong>
+                        @if (!string.IsNullOrWhiteSpace(Model.PullQuoteText))
+                        {
+                            <span>"@Model.PullQuoteText"</span>
+                        }
+                    </div>
+                }
+
+                @if (isAuthenticated)
+                {
+                    <form asp-action="ClaimConfirm" method="post">
+                        <input type="hidden" name="code" value="@code" />
+                        <button type="submit" class="gift-submit">Claim Your Passport</button>
+                    </form>
+                }
+                else
+                {
+                    <div class="gift-actions">
+                        <a class="gift-submit" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@claimUrl">Create an Account to Claim</a>
+                        <p class="gift-secondary-link">
+                            Already have an account? <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@claimUrl">Sign in</a>
+                            — you'll come straight back here to claim your gift.
+                        </p>
+                    </div>
+                }
+
+                <div class="gift-footer">Takes less than a minute. No credit card required.</div>
+            }
+
+        </div>
+    </div>
+
+</body>
+</html>

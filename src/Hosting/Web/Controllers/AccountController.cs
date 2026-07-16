@@ -18,54 +18,72 @@ namespace CelebrationPassports.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Register(string? returnUrl)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View(new RegisterViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model, string? returnUrl)
         {
             if (!ModelState.IsValid)
+            {
+                ViewData["ReturnUrl"] = returnUrl;
                 return View(model);
+            }
 
             var result = await _authenticationService.RegisterAsync(model);
 
             if (!result.Success)
             {
                 ModelState.AddModelError("", result.ErrorMessage ?? "Registration failed.");
+                ViewData["ReturnUrl"] = returnUrl;
                 return View(model);
             }
 
             await SignInAsync(result);
 
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectAfterAuth(returnUrl);
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string? returnUrl)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View(new LoginViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl)
         {
             if (!ModelState.IsValid)
+            {
+                ViewData["ReturnUrl"] = returnUrl;
                 return View(model);
+            }
 
             var result = await _authenticationService.LoginAsync(model);
 
             if (!result.Success)
             {
                 ModelState.AddModelError("", result.ErrorMessage ?? "Invalid email or password.");
+                ViewData["ReturnUrl"] = returnUrl;
                 return View(model);
             }
 
             await SignInAsync(result);
 
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectAfterAuth(returnUrl);
         }
+
+        // Scoped to this one use case (claim link continuity) rather than a general
+        // auth returnUrl system — Url.IsLocalUrl guards against open-redirect via a
+        // crafted external returnUrl.
+        private IActionResult RedirectAfterAuth(string? returnUrl) =>
+            !string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl)
+                ? Redirect(returnUrl)
+                : RedirectToAction("Index", "Dashboard");
 
         [Authorize]
         [HttpGet]

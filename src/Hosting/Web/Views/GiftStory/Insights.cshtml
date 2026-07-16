@@ -1,0 +1,68 @@
+@model CelebrationPassports.Web.Models.GiftStories.GiftDraftViewModel
+
+@{
+    ViewData["Title"] = "Add Insights";
+    ViewData["CurrentStep"] = 2;
+    var total = Model.Photos.Count;
+    var withInsight = Model.InsightedCount;
+    var progressPct = total == 0 ? 0 : (int)Math.Round(withInsight * 100.0 / total);
+}
+
+<div class="wizard-page">
+
+    <div class="wizard-header">
+        <div class="wizard-header-top">
+            <div>
+                <h1>Tell Us a Little About Each Photo</h1>
+                <p>Completely optional — anything you skip, our AI will thoughtfully fill in for you.</p>
+            </div>
+            <a asp-action="Photos" asp-route-id="@Model.Id" class="btn-wizard-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Photos
+            </a>
+        </div>
+
+        <partial name="_Steps" />
+    </div>
+
+    <div class="wizard-card">
+
+        <div class="gs-insight-progress">
+            <div>
+                <div class="t">@withInsight of @total photos have an insight added</div>
+                <div class="s">You can leave the rest blank — that's completely fine.</div>
+            </div>
+        </div>
+
+        <form asp-action="GenerateStory" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+
+            @for (var i = 0; i < Model.Photos.Count; i++)
+            {
+                var photo = Model.Photos[i];
+                <div class="gs-insight-card">
+                    <img src="@photo.Url" alt="Gift photo" class="thumb" />
+                    <div class="body">
+                        <div class="lbl">
+                            Photo @(i + 1) of @total
+                            @if (string.IsNullOrWhiteSpace(photo.UserInsight))
+                            {
+                                <span class="gs-ai-badge">AI will write this</span>
+                            }
+                        </div>
+                        <textarea name="insight_@photo.Id" rows="2" placeholder="What's the story behind this photo? (optional)">@photo.UserInsight</textarea>
+                        <div class="gs-insight-hint">Leave blank and we'll write something thoughtful based on the photo itself.</div>
+                    </div>
+                </div>
+            }
+
+            <div class="wizard-footer">
+                <a asp-action="Photos" asp-route-id="@Model.Id" class="btn-wizard-secondary">Back to Photos</a>
+                <button type="submit" class="btn-wizard-next">
+                    <i class="bi bi-stars"></i> Generate the Story
+                </button>
+            </div>
+        </form>
+
+    </div>
+
+</div>

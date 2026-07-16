@@ -1,0 +1,73 @@
+@model CelebrationPassports.Web.Models.GiftStories.PrintPreviewViewModel
+
+@{
+    ViewData["Title"] = "Ready to Print";
+    ViewData["CurrentStep"] = 4;
+    var draftId = ViewData["DraftId"] as Guid?;
+    var pageClass = Model.Format == "LifeBook" ? "gs-life-book" : "gs-passport-edition";
+}
+
+<div class="wizard-page">
+
+    <div class="wizard-header">
+        <div class="wizard-header-top">
+            <div>
+                <h1>Ready to Print</h1>
+                <p>Choose the format — a compact keepsake book, or a full A4 passport-style volume.</p>
+            </div>
+            <a asp-action="Story" asp-route-id="@draftId" class="btn-wizard-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Story
+            </a>
+        </div>
+
+        <partial name="_Steps" />
+    </div>
+
+    <div class="gs-format-toggle">
+        <a asp-action="Print" asp-route-id="@draftId" asp-route-format="LifeBook" class="gs-fmt-btn @(Model.Format == "LifeBook" ? "active" : "")">
+            <div><h5>The Life Book</h5><div class="dims">190mm &times; 190mm &middot; Square keepsake</div></div>
+        </a>
+        <a asp-action="Print" asp-route-id="@draftId" asp-route-format="PassportEdition" class="gs-fmt-btn @(Model.Format == "PassportEdition" ? "active" : "")">
+            <div><h5>Passport Edition</h5><div class="dims">297mm &times; 210mm &middot; A4 Landscape</div></div>
+        </a>
+    </div>
+
+    <div class="gs-print-stage">
+        <div class="gs-spread">
+            <div class="gs-page @pageClass gs-left gs-page-cover">
+                <div class="stamp"><i class="bi bi-award-fill"></i></div>
+                <h3>@Model.CoverTitle</h3>
+                <div class="yr">@Model.CoverSubtitle.ToUpperInvariant()</div>
+            </div>
+        </div>
+
+        @foreach (var printPage in Model.Pages)
+        {
+            <div class="gs-spread">
+                <div class="gs-page @pageClass gs-right">
+                    <div class="gs-page-eyebrow">Page @printPage.PageNumber</div>
+                    @if (!string.IsNullOrWhiteSpace(printPage.PhotoUrl))
+                    {
+                        <img src="@printPage.PhotoUrl" alt="@printPage.Title" class="gs-page-img" />
+                    }
+                    <h4>@printPage.Title</h4>
+                    <p>@printPage.Text</p>
+                    <div class="gs-page-num">@printPage.PageNumber</div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="gs-print-specs">
+        <div class="gs-spec-item"><div class="lbl">Format</div><div class="val">@Model.FormatLabel</div></div>
+        <div class="gs-spec-item"><div class="lbl">Trim Size</div><div class="val">@Model.TrimSize</div></div>
+        <div class="gs-spec-item"><div class="lbl">Pages</div><div class="val">@Model.PageCount pages</div></div>
+        <div class="gs-spec-item"><div class="lbl">Cover</div><div class="val">Hardbound, Matte</div></div>
+        <div class="gs-spec-item"><div class="lbl">Price</div><div class="val">&#8377; @Model.Price.ToString("N0")</div></div>
+    </div>
+
+    <a asp-action="Message" asp-route-id="@draftId" asp-route-format="@Model.Format" class="btn-wizard-next" style="width:100%;justify-content:center;">
+        <i class="bi bi-arrow-right"></i> Continue to Your Message
+    </a>
+
+</div>

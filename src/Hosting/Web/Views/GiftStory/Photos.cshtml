@@ -1,0 +1,76 @@
+@model CelebrationPassports.Web.Models.GiftStories.GiftDraftViewModel
+
+@{
+    ViewData["Title"] = "Add Their Photos";
+    ViewData["CurrentStep"] = 1;
+    var error = ViewData["Error"] as string;
+}
+
+<div class="wizard-page">
+
+    <div class="wizard-header">
+        <div class="wizard-header-top">
+            <div>
+                <h1>Add Their Photos</h1>
+                <p>Choose the photos that should be part of the story you're gifting to @Model.RecipientName.</p>
+            </div>
+            <a asp-controller="Gift" asp-action="Index" class="btn-wizard-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Gifting
+            </a>
+        </div>
+
+        <partial name="_Steps" />
+    </div>
+
+    <div class="wizard-card">
+
+        @if (!string.IsNullOrWhiteSpace(error))
+        {
+            <div class="field-error mb-3">@error</div>
+        }
+
+        <form asp-action="UploadPhotos" method="post" enctype="multipart/form-data" style="margin-bottom:22px;">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <div class="gs-upload-zone">
+                <i class="bi bi-cloud-arrow-up"></i>
+                <div class="main">Choose photos to upload</div>
+                <div class="sub">JPG, PNG or WEBP &middot; Up to 30 photos</div>
+                <input type="file" name="files" accept=".jpg,.jpeg,.png,.webp,.heic,.gif" multiple style="margin-top:14px;" />
+            </div>
+            <button type="submit" class="btn-wizard-next">
+                <i class="bi bi-upload"></i> Upload Selected Photos
+            </button>
+        </form>
+
+        <div class="gs-count-note"><b>@Model.Photos.Count photo@(Model.Photos.Count == 1 ? "" : "s")</b> selected for this story</div>
+
+        @if (Model.Photos.Count > 0)
+        {
+            <div class="gs-photo-grid">
+                @foreach (var photo in Model.Photos)
+                {
+                    <div class="gs-photo-tile">
+                        <img src="@photo.Url" alt="Gift photo" />
+                        <form asp-action="RemovePhoto" method="post">
+                            <input type="hidden" name="draftId" value="@Model.Id" />
+                            <input type="hidden" name="photoId" value="@photo.Id" />
+                            <button type="submit" class="gs-remove" title="Remove"><i class="bi bi-x"></i></button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
+
+        <div class="wizard-footer">
+            <a asp-controller="Gift" asp-action="Index" class="btn-wizard-secondary">Cancel</a>
+            <form asp-action="ContinueToInsights" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn-wizard-next">
+                    Continue to Insights <i class="bi bi-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+</div>

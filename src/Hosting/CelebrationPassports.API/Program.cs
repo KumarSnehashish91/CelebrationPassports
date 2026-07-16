@@ -61,7 +61,15 @@ builder.Services.AddHostedService<AutoChapterClusteringBackgroundService>();
 
 builder.Services.AddHostedService<ImportJobProcessingBackgroundService>();
 
-builder.Services.AddHttpClient<AIClient>();
+// Local Ollama inference is genuinely slow on CPU, especially for longer prompts
+// (a multi-day trip itinerary, or Gift Story's vision/narrative calls) — the default
+// 100s HttpClient timeout was getting hit mid-generation, which the client sees as a
+// dropped connection ("Unable to read data from the transport connection") rather than
+// a clean timeout error.
+builder.Services.AddHttpClient<AIClient>(client =>
+{
+    client.Timeout = TimeSpan.FromMinutes(5);
+});
 
 builder.Services.AddScoped<ICelebrationAIService, CelebrationAIService>();
 
