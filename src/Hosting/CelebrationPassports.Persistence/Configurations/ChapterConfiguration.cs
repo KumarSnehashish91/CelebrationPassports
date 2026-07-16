@@ -25,6 +25,15 @@ public class ChapterConfiguration : IEntityTypeConfiguration<Chapter>
         builder.Property(x => x.Source)
             .HasDefaultValue(Enums.ChapterSource.Manual);
 
+        builder.Property(x => x.SongTitle)
+            .HasMaxLength(200);
+
+        builder.Property(x => x.SongArtist)
+            .HasMaxLength(200);
+
+        builder.Property(x => x.SongLinkUrl)
+            .HasMaxLength(500);
+
         builder.HasIndex(x => new { x.StoryId, x.EventDate });
 
         builder.HasOne(x => x.Passport)

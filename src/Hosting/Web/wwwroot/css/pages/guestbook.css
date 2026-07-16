@@ -1,0 +1,178 @@
+/* ==========================================================
+   Digital Guestbook (public, unauthenticated pages)
+========================================================== */
+
+:root {
+    --gb-navy: #1E2937;
+    --gb-navy-deep: #151F2C;
+    --gb-cream: #FDFBF7;
+    --gb-gold: #D4AF37;
+    --gb-gold-hover: #C6A02F;
+    --gb-slate: #4B5563;
+    --gb-line: #E9E3D4;
+    --gb-radius: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100%;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: var(--gb-navy);
+    background: linear-gradient(160deg, var(--gb-navy), var(--gb-navy-deep));
+}
+
+.gb-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.gb-card {
+    width: 100%;
+    max-width: 460px;
+    background: var(--gb-cream);
+    border-radius: var(--gb-radius);
+    padding: 36px 34px;
+    box-shadow: 0 30px 60px rgba(0,0,0,.3);
+}
+
+.gb-stamp {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--gb-gold);
+    color: var(--gb-navy-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin: 0 auto 20px;
+}
+
+.gb-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gb-gold-hover);
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.gb-card h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gb-navy);
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.gb-card .gb-sub {
+    text-align: center;
+    font-size: 13px;
+    color: var(--gb-slate);
+    margin-bottom: 26px;
+}
+
+.gb-field {
+    margin-bottom: 16px;
+}
+
+    .gb-field label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        color: var(--gb-slate);
+        margin-bottom: 7px;
+    }
+
+    .gb-field input[type="text"],
+    .gb-field textarea {
+        width: 100%;
+        background: #fff;
+        border: 1.5px solid var(--gb-line);
+        border-radius: 8px;
+        padding: 12px 14px;
+        font-family: inherit;
+        font-size: 13.5px;
+        color: var(--gb-navy);
+    }
+
+        .gb-field input[type="text"]:focus,
+        .gb-field textarea:focus {
+            outline: none;
+            border-color: var(--gb-gold);
+        }
+
+    .gb-field input[type="file"] {
+        width: 100%;
+        font-size: 12.5px;
+        color: var(--gb-slate);
+    }
+
+.gb-hint {
+    font-size: 11px;
+    color: var(--gb-slate);
+    margin-top: 6px;
+}
+
+.gb-error {
+    background: #FBEFEF;
+    border: 1px solid #E3B4B4;
+    color: #A03D3D;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    margin-bottom: 16px;
+}
+
+.gb-submit {
+    width: 100%;
+    background: var(--gb-gold);
+    color: var(--gb-navy-deep);
+    border: none;
+    border-radius: 8px;
+    padding: 13px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+    .gb-submit:hover {
+        background: var(--gb-gold-hover);
+    }
+
+.gb-invalid,
+.gb-thanks {
+    text-align: center;
+}
+
+    .gb-invalid i,
+    .gb-thanks i {
+        font-size: 40px;
+        color: var(--gb-gold);
+        margin-bottom: 16px;
+        display: block;
+    }
+
+    .gb-thanks h1 {
+        margin-bottom: 12px;
+    }
+
+    .gb-thanks p {
+        color: var(--gb-slate);
+        font-size: 13.5px;
+        line-height: 1.6;
+    }

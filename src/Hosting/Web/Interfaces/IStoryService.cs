@@ -18,6 +18,8 @@ public interface IStoryService
 
     Task<ChapterDetailViewModel?> GetChapterByIdAsync(Guid chapterId);
 
+    Task<bool> SetChapterSoundtrackAsync(Guid chapterId, string? songTitle, string? songArtist, string? songLinkUrl);
+
     // Trip detection review flow
     Task<Guid?> DetectTripAsync(List<Guid> mediaIds);
 

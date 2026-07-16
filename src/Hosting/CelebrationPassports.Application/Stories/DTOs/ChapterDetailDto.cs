@@ -27,5 +27,11 @@ public class ChapterDetailDto
 
     public ChapterSource Source { get; set; }
 
+    public string? SongTitle { get; set; }
+
+    public string? SongArtist { get; set; }
+
+    public string? SongLinkUrl { get; set; }
+
     public List<MediaDto> Media { get; set; } = new();
 }

@@ -52,4 +52,6 @@ public class Passport
     public virtual ICollection<PassportMilestoneProgress> MilestoneProgress { get; set; } = new List<PassportMilestoneProgress>();
 
     public virtual ICollection<ActivityLog> ActivityLogs { get; set; } = new List<ActivityLog>();
+
+    public virtual ICollection<ImportJob> ImportJobs { get; set; } = new List<ImportJob>();
 }

@@ -37,6 +37,12 @@ using CelebrationPassports.Application.TripItinerary.Interfaces;
 using CelebrationPassports.Application.TripItinerary.Services;
 using CelebrationPassports.Application.Dashboard.Interfaces;
 using CelebrationPassports.Application.Dashboard.Services;
+using CelebrationPassports.Application.Guestbook.Interfaces;
+using CelebrationPassports.Application.Guestbook.Services;
+using CelebrationPassports.Application.Sharing.Interfaces;
+using CelebrationPassports.Application.Sharing.Services;
+using CelebrationPassports.Application.Imports.Interfaces;
+using CelebrationPassports.Application.Imports.Services;
 
 namespace CelebrationPassports.Application;
 
@@ -80,6 +86,11 @@ public static class DependencyInjection
         services.AddScoped<IExpenseService, ExpenseService>();
         services.AddScoped<ITripItineraryService, TripItineraryService>();
         services.AddScoped<IDashboardStatsService, DashboardStatsService>();
+        services.AddScoped<IGuestbookTokenService, GuestbookTokenService>();
+        services.AddScoped<IGuestbookService, GuestbookService>();
+        services.AddScoped<IChapterSharingService, ChapterSharingService>();
+        services.AddScoped<IImportService, ImportService>();
+        services.AddScoped<IImportProcessingService, ImportProcessingService>();
 
 
         return services;

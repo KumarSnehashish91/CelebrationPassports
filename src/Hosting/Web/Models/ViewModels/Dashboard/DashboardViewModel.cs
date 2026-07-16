@@ -1,6 +1,7 @@
 ﻿using CelebrationPassports.Web.Models.Dashboard;
 using CelebrationPassports.Web.Models.Invitations;
 using CelebrationPassports.Web.Models.Passports;
+using CelebrationPassports.Web.Models.Sharing;
 using CelebrationPassports.Web.Models.Stories;
 
 namespace CelebrationPassports.Web.ViewModels.Dashboard;
@@ -14,6 +15,10 @@ public class DashboardViewModel
     public List<PassportListItemViewModel> Passports { get; set; } = [];
 
     public List<InvitationViewModel> PendingInvitations { get; set; } = [];
+
+    // Scoped Family Sharing (feature-backlog-v1.1.md, CELEBRATE #10) — chapter-scoped
+    // invitations, distinct from the full-passport ones above.
+    public List<ChapterInvitationViewModel> PendingChapterInvitations { get; set; } = [];
 
     public List<UpcomingCelebration> UpcomingCelebrations { get; set; } = [];
 
@@ -32,5 +37,15 @@ public class DashboardViewModel
     // Highlights strip — replaces the old hardcoded picsum.photos placeholder cards.
     public List<StoryListItemViewModel> RecentStories { get; set; } = [];
 
+    // How many more stories exist beyond what's shown in the Highlights strip — feeds
+    // the "+N" tile. Zero means don't show that tile at all.
+    public int MoreStoriesCount { get; set; }
+
     public List<TimelineItem> Timeline { get; set; } = new();
+
+    // Matches the mockup's "New User — Empty Dashboard State" screen — shown instead of
+    // the full stats/grid dashboard until the user has added their first memory.
+    public bool ShowOnboarding { get; set; }
+
+    public List<OnboardingStepViewModel> OnboardingSteps { get; set; } = [];
 }

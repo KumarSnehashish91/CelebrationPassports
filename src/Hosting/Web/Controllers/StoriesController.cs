@@ -15,6 +15,8 @@ public class StoriesController : Controller
     private readonly IMediaService _mediaService;
     private readonly IWishService _wishService;
     private readonly IStoryNarrativeService _narrativeService;
+    private readonly IGuestbookService _guestbookService;
+    private readonly IChapterSharingService _sharingService;
 
     public StoriesController(
         IStoryService storyService,
@@ -22,7 +24,9 @@ public class StoriesController : Controller
         ICategoryService categoryService,
         IMediaService mediaService,
         IWishService wishService,
-        IStoryNarrativeService narrativeService)
+        IStoryNarrativeService narrativeService,
+        IGuestbookService guestbookService,
+        IChapterSharingService sharingService)
     {
         _storyService = storyService;
         _passportService = passportService;
@@ -30,6 +34,8 @@ public class StoriesController : Controller
         _mediaService = mediaService;
         _wishService = wishService;
         _narrativeService = narrativeService;
+        _guestbookService = guestbookService;
+        _sharingService = sharingService;
     }
 
     [HttpGet]
@@ -166,7 +172,38 @@ public class StoriesController : Controller
 
         ViewData["Wishes"] = wishes;
 
+        ViewData["GuestbookToken"] = await _guestbookService.GetShareTokenAsync(id);
+        ViewData["GuestbookPending"] = await _guestbookService.GetPendingAsync(id);
+
+        // These 403 gracefully (empty list) for a scoped contributor who isn't a full
+        // passport member — sharing management stays owner/member-only.
+        ViewData["Contributors"] = await _sharingService.GetContributorsAsync(id);
+        ViewData["ChapterInvitations"] = await _sharingService.GetByChapterAsync(id);
+
         return View(chapter);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> InviteContributor(Guid chapterId, string email)
+    {
+        if (!string.IsNullOrWhiteSpace(email))
+        {
+            var success = await _sharingService.InviteAsync(chapterId, email);
+
+            if (!success)
+            {
+                TempData["InviteError"] = "Could not send that invitation — they may already have a pending invite to this chapter.";
+            }
+        }
+
+        return RedirectToAction("Chapter", new { id = chapterId });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RemoveContributor(Guid contributorId, Guid chapterId)
+    {
+        await _sharingService.RemoveContributorAsync(contributorId);
+        return RedirectToAction("Chapter", new { id = chapterId });
     }
 
     [HttpPost]
@@ -184,6 +221,13 @@ public class StoriesController : Controller
     public async Task<IActionResult> DeleteWish(Guid id, Guid chapterId)
     {
         await _wishService.DeleteAsync(id);
+        return RedirectToAction("Chapter", new { id = chapterId });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SetSoundtrack(Guid chapterId, string? songTitle, string? songArtist, string? songLinkUrl)
+    {
+        await _storyService.SetChapterSoundtrackAsync(chapterId, songTitle, songArtist, songLinkUrl);
         return RedirectToAction("Chapter", new { id = chapterId });
     }
 

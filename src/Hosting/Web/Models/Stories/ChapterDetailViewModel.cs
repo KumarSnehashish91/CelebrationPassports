@@ -27,5 +27,11 @@ public class ChapterDetailViewModel
     // Mirrors CelebrationPassports.Persistence.Enums.ChapterSource (Manual=1, AiDetected=2).
     public int Source { get; set; }
 
+    public string? SongTitle { get; set; }
+
+    public string? SongArtist { get; set; }
+
+    public string? SongLinkUrl { get; set; }
+
     public List<MediaItemViewModel> Media { get; set; } = [];
 }

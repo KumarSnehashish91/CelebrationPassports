@@ -202,6 +202,18 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.Property<Guid?>("PlaceId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("SongArtist")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("SongLinkUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("SongTitle")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.Property<int>("Source")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -235,6 +247,67 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.HasIndex("StoryId", "EventDate");
 
                     b.ToTable("Chapters", (string)null);
+                });
+
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.ChapterContributor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ChapterId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("InvitedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvitedBy");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("ChapterId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("ChapterContributors", (string)null);
+                });
+
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.ChapterInvitation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ChapterId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<Guid>("InvitedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvitedBy");
+
+                    b.HasIndex("ChapterId", "Status");
+
+                    b.ToTable("ChapterInvitations", (string)null);
                 });
 
             modelBuilder.Entity("CelebrationPassports.Persistence.Entities.Comment", b =>
@@ -460,6 +533,111 @@ namespace CelebrationPassports.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("ExpenseCategoryBudgets", (string)null);
+                });
+
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.GuestbookSubmission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ApprovedMediaId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ChapterId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("GuestName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Message")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("PhotoUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ReviewedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApprovedMediaId");
+
+                    b.HasIndex("ReviewedByUserId");
+
+                    b.HasIndex("ChapterId", "Status");
+
+                    b.ToTable("GuestbookSubmissions", (string)null);
+                });
+
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.ImportJob", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ArchivePath")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<DateTime?>("CompletedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<Guid>("PassportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ProcessedItems")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SkippedItems")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SourceType")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TotalItems")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("PassportId");
+
+                    b.HasIndex("Status", "CreatedOn");
+
+                    b.ToTable("ImportJobs", (string)null);
                 });
 
             modelBuilder.Entity("CelebrationPassports.Persistence.Entities.Media", b =>
@@ -1733,6 +1911,52 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.Navigation("Story");
                 });
 
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.ChapterContributor", b =>
+                {
+                    b.HasOne("CelebrationPassports.Persistence.Entities.Chapter", "Chapter")
+                        .WithMany()
+                        .HasForeignKey("ChapterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CelebrationPassports.Persistence.Entities.User", "InvitedByUser")
+                        .WithMany()
+                        .HasForeignKey("InvitedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CelebrationPassports.Persistence.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Chapter");
+
+                    b.Navigation("InvitedByUser");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.ChapterInvitation", b =>
+                {
+                    b.HasOne("CelebrationPassports.Persistence.Entities.Chapter", "Chapter")
+                        .WithMany()
+                        .HasForeignKey("ChapterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CelebrationPassports.Persistence.Entities.User", "InvitedByUser")
+                        .WithMany()
+                        .HasForeignKey("InvitedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Chapter");
+
+                    b.Navigation("InvitedByUser");
+                });
+
             modelBuilder.Entity("CelebrationPassports.Persistence.Entities.Comment", b =>
                 {
                     b.HasOne("CelebrationPassports.Persistence.Entities.Chapter", "Chapter")
@@ -1847,6 +2071,50 @@ namespace CelebrationPassports.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.GuestbookSubmission", b =>
+                {
+                    b.HasOne("CelebrationPassports.Persistence.Entities.Media", "ApprovedMedia")
+                        .WithMany()
+                        .HasForeignKey("ApprovedMediaId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("CelebrationPassports.Persistence.Entities.Chapter", "Chapter")
+                        .WithMany()
+                        .HasForeignKey("ChapterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CelebrationPassports.Persistence.Entities.User", "ReviewedByUser")
+                        .WithMany()
+                        .HasForeignKey("ReviewedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ApprovedMedia");
+
+                    b.Navigation("Chapter");
+
+                    b.Navigation("ReviewedByUser");
+                });
+
+            modelBuilder.Entity("CelebrationPassports.Persistence.Entities.ImportJob", b =>
+                {
+                    b.HasOne("CelebrationPassports.Persistence.Entities.User", "CreatedByUser")
+                        .WithMany("CreatedImportJobs")
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CelebrationPassports.Persistence.Entities.Passport", "Passport")
+                        .WithMany("ImportJobs")
+                        .HasForeignKey("PassportId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("Passport");
                 });
 
             modelBuilder.Entity("CelebrationPassports.Persistence.Entities.Media", b =>
@@ -2370,6 +2638,8 @@ namespace CelebrationPassports.Persistence.Migrations
 
                     b.Navigation("Events");
 
+                    b.Navigation("ImportJobs");
+
                     b.Navigation("Invitations");
 
                     b.Navigation("MilestoneProgress");
@@ -2432,6 +2702,8 @@ namespace CelebrationPassports.Persistence.Migrations
                     b.Navigation("CreatedEvents");
 
                     b.Navigation("CreatedExpenses");
+
+                    b.Navigation("CreatedImportJobs");
 
                     b.Navigation("CreatedSomedayIdeas");
 

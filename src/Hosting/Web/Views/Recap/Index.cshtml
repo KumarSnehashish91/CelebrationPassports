@@ -1,0 +1,84 @@
+@{
+    ViewData["Title"] = "Annual Recap";
+
+    var availableYears = ViewData["AvailableYears"] as List<int> ?? [];
+    var selectedYear = ViewData["SelectedYear"] as int? ?? DateTime.Today.Year;
+    var momentCount = ViewData["MomentCount"] as int? ?? 0;
+    var recap = ViewData["Recap"] as string;
+
+    var paragraphs = string.IsNullOrWhiteSpace(recap)
+        ? new List<string>()
+        : recap.Split("\n\n", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+}
+
+<div class="narrative-page">
+
+    <div class="event-preview-topbar">
+        <a asp-controller="Dashboard" asp-action="Index" class="btn-wizard-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <div class="event-preview-hero narrative-hero has-cover" style="background:linear-gradient(160deg, var(--navy), var(--navy-deep));">
+        <div class="event-preview-hero-content">
+            <h1>@selectedYear in Review</h1>
+            <div class="event-preview-hero-meta">
+                <span><i class="bi bi-collection"></i> @momentCount @(momentCount == 1 ? "moment" : "moments")</span>
+            </div>
+        </div>
+    </div>
+
+    @if (availableYears.Count > 1)
+    {
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:var(--space-lg);">
+            @foreach (var year in availableYears)
+            {
+                <a asp-action="Index" asp-route-year="@year"
+                   class="@(year == selectedYear ? "btn-wizard-next" : "btn-wizard-secondary")"
+                   style="width:auto;">@year</a>
+            }
+        </div>
+    }
+
+    @if (momentCount == 0)
+    {
+        <div class="narrative-empty">
+            <i class="bi bi-calendar-x"></i>
+            <p>
+                @if (availableYears.Count == 0)
+                {
+                    @:No chapters yet — add a few memories to any story and your first recap will appear here.
+                }
+                else
+                {
+                    @:Nothing recorded for @selectedYear.
+                }
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="narrative-badge"><i class="bi bi-stars"></i> Written by AI from your @selectedYear moments</div>
+
+        @if (paragraphs.Count == 0)
+        {
+            <div class="narrative-empty">
+                <i class="bi bi-cloud-slash"></i>
+                <p>
+                    Couldn't generate a recap right now — the local AI model may be unavailable.
+                    Try again in a moment.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="narrative-body">
+                @foreach (var paragraph in paragraphs)
+                {
+                    <p>@paragraph</p>
+                }
+            </div>
+        }
+    }
+
+</div>

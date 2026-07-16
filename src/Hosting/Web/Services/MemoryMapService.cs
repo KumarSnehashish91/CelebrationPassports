@@ -13,10 +13,12 @@ public class MemoryMapService : IMemoryMapService
     };
 
     private readonly HttpClient _httpClient;
+    private readonly IMediaService _mediaService;
 
-    public MemoryMapService(HttpClient httpClient)
+    public MemoryMapService(HttpClient httpClient, IMediaService mediaService)
     {
         _httpClient = httpClient;
+        _mediaService = mediaService;
     }
 
     public async Task<List<MemoryMapPinViewModel>> GetByPassportAsync(Guid passportId)
@@ -30,17 +32,34 @@ public class MemoryMapService : IMemoryMapService
 
         var body = await response.Content.ReadFromJsonAsync<List<PinBody>>(JsonOptions);
 
-        return body?.Select(p => new MemoryMapPinViewModel
+        if (body is null)
         {
-            ChapterId = p.ChapterId,
-            StoryId = p.StoryId,
-            Title = p.Title,
-            EventDate = p.EventDate,
-            Latitude = p.Latitude,
-            Longitude = p.Longitude,
-            PlaceName = p.PlaceName,
-            PhotoCount = p.PhotoCount
-        }).ToList() ?? [];
+            return [];
+        }
+
+        var result = new List<MemoryMapPinViewModel>();
+
+        foreach (var p in body)
+        {
+            var imageUrl = p.CoverMediaId.HasValue
+                ? await _mediaService.GetUrlAsync(p.CoverMediaId.Value)
+                : null;
+
+            result.Add(new MemoryMapPinViewModel
+            {
+                ChapterId = p.ChapterId,
+                StoryId = p.StoryId,
+                Title = p.Title,
+                EventDate = p.EventDate,
+                Latitude = p.Latitude,
+                Longitude = p.Longitude,
+                PlaceName = p.PlaceName,
+                PhotoCount = p.PhotoCount,
+                ImageUrl = imageUrl
+            });
+        }
+
+        return result;
     }
 
     private sealed class PinBody
@@ -53,5 +72,6 @@ public class MemoryMapService : IMemoryMapService
         public decimal Longitude { get; set; }
         public string? PlaceName { get; set; }
         public int PhotoCount { get; set; }
+        public Guid? CoverMediaId { get; set; }
     }
 }

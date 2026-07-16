@@ -1,42 +1,40 @@
 @model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
 
-<div class="dashboard-card memory-highlights-card">
+<div class="db-card">
 
-    <div class="card-header">
-
+    <div class="db-card-head">
         <div>
             <h3>Memory Highlights</h3>
-            <p>Your best moments from recent events</p>
         </div>
-
         <a asp-controller="Stories" asp-action="Index">View All</a>
-
     </div>
 
     @if (Model.RecentStories.Count == 0)
     {
-        <p class="field-hint" style="margin:12px 0;">
+        <p class="field-hint">
             No other stories yet — <a asp-controller="Stories" asp-action="Create">start one</a> to see it here.
         </p>
     }
     else
     {
-        <div class="memory-gallery">
+        <div class="db-highlight-grid">
 
             @foreach (var story in Model.RecentStories)
             {
-                <a asp-controller="Stories" asp-action="Details" asp-route-id="@story.Id" class="memory-card">
-
-                    <img src="@(string.IsNullOrWhiteSpace(story.CoverImageUrl) ? "/images/udaipur.jpg" : story.CoverImageUrl)" alt="@story.Title" />
-
-                    <div class="memory-info">
-
-                        <h5>@story.Title</h5>
-
+                <a asp-controller="Stories" asp-action="Details" asp-route-id="@story.Id" class="db-hl-item"
+                   style="background-image:url('@(string.IsNullOrWhiteSpace(story.CoverImageUrl) ? "/images/udaipur.jpg" : story.CoverImageUrl)');">
+                    <div class="scrim"></div>
+                    <div class="txt">
+                        <h6>@story.Title</h6>
                         <span>@(story.StartDate?.ToString("dd MMM yyyy") ?? $"{story.ChapterCount} {(story.ChapterCount == 1 ? "chapter" : "chapters")}")</span>
-
                     </div>
+                </a>
+            }
 
+            @if (Model.MoreStoriesCount > 0)
+            {
+                <a asp-controller="Stories" asp-action="Index" class="db-hl-item db-hl-more">
+                    <span>+@Model.MoreStoriesCount</span>
                 </a>
             }
 

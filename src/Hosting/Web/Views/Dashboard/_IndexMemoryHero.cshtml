@@ -2,67 +2,51 @@
 
 @if (Model.MemoryHero is null)
 {
-    <div class="memory-hero-card memory-hero-empty">
-        <div class="memory-content">
-            <span class="memory-badge">&hearts; Recent Memory</span>
-            <h2>No memories yet</h2>
-            <p class="memory-description">
-                Start a story and add a few chapters — your most recent one will show up here.
-            </p>
-            <a asp-controller="Stories" asp-action="Create" class="btn btn-light">Start a Story</a>
+    <div class="db-hero-card">
+        <div class="db-hero-empty">
+            <i class="bi bi-heart"></i>
+            <h2 style="color:var(--cream);font-size:22px;margin:0;">No memories yet</h2>
+            <p>Start a story and add a few chapters — your most recent one will show up here.</p>
+            <a asp-controller="Stories" asp-action="Create" class="db-btn-outline-full" style="border-color:var(--gold-soft);color:var(--gold-soft);width:auto;">Start a Story</a>
         </div>
     </div>
 }
 else
 {
-    <div class="memory-hero-card">
+    <div class="db-hero-card">
 
-        <img src="@Model.MemoryHero.ImageUrl"
-             class="memory-image"
-             alt="Memory Hero" />
+        <div class="db-hero-img" style="background-image:url('@Model.MemoryHero.ImageUrl');"></div>
+        <div class="db-hero-scrim"></div>
 
-        <div class="memory-overlay">
+        <div class="db-hero-content">
 
-            <div class="memory-content">
+            <div class="db-hero-top">
+                <span class="db-hero-badge"><i class="bi bi-heart-fill"></i> Recent Memory</span>
+                <div class="db-hero-stamp"><i class="bi bi-check-lg"></i></div>
+            </div>
 
-                <span class="memory-badge">
-                    &hearts; Recent Memory
-                </span>
+            <div class="db-hero-mid">
 
-                <h2>@Model.MemoryHero.Title</h2>
+                <h2 class="db-hero-title">@Model.MemoryHero.Title</h2>
 
-                <p class="memory-location">
+                @if (!string.IsNullOrWhiteSpace(Model.MemoryHero.Location))
+                {
+                    <div class="db-hero-loc"><i class="bi bi-geo-alt-fill"></i> @Model.MemoryHero.Location</div>
+                }
 
-                    <i class="bi bi-geo-alt-fill"></i>
-
-                    @(string.IsNullOrWhiteSpace(Model.MemoryHero.Location) ? "" : Model.MemoryHero.Location + " • ")@Model.MemoryHero.Date.ToString("dd MMM yyyy")
-
-                </p>
-
-                <div class="memory-stats">
-
-                    <span>
-                        <i class="bi bi-camera"></i>
-                        @Model.MemoryHero.Photos Photos
-                    </span>
-
-                    <span>
-                        <i class="bi bi-film"></i>
-                        @Model.MemoryHero.Videos Videos
-                    </span>
-
-                    <span>
-                        <i class="bi bi-collection"></i>
-                        @Model.MemoryHero.Chapters @(Model.MemoryHero.Chapters == 1 ? "Chapter" : "Chapters")
-                    </span>
-
+                <div class="db-hero-meta">
+                    <span><i class="bi bi-camera"></i> @Model.MemoryHero.Photos Photos</span>
+                    <span><i class="bi bi-film"></i> @Model.MemoryHero.Videos Videos</span>
+                    <span><i class="bi bi-collection"></i> @Model.MemoryHero.Chapters @(Model.MemoryHero.Chapters == 1 ? "Chapter" : "Chapters")</span>
                 </div>
 
                 @if (Model.MemoryHero.Chapters > 0)
                 {
-                    <a asp-controller="Stories" asp-action="Narrative" asp-route-id="@Model.MemoryHero.StoryId" class="btn btn-light mt-4">
-                        <i class="bi bi-stars"></i> Read the Story
-                    </a>
+                    <div class="db-ai-panel">
+                        <div class="lbl"><i class="bi bi-stars"></i> AI Story</div>
+                        <p>Turn this memory into a written story — AI can weave your chapters into a narrative you'll want to keep.</p>
+                        <a asp-controller="Stories" asp-action="Narrative" asp-route-id="@Model.MemoryHero.StoryId" class="read-more">Read the Story &rarr;</a>
+                    </div>
                 }
 
             </div>

@@ -40,7 +40,7 @@ public class WishService : IWishService
         var chapter = await _chapterRepository.GetByIdAsync(chapterId)
             ?? throw new NotFoundException("Chapter not found.");
 
-        await _accessGuard.EnsureMemberAsync(userId, chapter.PassportId);
+        await _accessGuard.EnsureChapterAccessAsync(userId, chapterId);
 
         var comment = new Comment
         {
@@ -64,7 +64,7 @@ public class WishService : IWishService
         var chapter = await _chapterRepository.GetByIdAsync(chapterId)
             ?? throw new NotFoundException("Chapter not found.");
 
-        await _accessGuard.EnsureMemberAsync(userId, chapter.PassportId);
+        await _accessGuard.EnsureChapterAccessAsync(userId, chapterId);
 
         var comments = await _commentRepository.FindAsync(c => c.ChapterId == chapterId && !c.IsDeleted);
 

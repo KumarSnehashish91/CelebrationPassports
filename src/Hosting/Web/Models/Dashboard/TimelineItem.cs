@@ -12,5 +12,7 @@ public class TimelineItem
 
     public string ImageUrl { get; set; } = string.Empty;
 
-    public string StampColor { get; set; } = "#7C3AED";
+    public string StampColor { get; set; } = "#D4AF37";
+
+    public Guid StoryId { get; set; }
 }

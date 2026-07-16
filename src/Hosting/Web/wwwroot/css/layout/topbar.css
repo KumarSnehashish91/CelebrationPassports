@@ -8,9 +8,11 @@
 }
 
 .topbar-left h2 {
-    font-size: 16px;
+    font-family: var(--font-heading);
+    font-size: 24px;
     font-weight: 700;
     margin: 0 0 4px 0;
+    color: var(--navy);
 }
 
 .topbar-left p {
@@ -136,6 +138,21 @@
         height: 42px;
         border-radius: 50%;
     }
+
+.profile-avatar-initial {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--gold-soft);
+    color: var(--navy-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+}
 
 .profile-arrow {
     font-size: 13px;

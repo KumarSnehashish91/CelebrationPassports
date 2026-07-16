@@ -1,0 +1,35 @@
+@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+
+<div class="dashboard-empty-wrap">
+
+    <div class="dashboard-empty-stamp">
+        <i class="bi bi-award"></i>
+    </div>
+
+    <h2>Your passport is just getting started</h2>
+
+    <p>
+        Every relationship deserves a place to keep its story. Add your first memory, and
+        we'll start organizing the rest — automatically.
+    </p>
+
+    <a asp-controller="Stories" asp-action="QuickUpload" class="dashboard-empty-cta">
+        <i class="bi bi-plus-lg"></i> Add Your First Memory
+    </a>
+
+    <a asp-controller="Import" asp-action="Index" style="display:block; margin-top:12px;">
+        <i class="bi bi-cloud-arrow-up"></i> or import existing photos from Google Photos
+    </a>
+
+    <div class="onboard-steps">
+        @foreach (var step in Model.OnboardingSteps)
+        {
+            <div class="onboard-step @(step.IsDone ? "done" : "todo")">
+                <div class="num">@step.Number</div>
+                <h5>@step.Title</h5>
+                <p>@step.Description</p>
+            </div>
+        }
+    </div>
+
+</div>

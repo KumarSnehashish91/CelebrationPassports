@@ -1,9 +1,9 @@
 @model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
 
-<div class="dashboard-card" style="padding: 20px 24px; margin-bottom: 24px;">
+<div class="db-card" style="margin-bottom: 24px;">
 
-    <div class="card-header" style="margin-bottom: 12px;">
-        <h4 style="font-size:18px;">You've been invited</h4>
+    <div class="db-card-head" style="margin-bottom: 12px;">
+        <h3 style="font-size:18px;">You've been invited</h3>
     </div>
 
     @foreach (var invitation in Model.PendingInvitations)

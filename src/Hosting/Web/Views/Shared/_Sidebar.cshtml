@@ -100,6 +100,20 @@
                 </a>
             </li>
 
+            <li>
+                <a asp-controller="Recap" asp-action="Index">
+                    <i class="bi bi-stars"></i>
+                    Annual Recap
+                </a>
+            </li>
+
+            <li>
+                <a asp-controller="Import" asp-action="Index">
+                    <i class="bi bi-cloud-arrow-up"></i>
+                    Import Memories
+                </a>
+            </li>
+
         </ul>
 
     </li>
@@ -146,6 +160,13 @@
        class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "MemoryMap" ? "active" : "")">
         <i class="bi bi-map"></i>
         <span>Memory Map</span>
+    </a>
+
+    <a asp-controller="ThenVsNow"
+       asp-action="Index"
+       class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "ThenVsNow" ? "active" : "")">
+        <i class="bi bi-arrow-repeat"></i>
+        <span>Then vs. Now</span>
     </a>
 
     <a asp-controller="TimeCapsule"

@@ -23,9 +23,18 @@
     <div class="wizard-card" style="max-width:700px;">
 
         <div class="event-preview-detail-row" style="margin-bottom:var(--space-lg);">
-            <img src="@(string.IsNullOrWhiteSpace(Model.ProfilePhotoUrl) ? "https://i.pravatar.cc/72" : Model.ProfilePhotoUrl)"
-                 alt="Profile photo"
-                 style="width:56px;height:56px;border-radius:50%;object-fit:cover;" />
+            @if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoUrl))
+            {
+                <img src="@Model.ProfilePhotoUrl"
+                     alt="Profile photo"
+                     style="width:56px;height:56px;border-radius:50%;object-fit:cover;" />
+            }
+            else
+            {
+                <div class="profile-avatar-initial" style="width:56px;height:56px;font-size:20px;">
+                    @(string.IsNullOrWhiteSpace(displayName) ? "?" : displayName.Substring(0, 1).ToUpper())
+                </div>
+            }
             <div>
                 <strong>@displayName</strong>
                 <span>@Model.Email</span>

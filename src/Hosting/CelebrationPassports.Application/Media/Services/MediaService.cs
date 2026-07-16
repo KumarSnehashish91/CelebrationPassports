@@ -78,10 +78,14 @@ public class MediaService : IMediaService
 
         if (chapterId.HasValue)
         {
-            var chapter = await _chapterRepository.GetByIdWithMediaAsync(chapterId.Value)
-                ?? throw new NotFoundException("Chapter not found.");
+            var chapterExists = await _chapterRepository.ExistsAsync(c => c.Id == chapterId.Value);
 
-            await _accessGuard.EnsureMemberAsync(userId, chapter.PassportId);
+            if (!chapterExists)
+            {
+                throw new NotFoundException("Chapter not found.");
+            }
+
+            await _accessGuard.EnsureChapterAccessAsync(userId, chapterId.Value);
         }
 
         // GPS/capture-date only make sense for photos — extraction is a no-op (all
@@ -117,7 +121,7 @@ public class MediaService : IMediaService
         var chapter = await _chapterRepository.GetByIdWithMediaAsync(chapterId)
             ?? throw new NotFoundException("Chapter not found.");
 
-        await _accessGuard.EnsureMemberAsync(userId, chapter.PassportId);
+        await _accessGuard.EnsureChapterAccessAsync(userId, chapterId);
 
         return chapter.Media.Select(MapToDto).ToList();
     }

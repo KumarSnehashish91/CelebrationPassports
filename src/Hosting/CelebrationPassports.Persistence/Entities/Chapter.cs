@@ -32,6 +32,14 @@ public class Chapter
 
     public ChapterSource Source { get; set; } = ChapterSource.Manual;
 
+    // Soundtrack — metadata + outbound link only, deliberately no audio hosting or
+    // streaming API integration, to avoid licensing complexity entirely.
+    public string? SongTitle { get; set; }
+
+    public string? SongArtist { get; set; }
+
+    public string? SongLinkUrl { get; set; }
+
     public bool IsDeleted { get; set; }
 
     public DateTime? DeletedOn { get; set; }

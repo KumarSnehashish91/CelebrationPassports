@@ -1,27 +1,42 @@
 ﻿@inject CelebrationPassports.Web.Interfaces.IGreetingService GreetingService
 @inject CelebrationPassports.Web.Interfaces.INotificationService NotificationService
+@inject CelebrationPassports.Web.Interfaces.IUserProfileService UserProfileService
 @{
     var notifications = await NotificationService.GetMineAsync(8);
     var unreadCount = await NotificationService.GetUnreadCountAsync();
+    var profile = await UserProfileService.GetProfileAsync();
+
+    var initial = "?";
+    if (profile is not null)
+    {
+        var nameForInitial = string.IsNullOrWhiteSpace(profile.DisplayName) ? profile.FirstName : profile.DisplayName;
+        if (!string.IsNullOrWhiteSpace(nameForInitial))
+        {
+            initial = nameForInitial.Substring(0, 1).ToUpper();
+        }
+    }
 }
 <div class="topbar-container">
 
     <div class="topbar-left">
 
-        <h2> @GreetingService.GetGreeting(), @(User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value ?? "there")! 👋</h2>
+        <div class="topbar-eyebrow"><i class="bi bi-sun"></i> @GreetingService.GetGreeting()</div>
 
-        <p>Every event creates a memory that lasts forever.</p>
+        <h2>Welcome back, @(User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value ?? "there")</h2>
+
+        <p class="sub">Every event creates a memory that lasts forever.</p>
 
     </div>
 
     <div class="topbar-right">
 
-        <div class="search-box">
+        <form class="search-box" asp-controller="Search" asp-action="Index" method="get">
 
             <input type="text"
+                   name="q"
                    placeholder="Search events, places, people..." />
 
-        </div>
+        </form>
 
         <div class="top-icons">
 
@@ -56,13 +71,20 @@
                 </div>
             </div>
 
-            <button> <i class="bi bi-chat-dots-fill"></i></button>
+            <button type="button" title="Coming soon — messaging isn't built yet."> <i class="bi bi-chat-dots-fill"></i></button>
 
         </div>
 
         <div class="profile" id="profileDropdown">
 
-            <img src="https://i.pravatar.cc/45" alt="Profile">
+            @if (profile is not null && !string.IsNullOrWhiteSpace(profile.ProfilePhotoUrl))
+            {
+                <img src="@profile.ProfilePhotoUrl" alt="Profile">
+            }
+            else
+            {
+                <div class="profile-avatar-initial">@initial</div>
+            }
 
             <i class="bi bi-chevron-down profile-arrow"></i>
 

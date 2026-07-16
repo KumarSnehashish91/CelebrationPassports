@@ -1,46 +1,34 @@
 @model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
 
-<div class="dashboard-card recent-card">
+<div class="db-card">
 
-    <div class="card-header">
-        <h4>Recent Chapters</h4>
+    <div class="db-card-head">
+        <h3>Recent Chapters</h3>
         <a asp-controller="Stories" asp-action="Index">View All</a>
     </div>
 
     @if (Model.RecentChapters.Count == 0)
     {
-        <div class="activity-list">
-            <p class="field-hint" style="margin:12px 0;">
-                No chapters yet — <a asp-controller="Stories" asp-action="Create">start a story</a> to see them here.
-            </p>
-        </div>
+        <p class="field-hint">
+            No chapters yet — <a asp-controller="Stories" asp-action="Create">start a story</a> to see them here.
+        </p>
     }
     else
     {
-        <div class="activity-list">
-
-            @foreach (var chapter in Model.RecentChapters)
-            {
-                <a asp-controller="Stories" asp-action="Chapter" asp-route-id="@chapter.Id" class="activity-item">
-
-                    <div class="activity-icon @(chapter.Source == 2 ? "purple" : "blue")">
-                        <i class="bi @(chapter.Source == 2 ? "bi-stars" : "bi-camera")"></i>
-                    </div>
-
-                    <div class="activity-content">
-                        <h5>@chapter.Title</h5>
-                        <p>@chapter.CategoryName &middot; @chapter.Media.Count photo@(chapter.Media.Count == 1 ? "" : "s")</p>
-                    </div>
-
-                    <div class="activity-date-card">
-                        <span class="month">@chapter.EventDate.ToString("MMM").ToUpper()</span>
-                        <span class="day">@chapter.EventDate.ToString("dd")</span>
-                    </div>
-
-                </a>
-            }
-
-        </div>
+        @foreach (var chapter in Model.RecentChapters)
+        {
+            <a asp-controller="Stories" asp-action="Chapter" asp-route-id="@chapter.Id" class="db-chapter-item">
+                <div class="ic"><i class="bi @(chapter.Source == 2 ? "bi-stars" : "bi-camera")"></i></div>
+                <div>
+                    <h5>@chapter.Title</h5>
+                    <p>@chapter.CategoryName &middot; @chapter.Media.Count photo@(chapter.Media.Count == 1 ? "" : "s")</p>
+                </div>
+                <div class="db-date-badge">
+                    <div class="mon">@chapter.EventDate.ToString("MMM").ToUpper()</div>
+                    <div class="day">@chapter.EventDate.ToString("dd")</div>
+                </div>
+            </a>
+        }
     }
 
 </div>

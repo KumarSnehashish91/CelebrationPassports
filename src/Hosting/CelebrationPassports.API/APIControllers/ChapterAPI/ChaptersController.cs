@@ -32,6 +32,13 @@ public class ChaptersController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPut("{id:guid}/soundtrack")]
+    public async Task<IActionResult> SetSoundtrack(Guid id, SetChapterSoundtrackRequest request)
+    {
+        var result = await _chapterService.SetSoundtrackAsync(User.GetUserId(), id, request);
+        return Ok(result);
+    }
+
     [HttpGet("mine/drafts")]
     public async Task<IActionResult> MyDrafts()
     {

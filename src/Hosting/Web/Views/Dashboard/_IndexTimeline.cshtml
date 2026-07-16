@@ -1,48 +1,42 @@
-﻿@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
+@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
 
-<div class="dashboard-card timeline-card">
+<div class="db-card">
 
-    <div class="card-header">
-        <h5><b>Life Journey Timeline</b></h5>
-        <a href="#">View Full Timeline</a>
+    <div class="db-card-head">
+        <h3>Life Journey</h3>
+        <a asp-controller="Stories" asp-action="Index">Full Timeline</a>
     </div>
 
-    <div class="timeline-list">
-
+    @if (Model.Timeline.Count == 0)
+    {
+        <p class="field-hint">
+            No stories yet — <a asp-controller="Stories" asp-action="Create">start one</a> to begin your timeline.
+        </p>
+    }
+    else
+    {
         @foreach (var item in Model.Timeline)
         {
-            <div class="timeline-item">
+            <a asp-controller="Stories" asp-action="Details" asp-route-id="@item.StoryId" class="db-tl-item">
 
-                <div class="timeline-year">
-
-                    <span>@item.Year</span>
-
-                    <strong>@item.Month</strong>
-
+                <div class="db-tl-date">
+                    <div class="yr">@item.Year</div>
+                    <div class="mon">@item.Month</div>
                 </div>
 
-                <img src="@item.ImageUrl"
-                     class="timeline-image" />
+                <div class="db-tl-thumb" style="background-image:url('@item.ImageUrl');"></div>
 
-                <div class="timeline-info">
-
-                    <h6>@item.Title</h6>
-
-                    <span>@item.Location</span>
-
+                <div class="db-tl-text">
+                    <h5>@item.Title</h5>
+                    <p>@(string.IsNullOrWhiteSpace(item.Location) ? "No location set" : item.Location)</p>
                 </div>
 
-                <div class="timeline-stamp"
-                     style="background:@item.StampColor">
-                </div>
+                <div class="db-tl-dot" style="background:@item.StampColor;"></div>
 
-            </div>
+            </a>
         }
 
-    </div>
-
-    <a class="timeline-footer" href="#">
-        View All Memories →
-    </a>
+        <a asp-controller="Stories" asp-action="Index" class="db-view-all-link">View All Memories &rarr;</a>
+    }
 
 </div>

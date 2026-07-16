@@ -46,9 +46,13 @@ namespace CelebrationPassports.Persistence.Context
         public DbSet<PassportMilestoneProgress> PassportMilestoneProgress => Set<PassportMilestoneProgress>();
         public DbSet<SomedayIdea> SomedayIdeas => Set<SomedayIdea>();
         public DbSet<TimeCapsuleMessage> TimeCapsuleMessages => Set<TimeCapsuleMessage>();
+        public DbSet<ImportJob> ImportJobs => Set<ImportJob>();
         public DbSet<Expense> Expenses => Set<Expense>();
         public DbSet<ExpenseCategoryBudget> ExpenseCategoryBudgets => Set<ExpenseCategoryBudget>();
         public DbSet<TripItineraryDay> TripItineraryDays => Set<TripItineraryDay>();
+        public DbSet<GuestbookSubmission> GuestbookSubmissions => Set<GuestbookSubmission>();
+        public DbSet<ChapterInvitation> ChapterInvitations => Set<ChapterInvitation>();
+        public DbSet<ChapterContributor> ChapterContributors => Set<ChapterContributor>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

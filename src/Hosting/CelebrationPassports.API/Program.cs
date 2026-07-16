@@ -4,6 +4,7 @@ using CelebrationPassports.Application;
 using CelebrationPassports.Application.Stories.Configuration;
 using CelebrationPassports.Application.Calendar.Configuration;
 using CelebrationPassports.Application.TimeCapsule.Configuration;
+using CelebrationPassports.Application.Guestbook.Configuration;
 using CelebrationPassports.Infrastructure.AI.Clients;
 using CelebrationPassports.Infrastructure.AI.Configuration;
 using CelebrationPassports.Infrastructure.Authentication;
@@ -51,9 +52,14 @@ builder.Services.Configure<CalendarFeedOptions>(
 builder.Services.Configure<TimeCapsuleOptions>(
     builder.Configuration.GetSection("TimeCapsule"));
 
+builder.Services.Configure<GuestbookOptions>(
+    builder.Configuration.GetSection("Guestbook"));
+
 builder.Services.AddHostedService<TimeCapsuleUnlockBackgroundService>();
 
 builder.Services.AddHostedService<AutoChapterClusteringBackgroundService>();
+
+builder.Services.AddHostedService<ImportJobProcessingBackgroundService>();
 
 builder.Services.AddHttpClient<AIClient>();
 

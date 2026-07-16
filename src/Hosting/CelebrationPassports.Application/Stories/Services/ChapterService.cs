@@ -19,6 +19,7 @@ public class ChapterService : IChapterService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<CreateChapterRequest> _createValidator;
     private readonly IValidator<UpdateChapterRequest> _updateValidator;
+    private readonly IValidator<SetChapterSoundtrackRequest> _soundtrackValidator;
 
     public ChapterService(
         IChapterRepository chapterRepository,
@@ -27,7 +28,8 @@ public class ChapterService : IChapterService
         IPassportAccessGuard accessGuard,
         IUnitOfWork unitOfWork,
         IValidator<CreateChapterRequest> createValidator,
-        IValidator<UpdateChapterRequest> updateValidator)
+        IValidator<UpdateChapterRequest> updateValidator,
+        IValidator<SetChapterSoundtrackRequest> soundtrackValidator)
     {
         _chapterRepository = chapterRepository;
         _storyRepository = storyRepository;
@@ -36,6 +38,7 @@ public class ChapterService : IChapterService
         _unitOfWork = unitOfWork;
         _createValidator = createValidator;
         _updateValidator = updateValidator;
+        _soundtrackValidator = soundtrackValidator;
     }
 
     public async Task<ChapterDetailDto> GetByIdAsync(Guid userId, Guid chapterId)
@@ -43,7 +46,7 @@ public class ChapterService : IChapterService
         var chapter = await _chapterRepository.GetByIdWithMediaAsync(chapterId)
             ?? throw new NotFoundException("Chapter not found.");
 
-        await _accessGuard.EnsureMemberAsync(userId, chapter.PassportId);
+        await _accessGuard.EnsureChapterAccessAsync(userId, chapterId);
 
         return MapToDetail(chapter);
     }
@@ -89,6 +92,24 @@ public class ChapterService : IChapterService
         chapter.PlaceId = request.PlaceId;
         chapter.EventDate = request.EventDate;
         chapter.DisplayOrder = request.DisplayOrder;
+
+        await _unitOfWork.SaveChangesAsync();
+
+        return MapToDetail(chapter);
+    }
+
+    public async Task<ChapterDetailDto> SetSoundtrackAsync(Guid userId, Guid chapterId, SetChapterSoundtrackRequest request)
+    {
+        await _soundtrackValidator.ValidateAndThrowAsync(request);
+
+        var chapter = await _chapterRepository.GetByIdWithMediaAsync(chapterId)
+            ?? throw new NotFoundException("Chapter not found.");
+
+        await _accessGuard.EnsureMemberAsync(userId, chapter.PassportId);
+
+        chapter.SongTitle = string.IsNullOrWhiteSpace(request.SongTitle) ? null : request.SongTitle.Trim();
+        chapter.SongArtist = string.IsNullOrWhiteSpace(request.SongArtist) ? null : request.SongArtist.Trim();
+        chapter.SongLinkUrl = string.IsNullOrWhiteSpace(request.SongLinkUrl) ? null : request.SongLinkUrl.Trim();
 
         await _unitOfWork.SaveChangesAsync();
 
@@ -243,6 +264,9 @@ public class ChapterService : IChapterService
         DisplayOrder = chapter.DisplayOrder,
         Status = chapter.Status,
         Source = chapter.Source,
+        SongTitle = chapter.SongTitle,
+        SongArtist = chapter.SongArtist,
+        SongLinkUrl = chapter.SongLinkUrl,
         Media = chapter.Media.Select(m => new MediaDto
         {
             Id = m.Id,

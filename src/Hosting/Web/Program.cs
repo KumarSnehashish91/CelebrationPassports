@@ -26,6 +26,7 @@ builder.Services.AddScoped<IGreetingService, GreetingService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<ITripPlannerService, TripPlannerService>();
 builder.Services.AddScoped<IStoryNarrativeService, StoryNarrativeService>();
+builder.Services.AddScoped<IRecapService, RecapService>();
 
 // No BearerTokenHandler here — refresh calls carry the refresh token, not an access
 // token, and this is the client BearerTokenHandler itself calls out to.
@@ -120,6 +121,21 @@ builder.Services.AddHttpClient<ITripItineraryService, TripItineraryService>(clie
 }).AddHttpMessageHandler<BearerTokenHandler>();
 
 builder.Services.AddHttpClient<IDashboardStatsService, DashboardStatsService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<IGuestbookService, GuestbookService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<IChapterSharingService, ChapterSharingService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<BearerTokenHandler>();
+
+builder.Services.AddHttpClient<IImportService, ImportService>(client =>
 {
     client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<BearerTokenHandler>();

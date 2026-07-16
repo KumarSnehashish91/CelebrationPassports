@@ -113,4 +113,6 @@ public partial class User
     public virtual ICollection<Expense> CreatedExpenses { get; set; } = new List<Expense>();
 
     public virtual ICollection<Expense> DeletedExpenses { get; set; } = new List<Expense>();
+
+    public virtual ICollection<ImportJob> CreatedImportJobs { get; set; } = new List<ImportJob>();
 }

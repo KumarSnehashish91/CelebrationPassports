@@ -3,6 +3,13 @@
 @{
     ViewData["Title"] = Model.Title;
     var wishes = ViewData["Wishes"] as List<CelebrationPassports.Web.Models.Stories.WishViewModel> ?? [];
+    var guestbookToken = ViewData["GuestbookToken"] as string;
+    var guestbookPending = ViewData["GuestbookPending"] as List<CelebrationPassports.Web.Models.Guestbook.GuestbookSubmissionViewModel> ?? [];
+    var guestbookLink = guestbookToken is null ? null : Url.Action("Submit", "Guestbook", new { chapterId = Model.Id, token = guestbookToken }, Context.Request.Scheme);
+    var contributors = ViewData["Contributors"] as List<CelebrationPassports.Web.Models.Sharing.ChapterContributorViewModel> ?? [];
+    var chapterInvitations = (ViewData["ChapterInvitations"] as List<CelebrationPassports.Web.Models.Sharing.ChapterInvitationViewModel> ?? [])
+        .Where(i => i.Status == "Pending")
+        .ToList();
 }
 
 <div class="event-preview-page">
@@ -108,7 +115,7 @@
                             <div class="wish-date">@wish.CreatedAt.ToString("MMM dd, yyyy")</div>
                         </div>
 
-                        @if (wish.IsMine)
+        @if (wish.IsMine)
                         {
                             <form asp-action="DeleteWish" method="post" class="wish-delete">
                                 <input type="hidden" name="id" value="@wish.Id" />
@@ -122,4 +129,183 @@
         }
     </div>
 
+    <div class="wizard-card">
+        <h4><i class="bi bi-music-note-beamed"></i> Chapter Soundtrack</h4>
+        <p class="field-hint">Pin a song to this memory — just a title, artist, and a link to play it wherever you stream music.</p>
+
+        @if (!string.IsNullOrWhiteSpace(Model.SongTitle))
+        {
+            <div class="soundtrack-now-playing">
+                <div class="soundtrack-icon"><i class="bi bi-vinyl-fill"></i></div>
+                <div class="soundtrack-info">
+                    <strong>@Model.SongTitle</strong>
+                    @if (!string.IsNullOrWhiteSpace(Model.SongArtist))
+                    {
+                        <span>@Model.SongArtist</span>
+                    }
+                </div>
+                @if (!string.IsNullOrWhiteSpace(Model.SongLinkUrl))
+                {
+                    <a href="@Model.SongLinkUrl" target="_blank" rel="noopener noreferrer" class="btn-wizard-secondary" style="width:auto;">
+                        <i class="bi bi-play-fill"></i> Play
+                    </a>
+                }
+            </div>
+        }
+
+        <form asp-action="SetSoundtrack" method="post" class="soundtrack-form">
+            <input type="hidden" name="chapterId" value="@Model.Id" />
+            <div class="soundtrack-fields">
+                <input type="text" name="songTitle" maxlength="200" placeholder="Song title" value="@Model.SongTitle" />
+                <input type="text" name="songArtist" maxlength="200" placeholder="Artist" value="@Model.SongArtist" />
+                <input type="url" name="songLinkUrl" maxlength="500" placeholder="Link (Spotify, YouTube, Apple Music...)" value="@Model.SongLinkUrl" />
+            </div>
+            <button type="submit" class="btn-wizard-secondary" style="width:auto;margin-top:var(--space-sm);">
+                <i class="bi bi-check-lg"></i> Save Soundtrack
+            </button>
+        </form>
+    </div>
+
+    <div class="wizard-card">
+        <h4><i class="bi bi-people"></i> Share This Chapter</h4>
+        <p class="field-hint">
+            Give someone access to just this memory — like a grandparent or a friend — without
+            making them a full member of the whole passport. They'll be able to view this
+            chapter and add their own photos and wishes to it.
+        </p>
+
+        @if (TempData["InviteError"] is string inviteError)
+        {
+            <p class="field-hint" style="color:#A03D3D;">@inviteError</p>
+        }
+
+        <form asp-action="InviteContributor" method="post" class="wish-form" style="flex-direction:row;align-items:flex-start;">
+            <input type="hidden" name="chapterId" value="@Model.Id" />
+            <input type="email" name="email" placeholder="their@email.com" required
+                   style="flex:1;background:var(--bg-body);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;color:var(--text);" />
+            <button type="submit" class="btn-wizard-secondary" style="width:auto;">
+                <i class="bi bi-send"></i> Invite
+            </button>
+        </form>
+
+        @if (contributors.Count > 0)
+        {
+            <h5 style="font-size:13px;color:var(--text-light);text-transform:uppercase;letter-spacing:.03em;margin:var(--space-lg) 0 10px;">
+                Has Access &middot; @contributors.Count
+            </h5>
+
+            <div class="guestbook-pending-list">
+                @foreach (var contributor in contributors)
+                {
+                    <div class="guestbook-pending-item">
+                        <div class="guestbook-pending-body">
+                            <strong>@contributor.Name</strong>
+                            <span>Contributor since @contributor.CreatedAt.ToString("MMM dd, yyyy")</span>
+                        </div>
+                        <div class="guestbook-pending-actions">
+                            <form asp-action="RemoveContributor" method="post">
+                                <input type="hidden" name="chapterId" value="@Model.Id" />
+                                <input type="hidden" name="contributorId" value="@contributor.Id" />
+                                <button type="submit" class="btn-wizard-secondary" title="Remove access"><i class="bi bi-x-lg"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        @if (chapterInvitations.Count > 0)
+        {
+            <h5 style="font-size:13px;color:var(--text-light);text-transform:uppercase;letter-spacing:.03em;margin:var(--space-lg) 0 10px;">
+                Invitation Pending &middot; @chapterInvitations.Count
+            </h5>
+
+            <div class="guestbook-pending-list">
+                @foreach (var invitation in chapterInvitations)
+                {
+                    <div class="guestbook-pending-item">
+                        <div class="guestbook-pending-body">
+                            <strong>@invitation.Email</strong>
+                            <span>Waiting for them to accept</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="wizard-card">
+        <h4><i class="bi bi-book"></i> Guestbook</h4>
+        <p class="field-hint">
+            Share this link with anyone — no account needed. They can leave a name, a
+            note, and a photo, and it'll wait here for your approval before it shows up
+            anywhere.
+        </p>
+
+        @if (guestbookLink is not null)
+        {
+            <div class="wizard-field">
+                <input type="text" id="guestbookLinkInput" value="@guestbookLink" readonly onclick="this.select();" />
+            </div>
+
+            <button type="button" id="copyGuestbookLinkBtn" class="btn-wizard-secondary" style="margin-bottom:var(--space-lg);">
+                <i class="bi bi-clipboard"></i> Copy Link
+            </button>
+        }
+
+        @if (guestbookPending.Count > 0)
+        {
+            <h5 style="font-size:13px;color:var(--text-light);text-transform:uppercase;letter-spacing:.03em;margin-bottom:10px;">
+                Pending Approval &middot; @guestbookPending.Count
+            </h5>
+
+            <div class="guestbook-pending-list">
+                @foreach (var submission in guestbookPending)
+                {
+                    <div class="guestbook-pending-item">
+                        @if (!string.IsNullOrWhiteSpace(submission.PhotoUrl))
+                        {
+                            <img src="@submission.PhotoUrl" alt="Submitted photo" class="guestbook-pending-photo" />
+                        }
+                        <div class="guestbook-pending-body">
+                            <strong>@submission.GuestName</strong>
+                            @if (!string.IsNullOrWhiteSpace(submission.Message))
+                            {
+                                <p>@submission.Message</p>
+                            }
+                            <span>@submission.CreatedAt.ToString("MMM dd, yyyy")</span>
+                        </div>
+                        <div class="guestbook-pending-actions">
+                            <form asp-controller="Guestbook" asp-action="Approve" method="post">
+                                <input type="hidden" name="chapterId" value="@Model.Id" />
+                                <input type="hidden" name="submissionId" value="@submission.Id" />
+                                <button type="submit" class="btn-wizard-secondary" title="Approve"><i class="bi bi-check-lg"></i></button>
+                            </form>
+                            <form asp-controller="Guestbook" asp-action="Reject" method="post">
+                                <input type="hidden" name="chapterId" value="@Model.Id" />
+                                <input type="hidden" name="submissionId" value="@submission.Id" />
+                                <button type="submit" class="btn-wizard-secondary" title="Reject"><i class="bi bi-x-lg"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById('copyGuestbookLinkBtn')?.addEventListener('click', function () {
+            var input = document.getElementById('guestbookLinkInput');
+            var btn = this;
+
+            navigator.clipboard.writeText(input.value).then(function () {
+                var original = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check-lg"></i> Copied!';
+                setTimeout(function () { btn.innerHTML = original; }, 2000);
+            });
+        });
+    </script>
+}

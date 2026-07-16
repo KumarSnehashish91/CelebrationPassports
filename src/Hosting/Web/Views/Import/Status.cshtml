@@ -1,0 +1,63 @@
+@model CelebrationPassports.Web.Models.Imports.ImportJobViewModel
+
+@{
+    ViewData["Title"] = "Import Status";
+}
+
+@if (!Model.IsFinished)
+{
+    <meta http-equiv="refresh" content="3" />
+}
+
+<div class="dashboard">
+
+    <div class="dashboard-card" style="padding: 24px; max-width: 700px;">
+
+        <div class="card-header">
+            <h4><i class="bi bi-cloud-arrow-up"></i> Import Status</h4>
+        </div>
+
+        @switch (Model.Status)
+        {
+            case "Pending":
+                <p><i class="bi bi-hourglass-split"></i> Queued — this will start shortly.</p>
+                break;
+            case "Processing":
+                <p>
+                    <i class="bi bi-arrow-repeat"></i> Importing…
+                    @if (Model.TotalItems > 0)
+                    {
+                        <text>@Model.ProcessedItems of @Model.TotalItems processed</text>
+                    }
+                </p>
+                break;
+            case "Completed":
+                <p><i class="bi bi-check-circle text-success"></i> Import complete.</p>
+                <p>
+                    @Model.ProcessedItems imported
+                    @if (Model.SkippedItems > 0)
+                    {
+                        <text>, @Model.SkippedItems skipped (unsupported type or too large)</text>
+                    }
+                    . New chapters will appear on your Dashboard once they've been organized —
+                    that can take a couple of minutes.
+                </p>
+                <a asp-controller="Dashboard" asp-action="Index" class="primary-btn" style="width:auto;">
+                    <i class="bi bi-grid"></i> Go to Dashboard
+                </a>
+                break;
+            case "Failed":
+                <p><i class="bi bi-x-circle text-danger"></i> The import failed.</p>
+                @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+                {
+                    <p>@Model.ErrorMessage</p>
+                }
+                <a asp-controller="Import" asp-action="Index" class="primary-btn" style="width:auto;">
+                    <i class="bi bi-arrow-left"></i> Try Again
+                </a>
+                break;
+        }
+
+    </div>
+
+</div>

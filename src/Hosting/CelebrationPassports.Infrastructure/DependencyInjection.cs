@@ -5,6 +5,8 @@ using CelebrationPassports.Infrastructure.Storage.Interfaces;
 using CelebrationPassports.Infrastructure.Storage.Services;
 using CelebrationPassports.Infrastructure.Photo.Interfaces;
 using CelebrationPassports.Infrastructure.Photo.Services;
+using CelebrationPassports.Infrastructure.Imports.Interfaces;
+using CelebrationPassports.Infrastructure.Imports.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -24,6 +26,8 @@ namespace CelebrationPassports.Infrastructure.Authentication
 
             services.AddScoped<IFileStorageService, LocalFileStorageService>();
             services.AddScoped<IPhotoMetadataService, PhotoMetadataService>();
+            services.AddScoped<IImportArchiveStorage, LocalImportArchiveStorage>();
+            services.AddScoped<IGooglePhotosImportParser, GooglePhotosImportParser>();
 
             return services;
         }

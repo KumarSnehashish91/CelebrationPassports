@@ -1,31 +1,31 @@
 @model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
 
-<div class="dashboard-card recent-card">
+<div class="db-card">
 
-    <div class="card-header">
-        <h4>My Passports</h4>
+    <div class="db-card-head">
+        <h3>My Passports</h3>
         <a asp-controller="Passports" asp-action="Index">View All</a>
     </div>
 
-    <div class="activity-list">
-
+    @if (Model.Passports.Count == 0)
+    {
+        <p class="field-hint">No passports yet.</p>
+    }
+    else
+    {
         @foreach (var passport in Model.Passports)
         {
-            <div class="activity-item">
-                <div class="activity-icon purple">
-                    <i class="bi bi-book"></i>
-                </div>
-
-                <div class="activity-content">
-                    <h5 style="margin:0;">@passport.Title</h5>
-                    <p style="margin:0;">
+            <a asp-controller="Passports" asp-action="Details" asp-route-id="@passport.Id" class="db-passport-item">
+                <div class="ic"><i class="bi bi-award-fill"></i></div>
+                <div>
+                    <h5>@passport.Title</h5>
+                    <p>
                         @passport.Status &middot; @passport.PeopleCount @(passport.PeopleCount == 1 ? "person" : "people")
                         @(passport.IsOwner ? " · Owner" : "")
                     </p>
                 </div>
-            </div>
+            </a>
         }
-
-    </div>
+    }
 
 </div>

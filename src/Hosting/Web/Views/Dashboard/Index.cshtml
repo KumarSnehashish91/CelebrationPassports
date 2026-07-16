@@ -1,5 +1,4 @@
-﻿@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
-@using CelebrationPassports.Web.Models.ViewModels
+@model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -12,150 +11,100 @@
         <partial name="_IndexInvitations" />
     }
 
-    <!-- ===========================
-         Statistics
-    ============================ -->
+    @if (Model.PendingChapterInvitations.Any())
+    {
+        <partial name="_IndexChapterInvitations" />
+    }
 
-    <div class="stats-row">
+    @if (Model.ShowOnboarding)
+    {
+        <partial name="_IndexEmptyState" />
+    }
+    else
+    {
+        <!-- ===========================
+             Stat Strip
+        ============================ -->
 
-        <partial name="_StatisticCard"
-                 model='new StatisticCardViewModel
-                 {
-                     Title = "Upcoming",
-                     Value = Model.Summary.UpcomingCelebrations.ToString(),
-                     Description = "Next Event",
-                     Icon = "bi bi-calendar-event",
-                     IconBackground = "#FBF6E8"
-                 }' />
+        <div class="db-stat-strip">
 
-<partial name="_StatisticCard"
-         model='new StatisticCardViewModel
-         {
-             Title = "Invitations",
-             Value = Model.Summary.Invitations.ToString(),
-             Description = "Pending",
-             Icon = "bi bi-envelope",
-             IconBackground = "#EFF3EA"
-         }' />
+            <div class="db-stat">
+                <div class="ic"><i class="bi bi-calendar-event"></i></div>
+                <div>
+                    <div class="num">@Model.Summary.UpcomingCelebrations</div>
+                    <div class="lbl">Upcoming &middot; Next Event</div>
+                </div>
+            </div>
 
-<partial name="_StatisticCard"
-         model='new StatisticCardViewModel
-         {
-             Title = "Passport Stamps",
-             Value = Model.Summary.PassportStamps.ToString(),
-             Description = "Countries Visited",
-             Icon = "bi bi-patch-check",
-             IconBackground = "#FBEFEA"
-         }' />
+            <div class="db-stat">
+                <div class="ic"><i class="bi bi-envelope"></i></div>
+                <div>
+                    <div class="num">@Model.Summary.Invitations</div>
+                    <div class="lbl">Invitations &middot; Pending</div>
+                </div>
+            </div>
 
-<partial name="_StatisticCard"
-         model='new StatisticCardViewModel
-         {
-             Title = "Memories",
-             Value = Model.Summary.Memories.ToString(),
-             Description = "Photos & Videos",
-             Icon = "bi bi-camera",
-             IconBackground = "#EAF1F5"
-         }' />
+            <div class="db-stat">
+                <div class="ic"><i class="bi bi-patch-check"></i></div>
+                <div>
+                    <div class="num">@Model.Summary.PassportStamps</div>
+                    <div class="lbl">Passport Stamps &middot; Earned</div>
+                </div>
+            </div>
 
-<partial name="_StatisticCard"
-         model='new StatisticCardViewModel
-         {
-             Title = "Trips",
-             Value = Model.Summary.Trips.ToString(),
-             Description = "Places Visited",
-             Icon = "bi bi-airplane",
-             IconBackground = "#EEF0F3"
-         }' />
+            <div class="db-stat">
+                <div class="ic"><i class="bi bi-camera"></i></div>
+                <div>
+                    <div class="num">@Model.Summary.Memories</div>
+                    <div class="lbl">Memories &middot; Photos &amp; Videos</div>
+                </div>
+            </div>
 
-<partial name="_StatisticCard"
-         model='new StatisticCardViewModel
-         {
-             Title = "Countries",
-             Value = Model.Summary.Countries.ToString(),
-             Description = "Explored",
-             Icon = "bi bi-globe-central-south-asia",
-             IconBackground = "#FFF8EC"
-         }' />
+            <div class="db-stat">
+                <div class="ic"><i class="bi bi-airplane"></i></div>
+                <div>
+                    <div class="num">@Model.Summary.Trips</div>
+                    <div class="lbl">Trips &middot; Places Visited</div>
+                </div>
+            </div>
+
+            <div class="db-stat">
+                <div class="ic"><i class="bi bi-globe-central-south-asia"></i></div>
+                <div>
+                    <div class="num">@Model.Summary.Countries</div>
+                    <div class="lbl">Countries &middot; Explored</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ===========================
+             Row 3: Upcoming | Hero | Timeline
+        ============================ -->
+
+        <div class="db-row3">
+
+            <partial name="_IndexUpcoming" />
+
+            <partial name="_IndexMemoryHero" />
+
+            <partial name="_IndexTimeline" />
+
+        </div>
+
+        <!-- ===========================
+             Row Bottom: Passports | Chapters | Highlights
+        ============================ -->
+
+        <div class="db-row-bottom">
+
+            <partial name="_IndexPassports" />
+
+            <partial name="_IndexRecent" />
+
+            <partial name="_IndexMemoryHighlights" />
+
+        </div>
+    }
 
 </div>
-
-    <!-- ===========================
-         Main Dashboard Grid
-    ============================ -->
-
-    <div class="dashboard-grid">
-
-        <!-- Row 1 -->
-        <div class="grid-upcoming">
-            <partial name="_IndexUpcoming" />
-        </div>
-
-        <div class="grid-memoryhero">
-            <partial name="_IndexMemoryHero" />
-        </div>
-
-        <div class="grid-timeline">
-            <partial name="_IndexTimeline" />
-        </div>
-
-        <!-- Row 2 -->
-        @* <div class="grid-today">
-            <partial name="_IndexTodaysPlan" />
-        </div>
-
-        <div class="grid-actions">
-            <partial name="_IndexQuickActions" />
-        </div>
-
-        <div class="grid-map">
-            <div class="dashboard-card journey-map-placeholder">
-                <h3>Journey Map</h3>
-                <p>Coming next...</p>
-            </div>
-        </div> *@
-
-        <!-- Row 3 -->
-        <div class="dashboard-bottom-row">
-
-            <div class="grid-passports">
-                <partial name="_IndexPassports" />
-            </div>
-
-            <div class="grid-recent">
-                <partial name="_IndexRecent" />
-            </div>
-
-            @* <div class="grid-progress">
-                <partial name="_IndexProgress" />
-            </div> *@
-            <div class="grid-memory-highlights">
-                <partial name="_IndexMemoryHighlights" />
-            </div>
-            @* <div class="grid-actions">
-                <partial name="_IndexQuickActions" />
-            </div> *@
-
-          
-
-        </div>
-
-        <!-- Row 4 -->
-        @* <div class="dashboard-bottom-row">
-
-           
-
-            <div class="grid-wishlist">
-                <partial name="_IndexWishlist" />
-            </div>
-
-        </div> *@
-
-        <!-- Row 5 -->
-
-        <div class="grid-passport-book">
-
-            <partial name="_IndexPassportBook" />
-
-        </div>
-    </div>

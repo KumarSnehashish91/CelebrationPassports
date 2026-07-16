@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "Import Existing Memories";
+    var passportId = (Guid)ViewData["PassportId"]!;
+    var error = ViewData["Error"] as string;
+}
+
+<div class="dashboard">
+
+    <div class="dashboard-card" style="padding: 24px; max-width: 700px;">
+
+        <div class="card-header">
+            <h4><i class="bi bi-cloud-arrow-up"></i> Import Existing Memories</h4>
+        </div>
+
+        <p>
+            Already have photos somewhere else? Upload a Google Photos export and we'll bring
+            everything in — captured dates and locations included — then organize it into
+            chapters automatically, the same way a fresh upload is.
+        </p>
+
+        @if (!string.IsNullOrWhiteSpace(error))
+        {
+            <div class="alert alert-danger" role="alert">@error</div>
+        }
+
+        <form asp-action="StartGooglePhotosImport" method="post" enctype="multipart/form-data"
+              style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
+            <input type="hidden" name="passportId" value="@passportId" />
+
+            <label for="archive" class="form-label">Google Photos export (.zip)</label>
+            <input type="file" id="archive" name="archive" class="form-control" accept=".zip" required />
+
+            <button type="submit" class="primary-btn" style="width:auto;align-self:flex-start;">
+                <i class="bi bi-upload"></i> Start Import
+            </button>
+        </form>
+
+        <hr />
+
+        <h6>How to get a Google Photos export</h6>
+        <p>
+            Go to <a href="https://takeout.google.com" target="_blank" rel="noopener">Google Takeout</a>,
+            select only Google Photos, and choose the .zip export format. Once it's ready to
+            download, upload that .zip file here.
+        </p>
+
+    </div>
+
+</div>

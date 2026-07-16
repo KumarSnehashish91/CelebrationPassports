@@ -17,4 +17,6 @@ public class MemoryMapPinViewModel
     public string? PlaceName { get; set; }
 
     public int PhotoCount { get; set; }
+
+    public string? ImageUrl { get; set; }
 }

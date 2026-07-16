@@ -10,6 +10,8 @@ public interface IChapterService
 
     Task<ChapterDetailDto> UpdateAsync(Guid userId, Guid chapterId, UpdateChapterRequest request);
 
+    Task<ChapterDetailDto> SetSoundtrackAsync(Guid userId, Guid chapterId, SetChapterSoundtrackRequest request);
+
     // Draft = auto-detected, pending review — across all of the user's passports.
     Task<IReadOnlyList<ChapterDetailDto>> ListDraftsForUserAsync(Guid userId);
 

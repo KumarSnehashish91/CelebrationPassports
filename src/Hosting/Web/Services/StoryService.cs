@@ -218,7 +218,10 @@ public class StoryService : IStoryService
             PlaceId = body.PlaceId,
             EventDate = body.EventDate,
             Status = body.Status,
-            Source = body.Source
+            Source = body.Source,
+            SongTitle = body.SongTitle,
+            SongArtist = body.SongArtist,
+            SongLinkUrl = body.SongLinkUrl
         };
 
         foreach (var m in body.Media)
@@ -234,6 +237,19 @@ public class StoryService : IStoryService
         }
 
         return model;
+    }
+
+    public async Task<bool> SetChapterSoundtrackAsync(Guid chapterId, string? songTitle, string? songArtist, string? songLinkUrl)
+    {
+        var request = new
+        {
+            songTitle,
+            songArtist,
+            songLinkUrl
+        };
+
+        var response = await _httpClient.PutAsJsonAsync($"api/chapters/{chapterId}/soundtrack", request);
+        return response.IsSuccessStatusCode;
     }
 
     public async Task<Guid?> DetectTripAsync(List<Guid> mediaIds)
@@ -390,6 +406,9 @@ public class StoryService : IStoryService
         public DateOnly EventDate { get; set; }
         public int Status { get; set; }
         public int Source { get; set; }
+        public string? SongTitle { get; set; }
+        public string? SongArtist { get; set; }
+        public string? SongLinkUrl { get; set; }
         public List<MediaBody> Media { get; set; } = [];
     }
 

@@ -1,0 +1,111 @@
+/*==========================================================
+    THEN VS. NOW
+==========================================================*/
+
+.tvn-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.tvn-pair-card {
+    margin-bottom: 0;
+}
+
+.tvn-pair-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
+}
+
+    .tvn-pair-head h4 {
+        margin: 0;
+        font-size: 16px;
+    }
+
+.tvn-years-apart {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--gold-hover);
+    background: rgba(212,175,55,.14);
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.tvn-pair {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.tvn-side {
+    flex: 1;
+    min-width: 0;
+    text-decoration: none;
+    color: inherit;
+}
+
+.tvn-photo {
+    aspect-ratio: 4/3;
+    border-radius: var(--radius-md);
+    background-color: var(--bg-body);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.tvn-year-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(21,25,20,.65);
+    color: var(--cream);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+    .tvn-year-badge.now {
+        background: var(--gold);
+        color: var(--navy-deep);
+    }
+
+.tvn-caption {
+    margin-top: 8px;
+}
+
+    .tvn-caption strong {
+        display: block;
+        font-size: 13px;
+        color: var(--navy);
+    }
+
+    .tvn-caption span {
+        display: block;
+        font-size: 11.5px;
+        color: var(--text-light);
+        margin-top: 2px;
+    }
+
+.tvn-arrow {
+    flex-shrink: 0;
+    color: var(--gold);
+    font-size: 20px;
+}
+
+@media (max-width: 600px) {
+    .tvn-pair {
+        flex-direction: column;
+    }
+
+    .tvn-arrow {
+        transform: rotate(90deg);
+    }
+}

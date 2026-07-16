@@ -1,64 +1,45 @@
 @model CelebrationPassports.Web.ViewModels.Dashboard.DashboardViewModel
 
-<div class="dashboard-card upcoming-card">
+<div class="db-card" style="display:flex;flex-direction:column;">
 
-    <div class="card-header">
-
-        <h5><b>Upcoming Events</b></h5>
-
+    <div class="db-card-head">
+        <h3>Upcoming Events</h3>
         <a asp-controller="Celebrations" asp-action="Index">View All</a>
-
     </div>
 
-    <div class="upcoming-list">
-
-        @foreach (var item in Model.UpcomingCelebrations)
+    @if (Model.UpcomingCelebrations.Count == 0)
+    {
+        <p class="field-hint">No upcoming events yet.</p>
+    }
+    else
+    {
+        foreach (var item in Model.UpcomingCelebrations)
         {
             var daysLeft = (item.Date - DateTime.Today).Days;
 
-            <a asp-controller="Events" asp-action="Create" asp-route-id="@item.Id" class="upcoming-item">
+            <a asp-controller="Events" asp-action="Create" asp-route-id="@item.Id" class="db-event-item">
 
-                <img src="@item.ImageUrl"
-                     class="celebration-thumb"
-                     alt="@item.Title" />
+                <div class="thumb" style="background-image:url('@item.ImageUrl');"></div>
 
-                <div class="upcoming-info">
-
-                    <h6>@item.Title</h6>
-
-                    <span>@item.Type</span>
-
+                <div>
+                    <div class="name">@item.Title</div>
+                    <div class="status">@item.Type</div>
                 </div>
 
-                <div class="upcoming-date">
-
-                    <div class="date-badge">
-
-                        <small>@item.Date.ToString("MMM").ToUpper()</small>
-
-                        <strong>@item.Date.ToString("dd")</strong>
-
-                    </div>
-
-                    <span class="days-left">
-
-                        @(daysLeft > 0 ? $"{daysLeft} days left" : "Today")
-
-                    </span>
-
+                <div class="db-date-badge">
+                    <div class="mon">@item.Date.ToString("MMM").ToUpper()</div>
+                    <div class="day">@item.Date.ToString("dd")</div>
+                    <div class="left">@(daysLeft > 0 ? $"{daysLeft}d left" : "Today")</div>
                 </div>
 
             </a>
         }
+    }
 
-    </div>
+    <div style="flex:1;"></div>
 
-    <a asp-controller="Events" asp-action="Create" class="btn btn-outline-primary w-100 mt-3">
-
-        <i class="bi bi-plus-lg"></i>
-
-        Create New Event
-
+    <a asp-controller="Events" asp-action="Create" class="db-btn-outline-full">
+        <i class="bi bi-plus-lg"></i> Create New Event
     </a>
 
 </div>
